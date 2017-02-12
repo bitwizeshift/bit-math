@@ -38,7 +38,7 @@ namespace bit {
 
       /// \brief Default constructs a radian.
       ///
-      /// The angle is in an undefined state until it is assigned
+      /// The angle defaults to 0 radians.
       constexpr radian() noexcept;
 
       /// \brief Constructs a radian from the given floating point value

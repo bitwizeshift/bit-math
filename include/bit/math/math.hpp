@@ -113,20 +113,6 @@ namespace bit {
     //
     //------------------------------------------------------------------------
 
-    /// \brief Calculates the absolute value of \p f
-    ///
-    /// \param f the value to calculate
-    /// \return the absolute value of \p f
-    float abs( float f ) noexcept;
-
-    /// \copydoc abs( float )
-    double abs( double f ) noexcept;
-
-    /// \copydoc abs( float )
-    long double abs( long double f ) noexcept;
-
-    //------------------------------------------------------------------------
-
     /// \brief Squares the value of \p f
     ///
     /// \param f the value to square
@@ -152,7 +138,15 @@ namespace bit {
     //------------------------------------------------------------------------
 
     template<typename T, typename U>
-    auto mod( T num, U den ) noexcept -> std::common_type_t<T,U>;
+    std::common_type_t<T,U>
+      mod( T num, U den ) noexcept;
+
+    namespace detail {
+
+      template<typename T>
+      struct mod_dispatch;
+
+    } // namespace detail
 
     //------------------------------------------------------------------------
 
@@ -174,6 +168,39 @@ namespace bit {
     /// \copydoc log2( float )
     long double log2( long double f ) noexcept;
 
+    //------------------------------------------------------------------------
+    // Absolute Values
+    //------------------------------------------------------------------------
+
+    /// \brief Absolute value function specialization for signed types
+    ///
+    /// \param x the signed value
+    /// \return \p x the absolute value of \p x (\c |x| )
+#ifndef BIT_DOXYGEN_BUILD
+    template<typename Arithmetic, std::enable_if_t<std::is_signed<Arithmetic>::value>* = nullptr>
+#else
+    template<typename Arithmetic>
+#endif
+    constexpr Arithmetic abs( Arithmetic x ) noexcept;
+
+    /// \brief Absolute value function specialization for unsigned types
+    ///
+    /// This function acts as a simple type-safe identity that returns the
+    /// input value
+    ///
+    /// \param x the unsigned value
+    /// \return \p x
+#ifndef BIT_DOXYGEN_BUILD
+    template<typename Arithmetic, std::enable_if_t<std::is_unsigned<Arithmetic>::value>* = nullptr>
+#else
+    template<typename Arithmetic>
+#endif
+    constexpr Arithmetic abs( Arithmetic x ) noexcept;
+
+    //------------------------------------------------------------------------
+    // Clamping
+    //------------------------------------------------------------------------
+
     /// \brief Clamps a value between [\p min , \p max ]
     ///
     /// \param val the value to clamp
@@ -181,20 +208,15 @@ namespace bit {
     /// \param min the min value
     /// \return the clamped value
     template<typename T, typename U, typename V>
-    constexpr auto clamp( T val, U max, V min ) noexcept
-      -> std::common_type_t<T,U,V>;
+    constexpr std::common_type_t<T,U,V>
+      clamp( T val, U max, V min ) noexcept;
 
     /// \brief Clamps a floating value between \c [0,1]
     ///
     /// \param val the value to clamp
     /// \return the clamped value
-    constexpr float saturate( float val ) noexcept;
-
-    /// \copydoc saturate( float )
-    constexpr double saturate( double val ) noexcept;
-
-    /// \copydoc saturate( float )
-    constexpr long double saturate( long double val ) noexcept;
+    template<typename Float>
+    constexpr float saturate( Float val ) noexcept;
 
     //------------------------------------------------------------------------
     // Trig Functions
@@ -208,8 +230,11 @@ namespace bit {
     // Equality
     //------------------------------------------------------------------------
 
+    template<typename T, typename U>
+    constexpr bool almost_equal( T lhs, U rhs ) noexcept;
+
     template<typename T, typename U, typename V>
-    constexpr bool almost_equal( T lhs, U rhs, V tolerance = default_tolerance ) noexcept;
+    constexpr bool almost_equal( T lhs, U rhs, V tolerance ) noexcept;
 
   } // namespace math
 } // namespace bit
@@ -241,20 +266,72 @@ inline constexpr T bit::math::half_pi()
 }
 
 //----------------------------------------------------------------------------
-// Rounding
+// Square-root
+//----------------------------------------------------------------------------
+
+template<typename T, typename U>
+inline std::common_type_t<T,U> bit::math::mod( T num, U den )
+  noexcept
+{
+  return std::fmod<std::common_type_t<T,U>>(num,den);
+}
+
+inline float bit::math::sqrt( float f )
+  noexcept
+{
+  return std::sqrt(f);
+}
+
+//----------------------------------------------------------------------------
+
+inline double bit::math::sqrt( double f )
+  noexcept
+{
+  return std::sqrt(f);
+}
+
+//----------------------------------------------------------------------------
+
+inline long double bit::math::sqrt( long double f )
+  noexcept
+{
+  return std::sqrt(f);
+}
+
+//----------------------------------------------------------------------------
+// Logarithms
 //----------------------------------------------------------------------------
 
 inline float bit::math::log2( float f )
   noexcept;
 
-/// \copydoc log2( float )
+//----------------------------------------------------------------------------
+
 inline double bit::math::log2( double f )
   noexcept;
 
-/// \copydoc log2( float )
+//----------------------------------------------------------------------------
+
 inline long double bit::math::log2( long double f )
   noexcept;
 
+//----------------------------------------------------------------------------
+// Absolute Values
+//----------------------------------------------------------------------------
+
+template<typename Arithmetic,std::enable_if_t<std::is_signed<Arithmetic>::value>*>
+inline constexpr Arithmetic bit::math::abs( Arithmetic x )
+  noexcept
+{
+  return ((x < 0) ? -x : x);
+}
+
+template<typename Arithmetic,std::enable_if_t<std::is_unsigned<Arithmetic>::value>*>
+inline constexpr Arithmetic bit::math::abs( Arithmetic x )
+  noexcept
+{
+  return x;
+}
 
 //----------------------------------------------------------------------------
 // Clamping
@@ -269,24 +346,11 @@ inline constexpr std::common_type_t<T,U,V> bit::math::clamp( T val, U max, V min
 
 //----------------------------------------------------------------------------
 
-inline constexpr float bit::math::saturate( float val )
+template<typename Float>
+inline constexpr float bit::math::saturate( Float val )
   noexcept
 {
-  return clamp( val, 1.0f, 0.0f );
-}
-
-
-inline constexpr double bit::math::saturate( double val )
-  noexcept
-{
-  return clamp( val, 1.0, 0.0 );
-}
-
-
-inline constexpr long double bit::math::saturate( long double val )
-  noexcept
-{
-  return clamp( val, 1.0l, 0.0l );
+  return clamp( val, static_cast<Float>(1), static_cast<Float>(0) );
 }
 
 //----------------------------------------------------------------------------
@@ -297,7 +361,15 @@ template<typename T, typename U, typename V>
 inline constexpr bool bit::math::almost_equal( T lhs, U rhs, V tolerance )
   noexcept
 {
-  return abs(lhs - rhs) <= tolerance;
+  auto tmp = (lhs - rhs);
+  return (((tmp < 0) ? -tmp : tmp) <= tolerance);
+}
+
+template<typename T, typename U>
+inline constexpr bool bit::math::almost_equal( T lhs, U rhs )
+  noexcept
+{
+  return almost_equal(lhs,rhs,default_tolerance);
 }
 
 

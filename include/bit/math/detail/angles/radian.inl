@@ -12,7 +12,7 @@ inline constexpr bit::math::radian::radian()
 
 }
 
-inline constexpr bit::math::radian::radian( radian::value_type angle )
+inline constexpr bit::math::radian::radian( value_type angle )
   noexcept
   : m_angle(angle)
 {

@@ -26,14 +26,14 @@ inline constexpr bit::math::degree
 //----------------------------------------------------------------------------
 
 template<>
-inline constexpr bit::math::radian bit::math::angle_cast( radian from )
+inline constexpr bit::math::radian bit::math::casts::angle_cast( radian from )
   noexcept
 {
   return from;
 }
 
 template<>
-inline constexpr bit::math::degree bit::math::angle_cast( degree from )
+inline constexpr bit::math::degree bit::math::casts::angle_cast( degree from )
   noexcept
 {
   return from;
@@ -49,7 +49,7 @@ namespace bit {
 }
 
 template<>
-inline constexpr bit::math::radian bit::math::angle_cast( degree angle )
+inline constexpr bit::math::radian bit::math::casts::angle_cast( degree angle )
   noexcept
 {
 
@@ -57,7 +57,7 @@ inline constexpr bit::math::radian bit::math::angle_cast( degree angle )
 }
 
 template<>
-inline constexpr bit::math::degree bit::math::angle_cast( radian angle )
+inline constexpr bit::math::degree bit::math::casts::angle_cast( radian angle )
   noexcept
 {
   return degree{ angle.value() * detail::rad_to_deg };

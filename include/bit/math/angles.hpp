@@ -33,43 +33,47 @@ namespace bit {
     // Casting
     //------------------------------------------------------------------------
 
-    /// \brief Performs a cast between angle types
-    ///
-    /// \tparam To the angle type to cast to
-    /// \param from the angle to cast from
-    /// \return the casted angle
-    template<typename To, typename From>
-    constexpr To angle_cast( From from ) noexcept;
+    inline namespace casts {
 
-    /// \brief Identity angle cast
-    ///
-    /// \tparam To the type to cast to
-    /// \param from the angle to cast
-    /// \return itself
-    template<>
-    constexpr radian angle_cast( radian angle ) noexcept;
+      /// \brief Performs a cast between angle types
+      ///
+      /// \tparam To the angle type to cast to
+      /// \param from the angle to cast from
+      /// \return the casted angle
+      template<typename To, typename From>
+      constexpr To angle_cast( From from ) noexcept;
 
-    /// \brief Identity angle cast
-    ///
-    /// \tparam To the type to cast to
-    /// \param from the angle to cast
-    /// \return itself
-    template<>
-    constexpr degree angle_cast( degree angle ) noexcept;
+      /// \brief Identity angle cast
+      ///
+      /// \tparam To the type to cast to
+      /// \param from the angle to cast
+      /// \return itself
+      template<>
+      constexpr radian angle_cast( radian angle ) noexcept;
 
-    /// \brief Casts a \ref degree \p angle to a \ref radian
-    ///
-    /// \param angle the degree to cast to radians
-    /// \return the angle in radians
-    template<>
-    constexpr radian angle_cast( degree angle ) noexcept;
+      /// \brief Identity angle cast
+      ///
+      /// \tparam To the type to cast to
+      /// \param from the angle to cast
+      /// \return itself
+      template<>
+      constexpr degree angle_cast( degree angle ) noexcept;
 
-    /// \brief Casts a \ref radian \p angle to a \ref degree
-    ///
-    /// \param angle the radian to cast to degrees
-    /// \return the angle in degrees
-    template<>
-    constexpr degree angle_cast( radian angle ) noexcept;
+      /// \brief Casts a \ref degree \p angle to a \ref radian
+      ///
+      /// \param angle the degree to cast to radians
+      /// \return the angle in radians
+      template<>
+      constexpr radian angle_cast( degree angle ) noexcept;
+
+      /// \brief Casts a \ref radian \p angle to a \ref degree
+      ///
+      /// \param angle the radian to cast to degrees
+      /// \return the angle in degrees
+      template<>
+      constexpr degree angle_cast( radian angle ) noexcept;
+
+    } // inline namespace casts
 
     //------------------------------------------------------------------------
     //

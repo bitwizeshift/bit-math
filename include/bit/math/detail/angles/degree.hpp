@@ -40,7 +40,7 @@ namespace bit {
 
       /// \brief Default constructs a degree.
       ///
-      /// The angle is in an undefined state until it is assigned
+      /// The angle defaults to 0 degrees
       constexpr degree() noexcept;
 
       /// \brief Constructs a degree from the given floating point value
