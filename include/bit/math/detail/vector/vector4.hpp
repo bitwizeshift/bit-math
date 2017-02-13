@@ -37,11 +37,11 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-      static const vector4<T> zero;
-      static const vector4<T> unit_x;
-      static const vector4<T> unit_y;
-      static const vector4<T> unit_z;
-      static const vector4<T> unit_w;
+      static const vector4<T> zero;   ///< Zero length vector
+      static const vector4<T> unit_x; ///< A unit vector in the x-direction
+      static const vector4<T> unit_y; ///< A unit vector in the y-direction
+      static const vector4<T> unit_z; ///< A unit vector in the z-direction
+      static const vector4<T> unit_w; ///< A unit vector in the w-direction
 
       //----------------------------------------------------------------------
       // Constructors
@@ -64,9 +64,9 @@ namespace bit {
       /// \param z the z-component of the vector4
       /// \param w the w-component of the vector4
       constexpr vector4( value_type x,
-                         value_type y,
-                         value_type z,
-                         value_type w ) noexcept;
+                          value_type y,
+                          value_type z,
+                          value_type w ) noexcept;
 
       /// \brief Copy-constructs a vector4 with the value of another
       ///        vector4
@@ -93,6 +93,23 @@ namespace bit {
       /// \param other the other vector4 to move
       template<typename U>
       constexpr vector4( vector4<U>&& other ) noexcept;
+
+      //----------------------------------------------------------------------
+      // Assignment
+      //----------------------------------------------------------------------
+    public:
+
+      /// \brief Copy-assigns \p other to \c this
+      ///
+      /// \param other the other vector4 to copy
+      /// \return reference to \c (*this)
+      vector4& operator=( const vector4& other ) = default;
+
+      /// \brief Move-assigns \p other to \c this
+      ///
+      /// \param other the other vector4 to move
+      /// \return reference to \c (*this)
+      vector4& operator=( vector4&& other ) = default;
 
       //----------------------------------------------------------------------
       // Observers
@@ -183,6 +200,10 @@ namespace bit {
         dot( const vector4<U>& rhs ) const noexcept;
 
       /// \brief Calculates the cross-product of \c this and \p rhs
+      ///
+      /// \note This cross-product is not a true 4-dimensional cross-product,
+      ///       it is a cross product constrainted to 3-dimensions, clearing
+      ///       the w-entry
       ///
       /// \param rhs the other vector4 to perform the cross-product with
       /// \return the cross product of \c this and \p rhs

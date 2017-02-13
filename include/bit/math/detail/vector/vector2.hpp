@@ -13,7 +13,13 @@ namespace bit {
   namespace math {
 
     //////////////////////////////////////////////////////////////////////////
+    /// \brief This object represents a 2-component vector in linear algebra
     ///
+    /// Most operations are marked \c constexpr to allow for compile-time
+    /// forward-calculations of vector sums and products.
+    ///
+    /// Operations on this type are able to promote results to reduce loss of
+    /// data, depending on what the operands are.
     //////////////////////////////////////////////////////////////////////////
     template<typename T>
     class vector2
@@ -37,9 +43,9 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-      static const vector2<T> zero;
-      static const vector2<T> unit_x;
-      static const vector2<T> unit_y;
+      static const vector2<T> zero;   ///< A zero-length vector
+      static const vector2<T> unit_x; ///< A unit-vector in the x-direction
+      static const vector2<T> unit_y; ///< A unit-vector in the y-direction
 
       //----------------------------------------------------------------------
       // Constructors
@@ -93,6 +99,23 @@ namespace bit {
       /// \param other the other vector2 to move
       template<typename U>
       constexpr vector2( vector2<U>&& other ) noexcept;
+
+      //----------------------------------------------------------------------
+      // Assignment
+      //----------------------------------------------------------------------
+    public:
+
+      /// \brief Copy-assigns \p other to \c this
+      ///
+      /// \param other the other vector2 to copy
+      /// \return reference to \c (*this)
+      vector2& operator=( const vector2& other ) = default;
+
+      /// \brief Move-assigns \p other to \c this
+      ///
+      /// \param other the other vector2 to move
+      /// \return reference to \c (*this)
+      vector2& operator=( vector2&& other ) = default;
 
       //----------------------------------------------------------------------
       // Observers

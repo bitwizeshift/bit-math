@@ -33,12 +33,19 @@ namespace bit {
     template<typename T>
     using enable_if_float_t = typename enable_if_float<T>::type;
 
+    template<typename T>
+    using math_result_t = std::conditional_t<
+      std::is_floating_point<T>::value,
+      T,
+      float_t
+    >;
+
     //------------------------------------------------------------------------
     // Constants
     //------------------------------------------------------------------------
 
     /// The tolerance to use for floating-point equality
-    static const float_t default_tolerance = 0.0;
+    static constexpr float_t default_tolerance = (float_t) 1e-6f;
 
     /// \brief Retrieves the value for the mathematical constant PI
     template<typename T>
@@ -53,7 +60,7 @@ namespace bit {
     constexpr T two_pi() noexcept;
 
     //------------------------------------------------------------------------
-    // Conversion
+    // Products
     //------------------------------------------------------------------------
 
     /// \brief Calculates the dot product between two arrays
@@ -62,111 +69,98 @@ namespace bit {
     /// \param rhs the right array
     /// \return the dot product of the two arrays
     template<typename T, typename U, size_t N>
-    constexpr auto dot( T (&lhs)[N], U (&rhs)[N] ) noexcept
-      -> std::common_type_t<T,U>;
+    constexpr std::common_type_t<T,U> dot( T(&lhs)[N], U(&rhs)[N] ) noexcept;
 
     //------------------------------------------------------------------------
     // Rounding
     //------------------------------------------------------------------------
 
-    /// \brief Rounds the floating point value \p f
+    /// \brief Rounds the floating point value \p a
     ///
-    /// \param f the floating point value
+    /// \param a the floating point value
     /// \return the rounded float value
-    float round( float f ) noexcept;
-
-    /// \copydoc round( float )
-    double round( double f ) noexcept;
-
-    /// \copydoc round( float )
-    long double trunc( long double f ) noexcept;
+    template<typename Arithmetic>
+    Arithmetic round( Arithmetic a ) noexcept;
 
     //------------------------------------------------------------------------
 
-    /// \brief Computes the smallest integer value not less than \p f
+    /// \brief Computes the smallest integer value not less than \p a
     ///
-    /// \param f the floating point value
-    /// \return the ceiling of \p f
-    float ceil( float f ) noexcept;
-
-    /// \copydoc ceil( float )
-    double ceil( double f ) noexcept;
-
-    /// \copydoc ceil( float )
-    long double ceil( long double f ) noexcept;
+    /// \param a the floating point value
+    /// \return the ceiling of \p a
+    template<typename Arithmetic>
+    Arithmetic ceil( Arithmetic a ) noexcept;
 
     //------------------------------------------------------------------------
 
-    /// \brief Computes the smallest integer value not less than \p f
+    /// \brief Computes the smallest integer value not less than \p a
     ///
-    /// \param f the floating point value
-    /// \return the ceiling of \p f
-    float floor( float f ) noexcept;
-
-    /// \copydoc floor( float )
-    double floor( double f ) noexcept;
-
-    /// \copydoc floor( float )
-    long double floor( long double f ) noexcept;
+    /// \param a the floating point value
+    /// \return the ceiling of \p a
+    template<typename Arithmetic>
+    Arithmetic floor( Arithmetic a ) noexcept;
 
     //------------------------------------------------------------------------
-    //
-    //------------------------------------------------------------------------
 
-    /// \brief Squares the value of \p f
+    /// \brief Truncates the arithmetic value \p a
     ///
-    /// \param f the value to square
-    /// \return the square of \p f
-    constexpr float sqr( float f ) noexcept;
-
-    /// \copydoc sqr( float )
-    constexpr double sqr( double f ) noexcept;
-
-    /// \copydoc sqr( float )
-    constexpr long double sqr( long double f ) noexcept;
+    /// \param a the value to truncate
+    /// \return the truncated value
+    template<typename Arithmetic>
+    Arithmetic trunc( Arithmetic a ) noexcept;
 
     //------------------------------------------------------------------------
 
-    float sqrt( float f ) noexcept;
-
-    /// \copydoc sqrt( float )
-    double sqrt( double f ) noexcept;
-
-    /// \copydoc sqrt( float )
-    long double sqrt( long double f ) noexcept;
-
-    //------------------------------------------------------------------------
-
+    /// \brief Calculates the modulo of \p num by \p den
+    ///
+    /// This function promotes the return value to the common type of
+    /// \p num and \p den
+    ///
+    /// \param num the numerator
+    /// \param den the denominator
+    /// \return the modulo of \p num and \p den
     template<typename T, typename U>
-    std::common_type_t<T,U>
-      mod( T num, U den ) noexcept;
+    std::common_type_t<T,U> mod( T num, U den ) noexcept;
 
-    namespace detail {
+    //------------------------------------------------------------------------
+    // Squares
+    //------------------------------------------------------------------------
 
-      template<typename T>
-      struct mod_dispatch;
-
-    } // namespace detail
+    /// \brief Squares the value of \p a
+    ///
+    /// \param a the value to square
+    /// \return the square of \p a
+    template<typename Arithmetic>
+    constexpr Arithmetic sqr( Arithmetic a ) noexcept;
 
     //------------------------------------------------------------------------
 
-    float log( float f ) noexcept;
+    /// \brief Computes the square-root of \p a
+    ///
+    /// \param a the value to square-root
+    /// \return the square-root of \p a
+    template<typename Arithmetic>
+    math_result_t<Arithmetic> sqrt( Arithmetic a ) noexcept;
 
-    /// \copydoc log( float )
-    double log( double f ) noexcept;
+    //------------------------------------------------------------------------
+    // Logarithms
+    //------------------------------------------------------------------------
 
-    /// \copydoc log( float )
-    long double log( long double f ) noexcept;
+    /// \brief Computes the logarithm (base-10) of \p a
+    ///
+    /// \param a the arithmetic type to determine the logarithm
+    /// \return the result of the logarithm
+    template<typename Arithmetic>
+    math_result_t<Arithmetic> log( Arithmetic a ) noexcept;
 
     //------------------------------------------------------------------------
 
-    float log2( float f ) noexcept;
-
-    /// \copydoc log2( float )
-    double log2( double f ) noexcept;
-
-    /// \copydoc log2( float )
-    long double log2( long double f ) noexcept;
+    /// \brief Computes the logarithm (base-2) of \p a
+    ///
+    /// \param a the arithmetic type to determine the logarithm
+    /// \return the result of the logarithm
+    template<typename Arithmetic>
+    math_result_t<Arithmetic> log2( Arithmetic a ) noexcept;
 
     //------------------------------------------------------------------------
     // Absolute Values
@@ -216,25 +210,87 @@ namespace bit {
     /// \param val the value to clamp
     /// \return the clamped value
     template<typename Float>
-    constexpr float saturate( Float val ) noexcept;
+    constexpr Float saturate( Float val ) noexcept;
 
-    //------------------------------------------------------------------------
-    // Trig Functions
-    //------------------------------------------------------------------------
-
-    //------------------------------------------------------------------------
-    // Table Trig Functions
-    //------------------------------------------------------------------------
+    //========================================================================
+    // Floating Point Math
+    //========================================================================
 
     //------------------------------------------------------------------------
     // Equality
     //------------------------------------------------------------------------
 
+    /// \brief Determines relative equality between \p lhs and \p rhs relative
+    ///        to \ref default_tolerance
+    ///
+    /// \param lhs the value on the left of the equation
+    /// \param rhs the value on the right of the equation
+    /// \return \c true if \p lhs is almost equal to \p rhs
     template<typename T, typename U>
     constexpr bool almost_equal( T lhs, U rhs ) noexcept;
 
+    /// \brief Determines relative equality between \p lhs and \p rhs relative
+    ///        to the specified \p tolerance
+    ///
+    /// \param lhs the value on the left of the equation
+    /// \param rhs the value on the right of the equation
+    /// \param tolerance the tolerance to use for comparison
+    /// \return \c true if \p lhs is almost equal to \p rhs
     template<typename T, typename U, typename V>
     constexpr bool almost_equal( T lhs, U rhs, V tolerance ) noexcept;
+
+    //------------------------------------------------------------------------
+    // Finite
+    //------------------------------------------------------------------------
+
+    /// \brief Determines whether a given integral value \p f is a nan
+    ///
+    /// For non float-values, the entry is normalized to a \ref float_t
+    ///
+    /// \param f the value to check
+    /// \return \c true if \p f is a \c nan
+    template<typename Float>
+    bool is_nan( Float f ) noexcept;
+
+    //------------------------------------------------------------------------
+
+    /// \brief Determines whether a given integral value \p f is finite
+    ///
+    /// For non float-values, the entry is normalized to a \ref float_t
+    ///
+    /// \param f the value to check
+    /// \return \c true if \p f is \c finite
+    template<typename Float>
+    bool is_finite( Float f ) noexcept;
+
+    /// \brief Determines whether a given integral value \p f is infinite
+    ///
+    /// For non float-values, the entry is normalized to a \ref float_t
+    ///
+    /// \param f the value to check
+    /// \return \c true if \p f is \c infinite
+    template<typename Float>
+    bool is_infinite( Float f ) noexcept;
+
+    //------------------------------------------------------------------------
+
+    /// \brief Determines whether a given integral value \p f is normal
+    ///
+    /// For non float-values, the entry is normalized to a \ref float_t
+    ///
+    /// \param f the value to check
+    /// \return \c true if \p f is \c normal
+    template<typename Float>
+    bool is_normal( Float f ) noexcept;
+
+    /// \brief Determines whether a given integral value \p f is subnormal
+    ///
+    /// For non float-values, the entry is normalized to a \ref float_t
+    ///
+    /// \param f the value to check
+    /// \return \c true if \p f is \c subnormal
+    template<typename Float>
+    bool is_subnormal( Float f ) noexcept;
 
   } // namespace math
 } // namespace bit
@@ -266,7 +322,60 @@ inline constexpr T bit::math::half_pi()
 }
 
 //----------------------------------------------------------------------------
-// Square-root
+// Products
+//----------------------------------------------------------------------------
+
+template<typename T, typename U, std::size_t N>
+inline constexpr std::common_type_t<T,U>
+  bit::math::dot( T(&lhs)[N], U(&rhs)[N] )
+  noexcept
+{
+  // Hopefully compilers are smart enough to vectorize the following loop
+  auto result = std::common_type_t<T,U>(0);
+  for( auto i = 0; i < N; ++i ) {
+    result += (lhs[i] * rhs[i]);
+  }
+  return result;
+}
+
+//----------------------------------------------------------------------------
+// Rounding
+//----------------------------------------------------------------------------
+
+template<typename Arithmetic>
+inline Arithmetic bit::math::round( Arithmetic a )
+  noexcept
+{
+  return std::round( a );
+}
+
+//----------------------------------------------------------------------------
+
+template<typename Arithmetic>
+inline Arithmetic bit::math::ceil( Arithmetic a )
+  noexcept
+{
+  return std::ceil( a );
+}
+
+//----------------------------------------------------------------------------
+
+template<typename Arithmetic>
+inline Arithmetic bit::math::floor( Arithmetic a )
+  noexcept
+{
+  return std::floor( a );
+}
+
+//----------------------------------------------------------------------------
+
+template<typename Arithmetic>
+inline Arithmetic bit::math::trunc( Arithmetic a )
+  noexcept
+{
+  return std::trunc( a );
+}
+
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
@@ -276,44 +385,45 @@ inline std::common_type_t<T,U> bit::math::mod( T num, U den )
   return std::fmod<std::common_type_t<T,U>>(num,den);
 }
 
-inline float bit::math::sqrt( float f )
+//----------------------------------------------------------------------------
+// Squares
+//----------------------------------------------------------------------------
+
+template<typename Arithmetic>
+inline constexpr Arithmetic bit::math::sqr( Arithmetic a )
   noexcept
 {
-  return std::sqrt(f);
+  return (a*a);
 }
 
 //----------------------------------------------------------------------------
 
-inline double bit::math::sqrt( double f )
+template<typename Arithmetic>
+inline bit::math::math_result_t<Arithmetic> bit::math::sqrt( Arithmetic a )
   noexcept
 {
-  return std::sqrt(f);
-}
-
-//----------------------------------------------------------------------------
-
-inline long double bit::math::sqrt( long double f )
-  noexcept
-{
-  return std::sqrt(f);
+  return std::sqrt(a);
 }
 
 //----------------------------------------------------------------------------
 // Logarithms
 //----------------------------------------------------------------------------
 
-inline float bit::math::log2( float f )
-  noexcept;
+template<typename Arithmetic>
+inline bit::math::math_result_t<Arithmetic> bit::math::log( Arithmetic a )
+  noexcept
+{
+  return std::log( a );
+}
 
 //----------------------------------------------------------------------------
 
-inline double bit::math::log2( double f )
-  noexcept;
-
-//----------------------------------------------------------------------------
-
-inline long double bit::math::log2( long double f )
-  noexcept;
+template<typename Arithmetic>
+inline bit::math::math_result_t<Arithmetic> bit::math::log2( Arithmetic a )
+  noexcept
+{
+  return std::log2( a );
+}
 
 //----------------------------------------------------------------------------
 // Absolute Values
@@ -338,7 +448,8 @@ inline constexpr Arithmetic bit::math::abs( Arithmetic x )
 //----------------------------------------------------------------------------
 
 template<typename T, typename U, typename V>
-inline constexpr std::common_type_t<T,U,V> bit::math::clamp( T val, U max, V min )
+inline constexpr std::common_type_t<T,U,V>
+  bit::math::clamp( T val, U max, V min )
   noexcept
 {
   return ((val < min) ? min : ((val > max) ? max : val));
@@ -347,11 +458,15 @@ inline constexpr std::common_type_t<T,U,V> bit::math::clamp( T val, U max, V min
 //----------------------------------------------------------------------------
 
 template<typename Float>
-inline constexpr float bit::math::saturate( Float val )
+inline constexpr Float bit::math::saturate( Float val )
   noexcept
 {
   return clamp( val, static_cast<Float>(1), static_cast<Float>(0) );
 }
+
+//============================================================================
+// Floating Point Math
+//============================================================================
 
 //----------------------------------------------------------------------------
 // Equality
@@ -365,6 +480,8 @@ inline constexpr bool bit::math::almost_equal( T lhs, U rhs, V tolerance )
   return (((tmp < 0) ? -tmp : tmp) <= tolerance);
 }
 
+//----------------------------------------------------------------------------
+
 template<typename T, typename U>
 inline constexpr bool bit::math::almost_equal( T lhs, U rhs )
   noexcept
@@ -372,6 +489,48 @@ inline constexpr bool bit::math::almost_equal( T lhs, U rhs )
   return almost_equal(lhs,rhs,default_tolerance);
 }
 
+//----------------------------------------------------------------------------
+// Finite
+//----------------------------------------------------------------------------
 
+template<typename Float>
+inline bool bit::math::is_nan( Float f )
+  noexcept
+{
+  return std::isnan( f );
+}
+
+//----------------------------------------------------------------------------
+
+template<typename Float>
+inline bool bit::math::is_finite( Float f )
+  noexcept
+{
+  return std::isfinite(f);
+}
+
+
+template<typename Float>
+inline bool bit::math::is_infinite( Float f )
+  noexcept
+{
+  return std::isinf( f );
+}
+
+//----------------------------------------------------------------------------
+
+template<typename Float>
+inline bool bit::math::is_normal( Float f )
+  noexcept
+{
+  return std::isnormal( f );
+}
+
+template<typename Float>
+inline bool bit::math::is_subnormal( Float f )
+  noexcept
+{
+  return std::fpclassify(f) == FP_SUBNORMAL;
+}
 
 #endif /* BIT_MATH_MATH_HPP */

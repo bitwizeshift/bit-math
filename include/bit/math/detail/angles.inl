@@ -293,4 +293,48 @@ inline bit::math::float_t bit::math::ttan( degree deg )
   return ttan( angle_cast<radian>(deg) );
 }
 
+//------------------------------------------------------------------------
+// Inverse Table Trig
+//------------------------------------------------------------------------
+
+inline bit::math::float_t bit::math::tsec( radian rad )
+  noexcept
+{
+  return (1.0) / tcos(rad);
+}
+
+inline bit::math::float_t bit::math::tsec( degree deg )
+  noexcept
+{
+  return (1.0) / tcos(deg);
+}
+
+//------------------------------------------------------------------------
+
+inline bit::math::float_t bit::math::tcsc( radian rad )
+  noexcept
+{
+  return (1.0) / tsin(rad);
+}
+
+inline bit::math::float_t bit::math::tcsc( degree deg )
+  noexcept
+{
+  return (1.0) / tsin(deg);
+}
+
+//------------------------------------------------------------------------
+
+inline bit::math::float_t bit::math::tcot( radian rad )
+  noexcept
+{
+  return (1.0) / ttan(rad);
+}
+
+inline bit::math::float_t bit::math::tcot( degree deg )
+  noexcept
+{
+  return (1.0) / ttan(deg);
+}
+
 #endif /* BIT_MATH_DETAIL_ANGLES_INL */

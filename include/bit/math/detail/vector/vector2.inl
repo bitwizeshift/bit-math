@@ -29,7 +29,10 @@ inline constexpr bit::math::vector2<T>::vector2( value_type scalar )
 template<typename T>
 inline bit::math::vector2<T>::vector2( value_type magnitude, radian direction )
   noexcept
-  : m_data{magnitude * cos(direction), magnitude * sin(direction)}
+  : m_data {
+      static_cast<T>(magnitude * cos(direction)),
+      static_cast<T>(magnitude * sin(direction))
+    }
 {
 
 }
@@ -46,7 +49,10 @@ template<typename T>
 template<typename U>
 inline constexpr bit::math::vector2<T>::vector2( const vector2<U>& other )
   noexcept
-  : m_data{other.x(),other.y()}
+  : m_data {
+      static_cast<T>(other.x()),
+      static_cast<T>(other.y())
+    }
 {
 
 }
@@ -55,7 +61,10 @@ template<typename T>
 template<typename U>
 inline constexpr bit::math::vector2<T>::vector2( vector2<U>&& other )
   noexcept
-  : m_data{std::move(other.x()),std::move(other.y())}
+  : m_data {
+      static_cast<T>(std::move(other.x())),
+      static_cast<T>(std::move(other.y()))
+    }
 {
 
 }
@@ -134,7 +143,7 @@ template<typename T>
 inline constexpr typename bit::math::vector2<T>::reference
   bit::math::vector2<T>::at( index_type n )
 {
-  if( n > 2 || n < 0 ) throw std::out_of_range("bit::math::vector2<T>::at: index out of range");
+  if( n >= 2 || n < 0 ) throw std::out_of_range("bit::math::vector2<T>::at: index out of range");
   return m_data[n];
 }
 
@@ -143,7 +152,7 @@ inline constexpr typename bit::math::vector2<T>::const_reference
 bit::math::vector2<T>::at( index_type n )
   const
 {
-  if( n > 2 || n < 0 ) throw std::out_of_range("bit::math::vector2<T>::at: index out of range");
+  if( n >= 2 || n < 0 ) throw std::out_of_range("bit::math::vector2<T>::at: index out of range");
   return m_data[n];
 }
 
@@ -205,10 +214,10 @@ inline constexpr bit::math::vector2<std::common_type_t<T,U>>
   bit::math::vector2<T>::midpoint( const vector2<U>& rhs )
   const noexcept
 {
-  return vector2<std::common_type_t<T,U>>{
+  return vector2<std::common_type_t<T,U>>(
     ((x() + rhs.x()) * 0.5f),
     ((y() + rhs.y()) * 0.5f)
-  };
+  );
 }
 
 template<typename T>
@@ -217,9 +226,9 @@ inline constexpr bit::math::vector2<std::common_type_t<T,U>>
   bit::math::vector2<T>::reflection( const vector2<U>& normal )
   const noexcept
 {
-  return vector2<std::common_type_t<T,U>>{
+  return vector2<std::common_type_t<T,U>>(
     *this - ((2 * dot(normal)) * normal)
-  };
+  );
 }
 
 template<typename T>
@@ -236,10 +245,10 @@ inline bit::math::vector2<T>
   bit::math::vector2<T>::normalized()
   const noexcept
 {
-  const value_type mag = magnitude();
+  const auto mag = magnitude();
   if( mag > 0 ){
-    const value_type mag_inv = 1.0 / mag;
-    return vector2<T>{ x() * mag_inv, y() * mag_inv };
+    const auto mag_inv = 1.0 / mag;
+    return vector2<T>( x() * mag_inv, y() * mag_inv );
   }
   return (*this);
 }
@@ -249,7 +258,7 @@ inline constexpr bit::math::vector2<T>
   bit::math::vector2<T>::inverse()
   const noexcept
 {
-  return vector2<T>{ -x(), -y() };
+  return vector2<T>( -x(), -y() );
 }
 
 //----------------------------------------------------------------------------
@@ -304,10 +313,10 @@ template<typename T>
 inline constexpr bit::math::vector2<T>& bit::math::vector2<T>::normalize()
   noexcept
 {
-  const value_type mag = magnitude();
+  const auto mag = magnitude();
 
   if( mag > 0 ){
-    const value_type mag_inv = 1.0 / mag;
+    const auto mag_inv = 1.0 / mag;
 
     x() *= mag_inv;
     y() *= mag_inv;

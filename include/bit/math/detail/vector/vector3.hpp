@@ -37,10 +37,10 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-      static const vector3<T> zero;
-      static const vector3<T> unit_x;
-      static const vector3<T> unit_y;
-      static const vector3<T> unit_z;
+      static const vector3<T> zero;   ///< A zero-length vector
+      static const vector3<T> unit_x; ///< A unit-vector in the x-direction
+      static const vector3<T> unit_y; ///< A unit-vector in the y-direction
+      static const vector3<T> unit_z; ///< A unit-vector in the z-direction
 
       //----------------------------------------------------------------------
       // Constructors
@@ -88,6 +88,23 @@ namespace bit {
       /// \param other the other vector3 to move
       template<typename U>
       constexpr vector3( vector3<U>&& other ) noexcept;
+
+      //----------------------------------------------------------------------
+      // Assignment
+      //----------------------------------------------------------------------
+    public:
+
+      /// \brief Copy-assigns \p other to \c this
+      ///
+      /// \param other the other vector3 to copy
+      /// \return reference to \c (*this)
+      vector3& operator=( const vector3& other ) = default;
+
+      /// \brief Move-assigns \p other to \c this
+      ///
+      /// \param other the other vector3 to move
+      /// \return reference to \c (*this)
+      vector3& operator=( vector3&& other ) = default;
 
       //----------------------------------------------------------------------
       // Observers

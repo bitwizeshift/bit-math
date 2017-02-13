@@ -43,7 +43,11 @@ template<typename T>
 template<typename U>
 inline constexpr bit::math::vector3<T>::vector3( const vector3<U>& other )
   noexcept
-  : m_data{other.x(),other.y(),other.z()}
+  : m_data {
+      static_cast<T>(other.x()),
+      static_cast<T>(other.y()),
+      static_cast<T>(other.z())
+    }
 {
 
 }
@@ -52,7 +56,11 @@ template<typename T>
 template<typename U>
 inline constexpr bit::math::vector3<T>::vector3( vector3<U>&& other )
   noexcept
-  : m_data{std::move(other.x()),std::move(other.y()),std::move(other.z())}
+  : m_data {
+      static_cast<T>(std::move(other.x())),
+      static_cast<T>(std::move(other.y())),
+      static_cast<T>(std::move(other.z()))
+    }
 {
 
 }
@@ -149,7 +157,7 @@ template<typename T>
 inline constexpr typename bit::math::vector3<T>::reference
   bit::math::vector3<T>::at( index_type n )
 {
-  if( n > 3 || n < 0 ) throw std::out_of_range("bit::math::vector3<T>::at: index out of range");
+  if( n >= 3 || n < 0 ) throw std::out_of_range("bit::math::vector3<T>::at: index out of range");
   return m_data[n];
 }
 
@@ -158,7 +166,7 @@ inline constexpr typename bit::math::vector3<T>::const_reference
 bit::math::vector3<T>::at( index_type n )
   const
 {
-  if( n > 3 || n < 0 ) throw std::out_of_range("bit::math::vector3<T>::at: index out of range");
+  if( n >= 3 || n < 0 ) throw std::out_of_range("bit::math::vector3<T>::at: index out of range");
   return m_data[n];
 }
 
@@ -201,11 +209,11 @@ inline constexpr bit::math::vector3<std::common_type_t<T,U>>
   bit::math::vector3<T>::cross( const vector3<U>& other )
   const noexcept
 {
-  return vector3<std::common_type_t<T,U>>{
+  return vector3<std::common_type_t<T,U>>(
     (y() * other.z() - z() * other.y()),
     (z() * other.x() - x() * other.z()),
     (x() * other.y() - y() * other.x())
-  };
+  );
 }
 
 //----------------------------------------------------------------------------
@@ -224,11 +232,11 @@ inline constexpr bit::math::vector3<std::common_type_t<T,U>>
   bit::math::vector3<T>::midpoint( const vector3<U>& rhs )
   const noexcept
 {
-  return vector3<std::common_type_t<T,U>>{
+  return vector3<std::common_type_t<T,U>>(
     ((x() + rhs.x()) * 0.5f),
     ((y() + rhs.y()) * 0.5f),
     ((z() + rhs.z()) * 0.5f)
-  };
+  );
 }
 
 template<typename T>
@@ -262,10 +270,10 @@ inline bit::math::vector3<T>
   bit::math::vector3<T>::normalized()
   const noexcept
 {
-  const value_type mag = magnitude();
+  const auto mag = magnitude();
   if( mag > 0 ){
-    const value_type mag_inv = 1.0 / mag;
-    return vector3<T>{ x() * mag_inv, y() * mag_inv, z() * mag_inv };
+    const auto mag_inv = 1.0 / mag;
+    return vector3<T>( x() * mag_inv, y() * mag_inv, z() * mag_inv );
   }
   return (*this);
 }
@@ -275,7 +283,7 @@ inline constexpr bit::math::vector3<T>
   bit::math::vector3<T>::inverse()
   const noexcept
 {
-  return vector3<T>{ -x(), -y(), -z() };
+  return vector3<T>( -x(), -y(), -z() );
 }
 
 template<typename T>
@@ -329,10 +337,10 @@ template<typename T>
 inline constexpr bit::math::vector3<T>& bit::math::vector3<T>::normalize()
   noexcept
 {
-  const value_type mag = magnitude();
+  const auto mag = magnitude();
 
   if( mag > 0 ){
-    const value_type mag_inv = 1.0 / mag;
+    const auto mag_inv = 1.0 / mag;
 
     x() *= mag_inv;
     y() *= mag_inv;
@@ -370,7 +378,7 @@ template<typename T>
 inline constexpr bit::math::vector3<T> bit::math::vector3<T>::operator-()
   const noexcept
 {
-  return vector3<T>{ -x(), -y(), -z() };
+  return vector3<T>( -x(), -y(), -z() );
 }
 
 //----------------------------------------------------------------------------
