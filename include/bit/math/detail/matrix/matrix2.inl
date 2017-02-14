@@ -1,6 +1,18 @@
 #ifndef BIT_MATH_DETAIL_MATRIX_MATRIX2_INL
 #define BIT_MATH_DETAIL_MATRIX_MATRIX2_INL
 
+// inl sanity check
+#ifndef BIT_MATH_DETAIL_MATRIX_MATRIX2_HPP
+# error "matrix2.inl included without first including declaration header matrix2.hpp"
+#endif
+
+//----------------------------------------------------------------------------
+// Constants
+//----------------------------------------------------------------------------
+
+template<typename T>
+const bit::math::matrix2<T> bit::math::matrix2<T>::identity
+  = bit::math::matrix2<T>(T(1), T(0), T(0), T(1));
 
 //----------------------------------------------------------------------------
 // Constructors
@@ -8,7 +20,7 @@
 
 template<typename T>
 inline constexpr bit::math::matrix2<T>::matrix2( const vector2<T>& v0,
-                                                   const vector2<T>& v1 )
+                                                 const vector2<T>& v1 )
   noexcept
   : m_matrix {
       v0.x(), v0.y(),
@@ -48,7 +60,7 @@ inline constexpr bit::math::matrix2<T>::matrix2( const value_type(&array)[2][2] 
 
 template<typename T>
 inline constexpr bit::math::matrix2<T>::matrix2( value_type m00, value_type m01,
-                                                   value_type m10, value_type m11 )
+                                                 value_type m10, value_type m11 )
   noexcept
   : m_matrix {
       m00, m01,
@@ -65,8 +77,8 @@ template<typename U>
 inline constexpr bit::math::matrix2<T>::matrix2( const matrix2<U>& other )
   noexcept
   : m_matrix {
-      other.m_matrix[0], other.m_matrix[1],
-      other.m_matrix[2], other.m_matrix[3]
+      other.m_matrix[0][0], other.m_matrix[0][1],
+      other.m_matrix[1][0], other.m_matrix[1][1]
     }
 {
 
@@ -79,8 +91,8 @@ template<typename U>
 inline constexpr bit::math::matrix2<T>::matrix2( matrix2<U>&& other )
   noexcept
   : m_matrix {
-      other.m_matrix[0], other.m_matrix[1],
-      other.m_matrix[2], other.m_matrix[3]
+      std::move(other.m_matrix[0][0]), std::move(other.m_matrix[0][1]),
+      std::move(other.m_matrix[1][0]), std::move(other.m_matrix[1][1])
     }
 {
 
@@ -92,41 +104,41 @@ inline constexpr bit::math::matrix2<T>::matrix2( matrix2<U>&& other )
 
 template<typename T>
 inline constexpr typename bit::math::matrix2<T>::reference
-  bit::math::matrix2<T>::at( index_type c, index_type r )
+  bit::math::matrix2<T>::at( index_type r, index_type c )
 {
   if( c >=2 || c < 0 || r >=2 || r < 0 )
     throw std::out_of_range("matrix2::at: index out of range");
-  return get(c,r);
+  return get(r,c);
 }
 
 
 template<typename T>
 inline constexpr typename bit::math::matrix2<T>::const_reference
-  bit::math::matrix2<T>::at( index_type c, index_type r )
+  bit::math::matrix2<T>::at( index_type r, index_type c )
   const
 {
   if( c >=2 || c < 0 || r >=2 || r < 0 )
     throw std::out_of_range("matrix2::at: index out of range");
-  return get(c,r);
+  return get(r,c);
 }
 
 //----------------------------------------------------------------------------
 
 template<typename T>
-inline constexpr typename bit::math::matrix_proxy<T>
-  bit::math::matrix2<T>::operator[]( index_type c )
+inline constexpr typename bit::math::matrix2<T>::reference
+  bit::math::matrix2<T>::operator()( index_type r, index_type c )
   noexcept
 {
-  return matrix_proxy<T>( get_row(c) );
+  return get(r,c);
 }
 
 
 template<typename T>
-inline constexpr typename bit::math::matrix_proxy<const T>
-  bit::math::matrix2<T>::operator[]( index_type c )
+inline constexpr typename bit::math::matrix2<T>::const_reference
+  bit::math::matrix2<T>::operator()( index_type r, index_type c )
   const noexcept
 {
-  return matrix_proxy<const T>( get_row(c) );
+  return get(r,c);
 }
 
 template<typename T>
@@ -134,7 +146,7 @@ inline constexpr bit::math::vector2<T>
   bit::math::matrix2<T>::row( index_type r )
   const noexcept
 {
-  return vector2<T>{ get(0,r), get(1,r) };
+  return vector2<T>{ get(r,0), get(r,1) };
 }
 
 template<typename T>
@@ -142,7 +154,7 @@ inline constexpr bit::math::vector2<T>
   bit::math::matrix2<T>::column( index_type c )
   const noexcept
 {
-  return vector2<T>{ get(c,0), get(c,1) };
+  return vector2<T>{ get(0,c), get(1,c) };
 }
 
 //----------------------------------------------------------------------------
@@ -154,7 +166,7 @@ inline constexpr typename bit::math::matrix2<T>::size_type
   bit::math::matrix2<T>::size()
   const noexcept
 {
-  return 4;
+  return rows*columns;
 }
 
 //----------------------------------------------------------------------------
@@ -164,7 +176,7 @@ inline constexpr typename bit::math::matrix2<T>::pointer
   bit::math::matrix2<T>::data()
   noexcept
 {
-  return m_matrix;
+  return std::addressof(get(0,0));
 }
 
 template<typename T>
@@ -172,7 +184,7 @@ inline constexpr typename bit::math::matrix2<T>::const_pointer
   bit::math::matrix2<T>::data()
   const noexcept
 {
-  return m_matrix;
+  return std::addressof(get(0,0));
 }
 
 //----------------------------------------------------------------------------
@@ -184,7 +196,7 @@ inline constexpr typename bit::math::matrix2<T>::value_type
   bit::math::matrix2<T>::determinant()
   const noexcept
 {
-  return (m_matrix[0] * m_matrix[3]) - (m_matrix[1] * m_matrix[2]);
+  return (get(0,0) * get(1,1)) - (get(0,1) * get(1,0));
 }
 
 template<typename T>
@@ -192,7 +204,7 @@ inline constexpr typename bit::math::matrix2<T>::value_type
   bit::math::matrix2<T>::trace()
   const noexcept
 {
-  return (m_matrix[0] + m_matrix[3]);
+  return (get(0,0) + get(1,1));
 }
 
 //----------------------------------------------------------------------------
@@ -208,8 +220,8 @@ inline constexpr bit::math::matrix2<T>
 
   const auto inv_det = (1.0 / det);
   return matrix2<T>(
-    m_matrix[3]  * inv_det, -m_matrix[2] * inv_det,
-    -m_matrix[1] * inv_det, m_matrix[0]  * inv_det
+     get(1,1) * inv_det, -get(1,0) * inv_det,
+    -get(0,1) * inv_det,  get(0,0) * inv_det
   );
 }
 
@@ -219,8 +231,8 @@ inline constexpr bit::math::matrix2<T>
   const noexcept
 {
   return matrix2<T> {
-    m_matrix[0], m_matrix[2],
-    m_matrix[1], m_matrix[3]
+    get(0,0), get(1,0),
+    get(0,1), get(1,1)
   };
 }
 
@@ -232,10 +244,17 @@ constexpr bit::math::vector2<std::common_type_t<T,U>>
   bit::math::matrix2<T>::combine( const vector2<U>& vec )
   const noexcept
 {
-  return vector2<std::common_type_t<T,U>>(
-    vec.x() * m_matrix[0] + vec.y() * m_matrix[1],
-    vec.x() * m_matrix[2] + vec.y() * m_matrix[3]
-  );
+  auto result = vector2<std::common_type_t<T,U>>();
+
+  for( auto r = 0; r < columns; ++r ) {
+    auto sum = std::common_type_t<T,U>(0);
+
+    for( auto c = 0; c < rows; ++c ) {
+      sum += vec[c] * get(r,c);
+    }
+    result[r] = sum;
+  }
+  return result;
 }
 
 //----------------------------------------------------------------------------
@@ -247,8 +266,10 @@ inline constexpr void bit::math::matrix2<T>::swap( matrix2<T>& other )
   noexcept
 {
   using std::swap;
-  for(auto i=0; i < 4; ++i) {
-    swap(m_matrix[i],other.m_matrix[i]);
+  for( auto r=0; r < rows; ++r ) {
+    for( auto c=0; c < columns; ++c ) {
+      swap(get(r,c),other.get(r,c));
+    }
   }
 }
 
@@ -270,7 +291,7 @@ inline constexpr bit::math::matrix2<T>& bit::math::matrix2<T>::transpose()
 {
   using std::swap;
 
-  swap(m_matrix[1],m_matrix[2]);
+  swap(get(0,1),get(1,0));
   return (*this);
 }
 
@@ -284,8 +305,10 @@ inline bit::math::matrix2<T>&
   bit::math::matrix2<T>::operator+=( const matrix2<U>& rhs )
   noexcept
 {
-  for(auto i=0; i < 4; ++i) {
-    m_matrix[i] += rhs.m_matrix[i];
+  for( auto r=0; r < rows; ++r) {
+    for( auto c=0; c < columns; ++c ) {
+      get(r,c) += rhs.get(r,c);
+    }
   }
   return (*this);
 }
@@ -295,11 +318,13 @@ inline bit::math::matrix2<T>&
 template<typename T>
 template<typename U>
 bit::math::matrix2<T>&
-  bit::math::matrix2<T>::operator-=(const matrix2<U>& rhs)
+  bit::math::matrix2<T>::operator-=( const matrix2<U>& rhs )
   noexcept
 {
-  for(auto i=0; i < 4; ++i) {
-    m_matrix[i] -= rhs.m_matrix[i];
+  for( auto r=0; r < rows; ++r) {
+    for( auto c=0; c < columns; ++c ) {
+      get(r,c) -= rhs.get(r,c);
+    }
   }
   return (*this);
 }
@@ -309,22 +334,28 @@ bit::math::matrix2<T>&
 template<typename T>
 template<typename U>
 bit::math::matrix2<T>&
-  bit::math::matrix2<T>::operator*=(const matrix2<U>& rhs)
+  bit::math::matrix2<T>::operator*=( const matrix2<U>& rhs )
   noexcept
 {
-  return (*this);
-}
+  value_type result[rows][columns];
 
-//----------------------------------------------------------------------------
+  for( auto r = 0; r < rows; ++r ) {
+    for( auto c = 0; c < columns; ++c ) {
 
-template<typename T>
-template<typename U>
-bit::math::matrix2<T>&
-  bit::math::matrix2<T>::operator*=(U scalar)
-  noexcept
-{
-  for(auto i=0; i < 4; ++i) {
-    m_matrix[i] *= scalar;
+      auto sum = std::common_type_t<T,U>(0);
+
+      for( auto r2 = 0; r2 < rows; ++r2 ) {
+        sum += (get(r2,c) * rhs.get(r,r2));
+      }
+      result[r][c] = sum;
+    }
+  }
+
+  // Copy result in
+  for( auto i = 0; i < rows; ++i ) {
+    for( auto j =0; j < columns; ++j ) {
+      get(i,j) = result[i][j];
+    }
   }
   return (*this);
 }
@@ -334,13 +365,31 @@ bit::math::matrix2<T>&
 template<typename T>
 template<typename U>
 bit::math::matrix2<T>&
-  bit::math::matrix2<T>::operator/=(U scalar)
+  bit::math::matrix2<T>::operator*=( U scalar )
+  noexcept
+{
+  for( auto r=0; r < rows; ++r ) {
+    for( auto c=0; c < columns; ++c ) {
+      get(r,c) *= scalar;
+    }
+  }
+  return (*this);
+}
+
+//----------------------------------------------------------------------------
+
+template<typename T>
+template<typename U>
+bit::math::matrix2<T>&
+  bit::math::matrix2<T>::operator/=( U scalar )
   noexcept
 {
   auto inv = (1.0) / scalar;
 
-  for(auto i=0; i < 4; ++i) {
-    m_matrix[i] *= inv;
+  for( auto r=0; r < rows; ++r ) {
+    for( auto c=0; c < columns; ++c ) {
+      get(r,c) *= inv;
+    }
   }
   return (*this);
 }
@@ -350,38 +399,19 @@ bit::math::matrix2<T>&
 //----------------------------------------------------------------------------
 
 template<typename T>
-inline constexpr typename bit::math::matrix2<T>::pointer
-  bit::math::matrix2<T>::get_row( index_type c )
-  noexcept
-{
-  return (m_matrix + (2 * c));
-}
-
-
-template<typename T>
-inline constexpr typename bit::math::matrix2<T>::const_pointer
-  bit::math::matrix2<T>::get_row( index_type c )
-  const noexcept
-{
-  return (m_matrix + (2 * c));
-}
-
-//----------------------------------------------------------------------------
-
-template<typename T>
 inline constexpr typename bit::math::matrix2<T>::reference
-  bit::math::matrix2<T>::get( index_type c, index_type r )
+  bit::math::matrix2<T>::get( index_type r, index_type c )
   noexcept
 {
-  return *(m_matrix + (2 * c) + r);
+  return m_matrix[r][c];
 }
 
 template<typename T>
 inline constexpr typename bit::math::matrix2<T>::const_reference
-  bit::math::matrix2<T>::get( index_type c, index_type r )
+  bit::math::matrix2<T>::get( index_type r, index_type c )
   const noexcept
 {
-  return *(m_matrix + (2 * c) + r);
+  return m_matrix[r][c];
 }
 
 
@@ -390,7 +420,7 @@ inline constexpr typename bit::math::matrix2<T>::const_reference
 //----------------------------------------------------------------------------
 
 template<typename T>
-inline void bit::math::swap( matrix2<T>& lhs, matrix2<T>& rhs )
+inline constexpr void bit::math::swap( matrix2<T>& lhs, matrix2<T>& rhs )
   noexcept
 {
   lhs.swap(rhs);
@@ -436,6 +466,26 @@ inline constexpr bit::math::vector2<std::common_type_t<T,U>>
   noexcept
 {
   return rhs.combine(lhs);
+}
+
+//------------------------------------------------------------------------
+
+template<typename T, typename U, std::enable_if_t<std::is_arithmetic<T>::value>*>
+constexpr bit::math::matrix2<std::common_type_t<T,U>>
+  bit::math::operator*( T lhs, const matrix2<U>& rhs )
+  noexcept
+{
+  return matrix2<std::common_type_t<T,U>>(rhs) *= lhs;
+}
+
+//------------------------------------------------------------------------
+
+template<typename T, typename U, std::enable_if_t<std::is_arithmetic<U>::value>*>
+constexpr bit::math::matrix2<std::common_type_t<T,U>>
+  bit::math::operator*( const matrix2<T>& lhs, U rhs )
+  noexcept
+{
+  return matrix2<std::common_type_t<T,U>>(lhs) *= rhs;
 }
 
 

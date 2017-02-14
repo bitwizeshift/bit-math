@@ -6,10 +6,8 @@
  * \author Matthew Rodusek (matthew.rodusek@gmail.com)
  */
 
-#ifndef BIT_MATH_DETAIL_MATRIX2_HPP
-#define BIT_MATH_DETAIL_MATRIX2_HPP
-
-#include "matrix_proxy.hpp"
+#ifndef BIT_MATH_DETAIL_MATRIX_MATRIX2_HPP
+#define BIT_MATH_DETAIL_MATRIX_MATRIX2_HPP
 
 namespace bit {
   namespace math {
@@ -44,8 +42,11 @@ namespace bit {
 
       static const matrix2<T> identity; ///< Identity matrix
 
-      static constexpr bool column_major = true;
-      static constexpr bool row_major    = false;
+      static constexpr bool column_major = false;
+      static constexpr bool row_major    = true;
+
+      static constexpr size_type rows = 2;
+      static constexpr size_type columns = 2;
 
       //----------------------------------------------------------------------
       // Constructors
@@ -138,13 +139,13 @@ namespace bit {
       /// \throw std::out_of_range if \p c or \p r is greater than 2, or less
       ///        than 0.
       ///
-      /// \param c the column to retrieve
       /// \param r the row to retrieve
+      /// \param c the column to retrieve
       /// \return the reference to the entry
-      constexpr reference at( index_type c, index_type r );
+      constexpr reference at( index_type r, index_type c );
 
       /// \copydoc matrix2::at( index_type, index_type )
-      constexpr const_reference at( index_type c, index_type r ) const;
+      constexpr const_reference at( index_type r, index_type c ) const;
 
       //----------------------------------------------------------------------
 
@@ -153,12 +154,12 @@ namespace bit {
       ///
       /// \param c the column
       /// \return a proxy to the row
-      constexpr matrix_proxy<T>
-        operator[]( index_type c ) noexcept;
+      constexpr reference
+        operator()( index_type r, index_type c ) noexcept;
 
       /// \copydoc matrix2::at( index-type )
-      constexpr matrix_proxy<const T>
-        operator[]( index_type c ) const noexcept;
+      constexpr const_reference
+        operator()( index_type r, index_type c ) const noexcept;
 
       //----------------------------------------------------------------------
 
@@ -262,7 +263,7 @@ namespace bit {
       /// \param rhs the matrix2 to add
       /// \return reference to \c (*this)
       template<typename U>
-      matrix2& operator+=(const matrix2<U>& rhs) noexcept;
+      matrix2& operator+=( const matrix2<U>& rhs ) noexcept;
 
       /// \brief Performs matrix subtraction between \c (*this) matrix2 and
       ///        \p rhs
@@ -270,7 +271,7 @@ namespace bit {
       /// \param rhs the matrix2 to subtract
       /// \return reference to \c (*this)
       template<typename U>
-      matrix2& operator-=(const matrix2<U>& rhs) noexcept;
+      matrix2& operator-=( const matrix2<U>& rhs ) noexcept;
 
       /// \brief Performs matrix multiplication between \c (*this) matrix2 and
       ///        \p rhs
@@ -278,28 +279,28 @@ namespace bit {
       /// \param rhs the matrix2 to multiply
       /// \return reference to \c (*this)
       template<typename U>
-      matrix2& operator*=(const matrix2<U>& rhs) noexcept;
+      matrix2& operator*=( const matrix2<U>& rhs ) noexcept;
 
       /// \brief Performs matrix multiplication with a scalar value
       ///
       /// \param scalar the scalar to multiply
       /// \return reference to \c (*this)
       template<typename U>
-      matrix2& operator*=(U scalar) noexcept;
+      matrix2& operator*=( U scalar ) noexcept;
 
       /// \brief Performs matrix multiplication with a scalar divisor
       ///
       /// \param scalar the scalar to divide by
       /// \return reference to \c (*this)
       template<typename U>
-      matrix2& operator/=(U scalar) noexcept;
+      matrix2& operator/=( U scalar ) noexcept;
 
       //----------------------------------------------------------------------
       // Private Members
       //----------------------------------------------------------------------
     private:
 
-      value_type m_matrix[4]; ///< Linear array that represents the matrix
+      value_type m_matrix[rows][columns]; ///< Linear array that represents the matrix
 
       template<typename> friend class matrix2;
 
@@ -308,24 +309,15 @@ namespace bit {
       //----------------------------------------------------------------------
     private:
 
-      /// \brief Non-throwing matrix row access
-      ///
-      /// \param c the column
-      /// \return pointer to the row start
-      constexpr pointer get_row( index_type c ) noexcept;
-
-      /// \copydoc matrix2::get_row( index_type )
-      constexpr const_pointer get_row( index_type c ) const noexcept;
-
       /// \brief Non-throwing matrix element access
       ///
-      /// \param c the column
       /// \param r the row
+      /// \param c the column
       /// \return reference to the entry
-      constexpr reference get( index_type c, index_type r ) noexcept;
+      constexpr reference get( index_type r, index_type c ) noexcept;
 
       /// \copydoc matrix2::get( index_type, index_type )
-      constexpr const_reference get( index_type c, index_type r ) const noexcept;
+      constexpr const_reference get( index_type r, index_type c ) const noexcept;
 
     };
 
@@ -333,8 +325,12 @@ namespace bit {
     // Free Functions
     //------------------------------------------------------------------------
 
+    /// \brief Swaps \p lhs with \p rhs
+    ///
+    /// \param lhs the left matrix to swap
+    /// \param rhs the right matrix to swap
     template<typename T>
-    void swap( matrix2<T>& lhs, matrix2<T>& rhs ) noexcept;
+    constexpr void swap( matrix2<T>& lhs, matrix2<T>& rhs ) noexcept;
 
     //------------------------------------------------------------------------
     // Free Operators
@@ -362,9 +358,29 @@ namespace bit {
     constexpr vector2<std::common_type_t<T,U>>
       operator*( const vector2<T>& lhs, const matrix2<U>& rhs ) noexcept;
 
+    //------------------------------------------------------------------------
+
+#ifndef BIT_DOXYGEN_BUILD
+    template<typename T, typename U, std::enable_if_t<std::is_arithmetic<T>::value>* = nullptr>
+#else
+    template<typename T, typename U>
+#endif
+    constexpr matrix2<std::common_type_t<T,U>>
+      operator*( T lhs, const matrix2<U>& rhs ) noexcept;
+
+    //------------------------------------------------------------------------
+
+#ifndef BIT_DOXYGEN_BUILD
+    template<typename T, typename U, std::enable_if_t<std::is_arithmetic<U>::value>* = nullptr>
+#else
+    template<typename T, typename U>
+#endif
+    constexpr matrix2<std::common_type_t<T,U>>
+      operator*( const matrix2<T>& lhs, U rhs ) noexcept;
+
   } // namespace math
 } // namespace bit
 
 #include "matrix2.inl"
 
-#endif /* BIT_MATH_DETAIL_MATRIX2_HPP */
+#endif /* BIT_MATH_DETAIL_MATRIX_MATRIX2_HPP */
