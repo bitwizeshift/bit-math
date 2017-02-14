@@ -6,8 +6,8 @@
  * \author Matthew Rodusek (matthew.rodusek@gmail.com)
  */
 
-#ifndef BIT_MATH_DETAIL_VECTOR2_HPP
-#define BIT_MATH_DETAIL_VECTOR2_HPP
+#ifndef BIT_MATH_DETAIL_VECTOR_VECTOR2_HPP
+#define BIT_MATH_DETAIL_VECTOR_VECTOR2_HPP
 
 namespace bit {
   namespace math {
@@ -398,4 +398,4 @@ namespace bit {
 
 #include "vector2.inl"
 
-#endif /* BIT_MATH_DETAIL_VECTOR2_HPP */
+#endif /* BIT_MATH_DETAIL_VECTOR_VECTOR2_HPP */

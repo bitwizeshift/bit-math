@@ -1,6 +1,10 @@
 #ifndef BIT_MATH_DETAIL_ANGLES_DEGREE_INL
 #define BIT_MATH_DETAIL_ANGLES_DEGREE_INL
 
+#ifndef BIT_MATH_DETAIL_ANGLES_DEGREE_INL
+# error "degree.inl included without first including declaration header degree.hpp"
+#endif
+
 //----------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------

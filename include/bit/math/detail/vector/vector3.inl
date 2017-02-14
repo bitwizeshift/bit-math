@@ -1,6 +1,10 @@
 #ifndef BIT_MATH_DETAIL_VECTOR_VECTOR3_INL
 #define BIT_MATH_DETAIL_VECTOR_VECTOR3_INL
 
+#ifndef BIT_MATH_DETAIL_VECTOR_VECTOR3_HPP
+# error "vector3.inl included without first including declaration header vector3.hpp"
+#endif
+
 //----------------------------------------------------------------------------
 // Public Constants
 //----------------------------------------------------------------------------
