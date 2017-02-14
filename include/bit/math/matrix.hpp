@@ -12,6 +12,7 @@
 #include "vector.hpp"
 
 #include "detail/matrix/matrix2.hpp"
+#include "detail/matrix/matrix3.hpp"
 
 namespace bit {
   namespace math {
@@ -30,8 +31,10 @@ namespace bit {
     // Optimize the common case by pre-instantiating the matrix
 #ifdef BIT_MATH_DOUBLE_PRECISION
     extern template class matrix2<double>;
+    extern template class matrix3<double>;
 #else
     extern template class matrix2<float>;
+    extern template class matrix3<float>;
 #endif
 
   } // namespace math

@@ -106,7 +106,7 @@ template<typename T>
 inline constexpr typename bit::math::matrix2<T>::reference
   bit::math::matrix2<T>::at( index_type r, index_type c )
 {
-  if( c >=2 || c < 0 || r >=2 || r < 0 )
+  if( c >=columns || c < 0 || r >=rows || r < 0 )
     throw std::out_of_range("matrix2::at: index out of range");
   return get(r,c);
 }
@@ -117,7 +117,7 @@ inline constexpr typename bit::math::matrix2<T>::const_reference
   bit::math::matrix2<T>::at( index_type r, index_type c )
   const
 {
-  if( c >=2 || c < 0 || r >=2 || r < 0 )
+  if( c >=columns || c < 0 || r >=rows || r < 0 )
     throw std::out_of_range("matrix2::at: index out of range");
   return get(r,c);
 }
@@ -305,8 +305,8 @@ inline bit::math::matrix2<T>&
   bit::math::matrix2<T>::operator+=( const matrix2<U>& rhs )
   noexcept
 {
-  for( auto r=0; r < rows; ++r) {
-    for( auto c=0; c < columns; ++c ) {
+  for( auto r = 0; r < rows; ++r) {
+    for( auto c = 0; c < columns; ++c ) {
       get(r,c) += rhs.get(r,c);
     }
   }
@@ -321,8 +321,8 @@ bit::math::matrix2<T>&
   bit::math::matrix2<T>::operator-=( const matrix2<U>& rhs )
   noexcept
 {
-  for( auto r=0; r < rows; ++r) {
-    for( auto c=0; c < columns; ++c ) {
+  for( auto r = 0; r < rows; ++r) {
+    for( auto c = 0; c < columns; ++c ) {
       get(r,c) -= rhs.get(r,c);
     }
   }
@@ -344,8 +344,8 @@ bit::math::matrix2<T>&
 
       auto sum = std::common_type_t<T,U>(0);
 
-      for( auto r2 = 0; r2 < rows; ++r2 ) {
-        sum += (get(r2,c) * rhs.get(r,r2));
+      for( auto i = 0; i < columns; ++i ) {
+        sum += (get(i,c) * rhs.get(r,i));
       }
       result[r][c] = sum;
     }
@@ -353,7 +353,7 @@ bit::math::matrix2<T>&
 
   // Copy result in
   for( auto i = 0; i < rows; ++i ) {
-    for( auto j =0; j < columns; ++j ) {
+    for( auto j = 0; j < columns; ++j ) {
       get(i,j) = result[i][j];
     }
   }
@@ -368,8 +368,8 @@ bit::math::matrix2<T>&
   bit::math::matrix2<T>::operator*=( U scalar )
   noexcept
 {
-  for( auto r=0; r < rows; ++r ) {
-    for( auto c=0; c < columns; ++c ) {
+  for( auto r = 0; r < rows; ++r ) {
+    for( auto c = 0; c < columns; ++c ) {
       get(r,c) *= scalar;
     }
   }
@@ -386,8 +386,8 @@ bit::math::matrix2<T>&
 {
   auto inv = (1.0) / scalar;
 
-  for( auto r=0; r < rows; ++r ) {
-    for( auto c=0; c < columns; ++c ) {
+  for( auto r = 0; r < rows; ++r ) {
+    for( auto c = 0; c < columns; ++c ) {
       get(r,c) *= inv;
     }
   }
