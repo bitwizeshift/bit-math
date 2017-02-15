@@ -13,6 +13,7 @@
 
 #include "detail/matrix/matrix2.hpp"
 #include "detail/matrix/matrix3.hpp"
+#include "detail/matrix/matrix4.hpp"
 
 namespace bit {
   namespace math {
@@ -32,9 +33,11 @@ namespace bit {
 #ifdef BIT_MATH_DOUBLE_PRECISION
     extern template class matrix2<double>;
     extern template class matrix3<double>;
+    extern template class matrix4<double>;
 #else
     extern template class matrix2<float>;
     extern template class matrix3<float>;
+    extern template class matrix4<float>;
 #endif
 
   } // namespace math

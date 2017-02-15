@@ -12,7 +12,9 @@
 
 template<typename T>
 const bit::math::matrix3<T> bit::math::matrix3<T>::identity
-  = bit::math::matrix3<T>(T(1), T(0), T(0), T(0), T(1), T(0), T(0), T(0), T(1));
+  = { {T(1), T(0), T(0)},
+      {T(0), T(1), T(0)},
+      {T(0), T(0), T(1)} };
 
 //----------------------------------------------------------------------------
 // Constructors
@@ -64,8 +66,8 @@ inline constexpr bit::math::matrix3<T>::matrix3( const value_type(&array)[3][3] 
 
 template<typename T>
 inline constexpr bit::math::matrix3<T>::matrix3( value_type m00, value_type m01, value_type m02,
-                                                   value_type m10, value_type m11, value_type m12,
-                                                   value_type m20, value_type m21, value_type m22 )
+                                                 value_type m10, value_type m11, value_type m12,
+                                                 value_type m20, value_type m21, value_type m22 )
   noexcept
   : m_matrix {
       m00, m01, m02,
@@ -112,22 +114,22 @@ inline constexpr bit::math::matrix3<T>::matrix3( matrix3<U>&& other )
 
 template<typename T>
 inline constexpr typename bit::math::matrix3<T>::reference
-  bit::math::matrix3<T>::at( index_type c, index_type r )
+  bit::math::matrix3<T>::at( index_type r, index_type c )
 {
   if( c >=columns || c < 0 || r >=rows || r < 0 )
     throw std::out_of_range("matrix3::at: index out of range");
-  return get(c,r);
+  return get(r,c);
 }
 
 
 template<typename T>
 inline constexpr typename bit::math::matrix3<T>::const_reference
-  bit::math::matrix3<T>::at( index_type c, index_type r )
+  bit::math::matrix3<T>::at( index_type r, index_type c )
   const
 {
   if( c >=columns || c < 0 || r >=rows || r < 0 )
     throw std::out_of_range("matrix3::at: index out of range");
-  return get(c,r);
+  return get(r,c);
 }
 
 //----------------------------------------------------------------------------

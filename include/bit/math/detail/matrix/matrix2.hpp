@@ -87,7 +87,7 @@ namespace bit {
       /// \param m10 the entry at coordinate (1,0)
       /// \param m11 the entry at coordinate (1,1)
       constexpr matrix2( value_type m00, value_type m01,
-                          value_type m10, value_type m11 ) noexcept;
+                         value_type m10, value_type m11 ) noexcept;
 
       /// \brief Copy-constructs a matrix2 from another matrix2
       ///
