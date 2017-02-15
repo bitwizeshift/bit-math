@@ -1,6 +1,10 @@
 #ifndef BIT_MATH_DETAIL_ANGLES_INL
 #define BIT_MATH_DETAIL_ANGLES_INL
 
+#ifndef BIT_MATH_ANGLES_HPP
+# error "angles.inl included without first including declaration header angles.hpp"
+#endif
+
 //----------------------------------------------------------------------------
 // Literals
 //----------------------------------------------------------------------------

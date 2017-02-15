@@ -19,13 +19,13 @@ namespace bit {
   namespace math {
     namespace detail {
       template<typename To, typename From>
-      class matrix_caster;
+      struct matrix_caster;
     } // namespace detail
 
     inline namespace casts {
 
       template<typename To, typename From>
-      To matrix_cast(const From& from);
+      constexpr To matrix_cast(const From& from);
 
     } // inline namespace casts
 
@@ -43,6 +43,6 @@ namespace bit {
   } // namespace math
 } // namespace bit
 
-
+#include "detail/matrix.inl"
 
 #endif /* BIT_MATH_MATRIX_HPP */
