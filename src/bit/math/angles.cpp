@@ -8,6 +8,7 @@
 #include <bit/math/angles.hpp>
 
 #include <cassert>
+#include <array>
 
 #ifndef BIT_MATH_TRIG_TABLE_SIZE
 # define BIT_MATH_TRIG_TABLE_SIZE 4096
@@ -15,72 +16,57 @@
 
 #define BIT_MATH_UNUSED(...) ((void) __VA_ARGS__)
 
+#ifdef BIT_MATH_CACHED_TRIG
+# ifndef BIT_MATH_TRIG_TABLE_SIZE
+#   define BIT_MATH_TRIG_TABLE_SIZE 1024
+# endif
+# ifndef BIT_MATH_INVERSE_TRIG_TABLE_SIZE
+#   define BIT_MATH_INVERSE_TRIG_TABLE_SIZE 1024
+# endif
+# if BIT_MATH_TRIG_TABLE_SIZE <= 0
+#   error "BIT_MATH_TRIG_TABLE_SIZE must be > 0"
+# endif
+# if BIT_MATH_INVERSE_TRIG_TABLE_SIZE <= 0
+#   error "BIT_MATH_TRIG_TABLE_SIZE must be > 0"
+# endif
+
+// This is acquired from an externally generated *.cpp file
+// through cmake.
+namespace bit {
+  namespace math {
+
+    extern const std::array<float_t,BIT_MATH_TRIG_TABLE_SIZE> g_sin_table;
+
+  } // namespace math
+} // namespace bit
+
 namespace {
 
   //--------------------------------------------------------------------------
   // Constants
   //--------------------------------------------------------------------------
-#ifdef BIT_MATH_CACHED_TRIG
 
-  static bit::math::float_t g_sin_table[BIT_MATH_TRIG_TABLE_SIZE];
-  static bit::math::float_t g_tan_table[BIT_MATH_TRIG_TABLE_SIZE];
+  using sin_table_t = std::array<bit::math::float_t,BIT_MATH_TRIG_TABLE_SIZE>;
 
-#endif
-#ifdef BIT_MATH_CACHED_INVERSE_TRIG
+  const sin_table_t g_sin_table = {};
 
-  static bit::math::float_t g_arcsin_table[BIT_MATH_TRIG_TABLE_SIZE];
-  static bit::math::float_t g_arctan_table[BIT_MATH_TRIG_TABLE_SIZE];
+  constexpr auto g_table_size = BIT_MATH_TRIG_TABLE_SIZE;
 
-#endif
+  constexpr auto g_trig_factor = g_table_size / bit::math::two_pi<bit::math::float_t>();
 
-  static const bit::math::float_t g_trig_factor = BIT_MATH_TRIG_TABLE_SIZE / bit::math::two_pi<float_t>();
-
-  static const bit::math::float_t* calculate_trig_tables() noexcept;
-
-  static const void* const g_table_ptr = calculate_trig_tables();
-
-  //--------------------------------------------------------------------------
-  // Free Functions
-  //--------------------------------------------------------------------------
-
-  // todo: Complete trig table mathematics
-  const bit::math::float_t* calculate_trig_tables()
-    noexcept
-  {
-#if !(defined(BIT_MATH_CACHED_TRIG) && defined(BIT_MATH_CACHED_INVERSE_TRIG))
-    return nullptr;
-#else
-    for( std::size_t i=0; i < BIT_MATH_TRIG_TABLE_SIZE; ++i )
-    {
-# ifdef BIT_MATH_CACHED_TRIG
-
-      bit::math::float_t angle
-        = (bit::math::two_pi<float_t>() * i) / bit::math::float_t{BIT_MATH_TRIG_TABLE_SIZE};
-      g_sin_table[i] = std::sin(angle);
-      g_tan_table[i] = std::tan(angle);
-
-# endif // BIT_MATH_CACHED_TRIG
-# ifdef BIT_MATH_CACHED_INVERSE_TRIG
-
-      // Create some input...
-# endif // BIT_MATH_CACHED_INVERSE_TRIG
-    }
-    return g_sin_table;
-#endif
-  }
 } // anonymous namespace
+#endif
 
 //----------------------------------------------------------------------------
 // Trig Lookups
 //----------------------------------------------------------------------------
 
-bit::math::float_t bit::math::detail::sin_lookup( float_t angle )
+bit::math::float_t bit::math::cached::detail::sin_lookup( float_t angle )
   noexcept
 {
 #ifdef BIT_MATH_CACHED_TRIG
-  BIT_MATH_UNUSED(g_table_ptr);
 
-  std::ptrdiff_t i;
+  auto i = std::ptrdiff_t();
 
   if( angle >= 0 ){
     i = int(angle * g_trig_factor) % BIT_MATH_TRIG_TABLE_SIZE;
@@ -96,7 +82,7 @@ bit::math::float_t bit::math::detail::sin_lookup( float_t angle )
 
 //----------------------------------------------------------------------------
 
-bit::math::float_t bit::math::detail::tan_lookup( float_t angle )
+bit::math::float_t bit::math::cached::detail::tan_lookup( float_t angle )
   noexcept
 {
 #ifdef BIT_MATH_CACHED_TRIG

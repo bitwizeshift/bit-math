@@ -158,118 +158,129 @@ namespace bit {
     degree abs( degree deg ) noexcept;
 
     //------------------------------------------------------------------------
-    // Trig
+    // Runtime Trigonometry
     //------------------------------------------------------------------------
-
-    namespace detail {
-
-      float_t sin_lookup( float_t angle ) noexcept;
-
-      float_t tan_lookup( float_t angle ) noexcept;
-
-    } // namespace detail
-
-    //------------------------------------------------------------------------
-
-    /// \brief Calculates the cosine of the given \ref radian angle, \p rad
-    ///
-    /// \param rad the angle
-    /// \return the result of \c cos(rad)
-    float_t cos( radian rad ) noexcept;
-
-    /// \brief Calculates the cosine of the given \ref degree angle, \p deg
-    ///
-    /// \param deg the angle
-    /// \return the result of \c cos(deg)
-    float_t cos( degree deg ) noexcept;
-
-    //------------------------------------------------------------------------
-
-    /// \brief Calculates the sine of the given \ref radian angle, \p rad
-    ///
-    /// \param rad the angle
-    /// \return the result of \c sin(rad)
-    float_t sin( radian rad ) noexcept;
-
-    /// \brief Calculates the sine of the given \ref degree angle, \p deg
-    ///
-    /// \param deg the angle
-    /// \return the result of \c sin(deg)
-    float_t sin( degree deg ) noexcept;
-
-    //------------------------------------------------------------------------
-
-    /// \brief Calculates the tangent of the given \ref radian angle, \p rad
-    ///
-    /// \param rad the angle
-    /// \return the result of \c tan(rad)
-    float_t tan( radian rad ) noexcept;
-
-    /// \brief Calculates the tangent of the given \ref degree angle, \p deg
-    ///
-    /// \param deg the angle
-    /// \return the result of \c tan(deg)
-    float_t tan( degree deg ) noexcept;
-
-    //------------------------------------------------------------------------
-    // Inverse Trig
-    //------------------------------------------------------------------------
-
-    float_t sec( radian rad ) noexcept;
-    float_t sec( degree deg ) noexcept;
-
-    float_t csc( radian rad ) noexcept;
-    float_t csc( degree deg ) noexcept;
-
-    float_t cot( radian rad ) noexcept;
-    float_t cot( degree deg ) noexcept;
-
-    //------------------------------------------------------------------------
-
-    radian arccos( float_t f ) noexcept;
-    radian arcsin( float_t f ) noexcept;
-    radian arctan( float_t f ) noexcept;
-    radian arctan2( float_t f1, float_t f2 ) noexcept;
-
-    //------------------------------------------------------------------------
-    // Table Trig
-    //------------------------------------------------------------------------
-
-    float_t tcos( radian rad ) noexcept;
-    float_t tcos( degree deg ) noexcept;
-
-    float_t tsin( radian rad ) noexcept;
-    float_t tsin( degree deg ) noexcept;
-
-    float_t ttan( radian rad ) noexcept;
-    float_t ttan( degree deg ) noexcept;
-
-    //------------------------------------------------------------------------
-    // Inverse Table Trig
-    //------------------------------------------------------------------------
-
-    float_t tsec( radian rad ) noexcept;
-    float_t tsec( degree deg ) noexcept;
-
-    float_t tcsc( radian rad ) noexcept;
-    float_t tcsc( degree deg ) noexcept;
-
-    float_t tcot( radian rad ) noexcept;
-    float_t tcot( degree deg ) noexcept;
-
-#ifdef BIT_MATH_CACHED_TRIG
-    inline
-#endif
-    namespace cached {
-
-    } // namespace cached
 
 #ifndef BIT_MATH_CACHED_TRIG
     inline
 #endif
     namespace runtime {
 
+      //----------------------------------------------------------------------
+      // Trigonometry
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the cosine of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c cos(rad)
+      float_t cos( radian rad ) noexcept;
+
+      /// \brief Calculates the cosine of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c cos(deg)
+      float_t cos( degree deg ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the sine of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c sin(rad)
+      float_t sin( radian rad ) noexcept;
+
+      /// \brief Calculates the sine of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c sin(deg)
+      float_t sin( degree deg ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the tangent of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c tan(rad)
+      float_t tan( radian rad ) noexcept;
+
+      /// \brief Calculates the tangent of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c tan(deg)
+      float_t tan( degree deg ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      float_t sec( radian rad ) noexcept;
+      float_t sec( degree deg ) noexcept;
+
+      float_t csc( radian rad ) noexcept;
+      float_t csc( degree deg ) noexcept;
+
+      float_t cot( radian rad ) noexcept;
+      float_t cot( degree deg ) noexcept;
+
+      //----------------------------------------------------------------------
+      // Inverse Trigonometry
+      //----------------------------------------------------------------------
+
+      radian arccos( float_t f ) noexcept;
+      radian arcsin( float_t f ) noexcept;
+      radian arctan( float_t f ) noexcept;
+      radian arctan2( float_t f1, float_t f2 ) noexcept;
+
     } // namespace runtime
+
+    //------------------------------------------------------------------------
+    // Cached Trigonometry
+    //------------------------------------------------------------------------
+
+#ifdef BIT_MATH_CACHED_TRIG
+    inline
+#endif
+    namespace cached {
+
+      namespace detail {
+
+        float_t sin_lookup( float_t angle ) noexcept;
+
+        float_t tan_lookup( float_t angle ) noexcept;
+
+      } // namespace detail
+
+      float_t cos( radian rad ) noexcept;
+      float_t cos( degree deg ) noexcept;
+
+      float_t sin( radian rad ) noexcept;
+      float_t sin( degree deg ) noexcept;
+
+      float_t tan( radian rad ) noexcept;
+      float_t tan( degree deg ) noexcept;
+
+      //----------------------------------------------------------------------
+      //
+      //----------------------------------------------------------------------
+
+      float_t sec( radian rad ) noexcept;
+      float_t sec( degree deg ) noexcept;
+
+      float_t csc( radian rad ) noexcept;
+      float_t csc( degree deg ) noexcept;
+
+      float_t cot( radian rad ) noexcept;
+      float_t cot( degree deg ) noexcept;
+
+      //----------------------------------------------------------------------
+      // Inverse Table Trig
+      //----------------------------------------------------------------------
+
+      radian arccos( float_t f ) noexcept;
+      radian arcsin( float_t f ) noexcept;
+      radian arctan( float_t f ) noexcept;
+      radian arctan2( float_t f1, float_t f2 ) noexcept;
+
+    } // namespace cached
 
   } // namespace math
 } // namespace bit

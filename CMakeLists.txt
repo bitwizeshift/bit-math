@@ -1,15 +1,44 @@
 cmake_minimum_required(VERSION 3.1)
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
+
+include(GitBuildNumber)
+
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/modules/add_header_library.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/modules/add_test_executable.cmake")
 
 project("bit::math")
 
+# This project requires at least c++14 support
 set(CMAKE_CXX_VERSION 14)
+
+git_build_number(BIT_MATH_BUILD_NUMBER)
 
 set(BIT_MATH_VERSION_MAJOR 0 CACHE STRING "major version of bit::math" FORCE)
 set(BIT_MATH_VERSION_MINOR 1 CACHE STRING "minor version of bit::math" FORCE)
-set(BIT_MATH_VERSION "${BIT_STL_VERSION_MAJOR}.${BIT_STL_VERSION_MINOR}" CACHE STRING "version of bit::math" FORCE)
+set(BIT_MATH_VERSION_PATCH 0 CACHE STRING "patch version of bit::math" FORCE)
+set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}" CACHE STRING "version of bit::math" FORCE)
+set(BIT_MATH_BUILD_NUMBER "${BIT_MATH_BUILD_NUMBER}" CACHE STRING "build number of bit::math" FORCE)
+
+message(STATUS "bit::math ${BIT_MATH_VERSION}-${BIT_MATH_BUILD_NUMBER}")
+
+#-----------------------------------------------------------------------------
+# bit::stl : Sources
+#-----------------------------------------------------------------------------
+
+set(headers
+      "include/bit/math/angles.hpp"
+      "include/bit/math/vector.hpp"
+      "include/bit/math/matrix.hpp"
+      "include/bit/math/quaternion.hpp"
+)
+
+set(sources
+      "src/bit/math/angles.cpp"
+      "src/bit/math/vector.cpp"
+      "src/bit/math/matrix.cpp"
+      "src/bit/math/quaternion.cpp"
+)
 
 #-----------------------------------------------------------------------------
 # Options
@@ -21,40 +50,133 @@ option(BIT_COMPILE_INDEPENDENCE_TESTS "Include each header independently in a .c
 option(BIT_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" on)
 
 option(BIT_MATH_CACHED_TRIG "Build a cached table for triginometrec function results." off)
-option(BIT_MATH_CACHED_INVERSE_TRIG "Build a cached data for inverse triginometric function results." off)
+
+set(BIT_MATH_TRIG_TABLE_SIZE 1024 CACHE STRING "The size of the trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
+
+set(BIT_MATH_INVERSE_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the inverse trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
 
 #-----------------------------------------------------------------------------
-
-set(BIT_MATH_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
+# Option Validation
+#-----------------------------------------------------------------------------
 
 if( BIT_MATH_CACHED_TRIG AND NOT BIT_MATH_TRIG_TABLE_SIZE MATCHES "[1-9][0-9]+" )
-  message(FATAL_ERROR "'BIT_MATH_TRIG_TABLE_SIZE' contains invalid value. This must be a numeric entry")
+  message(FATAL_ERROR "'BIT_MATH_TRIG_TABLE_SIZE' contains an invalid value. This must be a numeric entry")
 endif()
 
 #-----------------------------------------------------------------------------
 
-set(BIT_MATH_INVERSE_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the inverse trig table to build. This is ignored unless BIT_MATH_CACHED_INVERSE_TRIG is on")
-
-if( BIT_MATH_CACHED_INVERSE_TRIG AND NOT BIT_MATH_INVERSE_TRIG_TABLE_SIZE MATCHES "[1-9][0-9]+" )
-  message(FATAL_ERROR "'BIT_MATH_INVERSE_TRIG_TABLE_SIZE' contains invalid value. This must be a numeric entry")
+if( BIT_MATH_CACHED_TRIG AND NOT BIT_MATH_INVERSE_TRIG_TABLE_SIZE MATCHES "[1-9][0-9]+" )
+  message(FATAL_ERROR "'BIT_MATH_INVERSE_TRIG_TABLE_SIZE' contains an invalid value. This must be a numeric entry")
 endif()
 
 #-----------------------------------------------------------------------------
-# bit::stl : Interface
+# Generate trig-table
 #-----------------------------------------------------------------------------
 
-set(headers
-      "include/bit/math/angles.hpp"
-      "include/bit/math/vector.hpp"
-      "include/bit/math/matrix.hpp"
-      "include/bit/math/quaternion.hpp"
-)
-set(sources
-      "src/bit/math/angles.cpp"
-      "src/bit/math/vector.cpp"
-      "src/bit/math/matrix.cpp"
-      "src/bit/math/quaternion.cpp"
-)
+if( BIT_MATH_CACHED_TRIG )
+
+  #---------------------------------------------------------------------------
+  # Configuration for files
+  #---------------------------------------------------------------------------
+
+  if(BIT_MATH_DOUBLE_PRECISION)
+    set(FLOAT_TYPE "double")
+  else()
+    set(FLOAT_TYPE "float")
+  endif()
+
+  set(sin_table_generator_file "${CMAKE_CURRENT_BINARY_DIR}/angles/generator.sin_table.cpp")
+  set(sin_table_file "${CMAKE_CURRENT_BINARY_DIR}/src/bit/math/angles/angles.g_sin_table.cpp")
+
+  #---------------------------------------------------------------------------
+  # Write Files
+  #---------------------------------------------------------------------------
+
+  # Write generator file if not already written
+  if( NOT EXISTS "${sin_table_generator_file}.in" )
+    file(WRITE "${sin_table_generator_file}.in"
+"
+#include <cmath>
+#include <iostream>
+
+int main()
+{
+  const auto pi   = @FLOAT_TYPE@(3.14159265358979323846264338327950288419716939937510);
+  const auto size = @FLOAT_TYPE@(@BIT_MATH_TRIG_TABLE_SIZE@);
+
+  for(auto i=0; i<@BIT_MATH_TRIG_TABLE_SIZE@; ++i)
+  {
+    auto angle = pi * (i / size);
+    auto result = std::sin(angle);
+    std::cout << result << ';';
+  }
+
+  return 0;
+}"
+    )
+  endif()
+
+  # Write cache file if not already written
+  if( NOT EXISTS "${sin_table_file}.in" )
+    file(WRITE "${sin_table_file}.in"
+"
+// This file is autogenerated, do not modify
+//
+//
+
+#include <array>
+
+namespace bit {
+  namespace math {
+
+    const std::array<@FLOAT_TYPE@,@BIT_MATH_TRIG_TABLE_SIZE@> g_sin_table = { @SIN_VALUES@ };
+
+  } // namespace math
+} // namespace bit"
+    )
+  endif()
+
+  #---------------------------------------------------------------------------
+  # Generate Files
+  #---------------------------------------------------------------------------
+
+  configure_file("${sin_table_generator_file}.in" "${sin_table_generator_file}"  @ONLY)
+
+  # Generate the cache source file if anything has changed
+  if( "${sin_table_file}.in" IS_NEWER_THAN "${sin_table_file}" )
+    message(STATUS "Generating sin cache")
+
+    if( UNIX )
+      # *nix systems require linking to the math library with -lm
+      set(flags "-lm")
+    endif()
+
+    try_run(RUN_RESULT_VAR COMPILE_RESULT_VAR
+      "${CMAKE_CURRENT_BINARY_DIR}/angles"
+      "${sin_table_generator_file}"
+      CMAKE_FLAGS ${flags}
+      COMPILE_OUTPUT_VARIABLE compile_output
+      RUN_OUTPUT_VARIABLE run_output
+    )
+    string(REPLACE ";" ",\n" SIN_VALUES "${run_output}")
+
+    if( NOT COMPILE_RESULT_VAR )
+      message(FATAL_ERROR "Error generating precomputed sin table. Compilation failed with message:\n ${compile_output}")
+    endif()
+
+    configure_file("${sin_table_file}.in" "${sin_table_file}" @ONLY)
+
+    message(STATUS "Generating sin cache - done")
+  endif()
+
+  #---------------------------------------------------------------------------
+  # Append generated sources
+  #---------------------------------------------------------------------------
+
+  # Add the cache source file
+  list(APPEND sources "${sin_table_file}")
+
+endif()
 
 #-----------------------------------------------------------------------------
 # bit::math : Library
@@ -70,15 +192,9 @@ if( BIT_MATH_DOUBLE_PRECISION )
 endif()
 
 if( BIT_MATH_CACHED_TRIG )
-  target_compile_options(bit_math PUBLIC
+  target_compile_definitions(bit_math PUBLIC
     "-DBIT_MATH_CACHED_TRIG"
     "-DBIT_MATH_TRIG_TABLE_SIZE=${BIT_MATH_TRIG_TABLE_SIZE}"
-  )
-endif()
-
-if( BIT_MATH_CACHED_INVERSE_TRIG )
-  target_compile_options(bit_math PUBLIC
-    "-DBIT_MATH_CACHED_INVERSE_TRIG"
     "-DBIT_MATH_INVERSE_TRIG_TABLE_SIZE=${BIT_MATH_INVERSE_TRIG_TABLE_SIZE}"
   )
 endif()
@@ -101,6 +217,8 @@ endif()
 
 if( BIT_COMPILE_UNIT_TESTS )
 
+  find_package(Catch)
+
   set(test_sources
         test/main.test.cpp
         test/bit/math/vector2.test.cpp
@@ -108,6 +226,6 @@ if( BIT_COMPILE_UNIT_TESTS )
   )
 
   add_test_executable(bit_math_test ${test_sources})
-  target_link_libraries(bit_math_test "bit::math")
+  target_link_libraries(bit_math_test "bit::math" "philsquared::Catch")
 
 endif()
