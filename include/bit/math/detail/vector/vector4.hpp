@@ -372,12 +372,59 @@ namespace bit {
     constexpr std::common_type_t<T,U>
       dot( const vector4<T>& lhs, const vector4<U>& rhs ) noexcept;
 
+    /// \brief Calculates the magnitude of the vector4 \p vec
+    ///
+    /// \param vec the vector4 to calculate the magnitude from
+    /// \return the magnitude
+    template<typename T>
+    typename vector4<T>::value_type magnitude( const vector4<T>& vec ) noexcept;
+
     /// \brief Swaps \p lhs with \p rhs
     ///
     /// \param lhs the left vector4 to swap
     /// \param rhs the right vector4 to swap
     template<typename T>
     constexpr void swap( vector4<T>& lhs, vector4<T>& rhs ) noexcept;
+
+    //------------------------------------------------------------------------
+    // Comparisons
+    //------------------------------------------------------------------------
+
+    /// \brief Determines exact equality between two vector4
+    ///
+    /// \param lhs the left vector4
+    /// \param rhs the right vector4
+    /// \return \c true if the two vector4 contain identical values
+    template<typename T, typename U>
+    constexpr bool operator == ( const vector4<T>& lhs, const vector4<U>& rhs ) noexcept;
+
+    /// \brief Determines exact inequality between two vector4
+    ///
+    /// \param lhs the left vector4
+    /// \param rhs the right vector4
+    /// \return \c true if the two vector4 contain at least 1 different value
+    template<typename T, typename U>
+    constexpr bool operator != ( const vector4<T>& lhs, const vector4<U>& rhs ) noexcept;
+
+    //----------------------------------------------------------------------------
+
+    /// \brief Determines equality between two vector4 relative to \ref default_tolerance
+    ///
+    /// \param lhs the left vector4
+    /// \param rhs the right vector4
+    /// \return \c true if the two vector4 contain almost equal values
+    template<typename T, typename U>
+    constexpr bool almost_equal( const vector4<T>& lhs, const vector4<U>& rhs ) noexcept;
+
+    /// \brief Determines equality between two vector4 relative to \ref tolerance
+    ///
+    /// \param lhs the left vector4
+    /// \param rhs the right vector4
+    /// \return \c true if the two vector4 contain almost equal values
+    template<typename T, typename U, typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>* = nullptr>
+    constexpr bool almost_equal( const vector4<T>& lhs,
+                                 const vector4<U>& rhs,
+                                 Arithmetic tolerance ) noexcept;
 
   } // namespace math
 } // namespace bit

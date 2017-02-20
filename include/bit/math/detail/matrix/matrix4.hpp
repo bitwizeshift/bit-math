@@ -453,6 +453,45 @@ namespace bit {
     constexpr matrix4<std::common_type_t<T,U>>
       operator*( const matrix4<T>& lhs, U rhs ) noexcept;
 
+    //------------------------------------------------------------------------
+    // Comparisons
+    //------------------------------------------------------------------------
+
+    /// \brief Determines exact equality between two matrix4
+    ///
+    /// \param lhs the left matrix4
+    /// \param rhs the right matrix4
+    /// \return \c true if the two matrix4 contain identical values
+    template<typename T, typename U>
+    constexpr bool operator == ( const matrix4<T>& lhs, const matrix4<U>& rhs ) noexcept;
+
+    /// \brief Determines exact inequality between two matrix4
+    ///
+    /// \param lhs the left matrix4
+    /// \param rhs the right matrix4
+    /// \return \c true if the two matrix4 contain at least 1 different value
+    template<typename T, typename U>
+    constexpr bool operator != ( const matrix4<T>& lhs, const matrix4<U>& rhs ) noexcept;
+
+    //----------------------------------------------------------------------------
+
+    /// \brief Determines equality between two matrix4 relative to \ref default_tolerance
+    ///
+    /// \param lhs the left matrix4
+    /// \param rhs the right matrix4
+    /// \return \c true if the two matrix4 contain almost equal values
+    template<typename T, typename U>
+    constexpr bool almost_equal( const matrix4<T>& lhs, const matrix4<U>& rhs ) noexcept;
+
+    /// \brief Determines equality between two matrix4 relative to \ref tolerance
+    ///
+    /// \param lhs the left matrix4
+    /// \param rhs the right matrix4
+    /// \return \c true if the two matrix4 contain almost equal values
+    template<typename T, typename U, typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>* = nullptr>
+    constexpr bool almost_equal( const matrix4<T>& lhs,
+                                 const matrix4<U>& rhs,
+                                 Arithmetic tolerance ) noexcept;
   } // namespace math
 } // namespace bit
 

@@ -521,4 +521,57 @@ constexpr bit::math::matrix3<std::common_type_t<T,U>>
   return matrix3<std::common_type_t<T,U>>(lhs) *= rhs;
 }
 
+//----------------------------------------------------------------------------
+// Comparisons
+//----------------------------------------------------------------------------
+
+template<typename T, typename U>
+inline constexpr bool bit::math::operator == ( const matrix3<T>& lhs,
+                                               const matrix3<U>& rhs )
+  noexcept
+{
+  for(auto r=0;r<matrix3<T>::rows;++r) {
+    for(auto c=0;c<matrix3<T>::columns;++c) {
+      if( lhs(r,c)!=rhs(r,c) ) return false;
+    }
+  }
+  return true;
+}
+
+template<typename T, typename U>
+inline constexpr bool bit::math::operator != ( const matrix3<T>& lhs,
+                                               const matrix3<U>& rhs )
+  noexcept
+{
+  return !(lhs==rhs);
+}
+
+//----------------------------------------------------------------------------
+
+template<typename T, typename U>
+inline constexpr bool bit::math::almost_equal( const matrix3<T>& lhs,
+                                               const matrix3<U>& rhs )
+  noexcept
+{
+  for(auto r=0;r<matrix3<T>::rows;++r) {
+    for(auto c=0;c<matrix3<T>::columns;++c) {
+      if( !almost_equal(rhs(r,c),rhs(r,c)) ) return false;
+    }
+  }
+  return true;
+}
+
+template<typename T, typename U, typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>*>
+inline constexpr bool bit::math::almost_equal( const matrix3<T>& lhs,
+                                               const matrix3<U>& rhs,
+                                               Arithmetic tolerance )
+  noexcept
+{
+  for(auto r=0;r<matrix3<T>::rows;++r) {
+    for(auto c=0;c<matrix3<T>::columns;++c) {
+      if( !almost_equal(rhs(r,c),rhs(r,c), tolerance) ) return false;
+    }
+  }
+  return true;
+}
 #endif /* BIT_MATH_DETAIL_MATRIX_MATRIX3_INL */

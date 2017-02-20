@@ -472,10 +472,66 @@ inline constexpr std::common_type_t<T,U>
 }
 
 template<typename T>
+typename bit::math::vector2<T>::value_type
+  bit::math::magnitude( const vector2<T>& vec )
+  noexcept
+{
+  return vec.magnitude();
+}
+
+template<typename T>
 constexpr void bit::math::swap( vector2<T>& lhs, vector2<T>& rhs )
   noexcept
 {
   lhs.swap(rhs);
+}
+
+//----------------------------------------------------------------------------
+// Comparisons
+//----------------------------------------------------------------------------
+
+template<typename T, typename U>
+inline constexpr bool bit::math::operator == ( const vector2<T>& lhs,
+                                               const vector2<U>& rhs )
+  noexcept
+{
+  for(auto i=0;i<2;++i) {
+    if( lhs[i]!=rhs[i] ) return false;
+  }
+  return true;
+}
+
+template<typename T, typename U>
+inline constexpr bool bit::math::operator != ( const vector2<T>& lhs,
+                                               const vector2<U>& rhs )
+  noexcept
+{
+  return !(lhs==rhs);
+}
+
+//----------------------------------------------------------------------------
+
+template<typename T, typename U>
+inline constexpr bool bit::math::almost_equal( const vector2<T>& lhs,
+                                               const vector2<U>& rhs )
+  noexcept
+{
+  for(auto i=0;i<2;++i) {
+    if( !almost_equal(rhs[i],rhs[i]) ) return false;
+  }
+  return true;
+}
+
+template<typename T, typename U, typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>*>
+inline constexpr bool bit::math::almost_equal( const vector2<T>& lhs,
+                                               const vector2<U>& rhs,
+                                               Arithmetic tolerance )
+  noexcept
+{
+  for(auto i=0;i<2;++i) {
+    if( !almost_equal(rhs[i],rhs[i],tolerance) ) return false;
+  }
+  return true;
 }
 
 #endif /* BIT_MATH_DETAIL_VECTOR_VECTOR2_INL */
