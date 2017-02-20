@@ -7,7 +7,7 @@
  */
 #include <bit/math/vector.hpp>
 
-#include "../../catch.hpp"
+#include <catch.hpp>
 
 //----------------------------------------------------------------------------
 // Constructors

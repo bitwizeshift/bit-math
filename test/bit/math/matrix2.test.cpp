@@ -7,7 +7,7 @@
  */
 #include <bit/math/matrix.hpp>
 
-#include "../../catch.hpp"
+#include <catch.hpp>
 
 TEST_CASE("matrix2::matrix2()")
 {

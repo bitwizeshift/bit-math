@@ -8,7 +8,7 @@
 
 #include <bit/math/quaternion.hpp>
 
-#include "../../catch.hpp"
+#include <catch.hpp>
 
 //----------------------------------------------------------------------------
 // Constructors
