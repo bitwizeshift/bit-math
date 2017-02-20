@@ -182,6 +182,9 @@ namespace bit {
       /// \return the result of \c cos(deg)
       float_t cos( degree deg ) noexcept;
 
+      /// \copydoc cos( radian )
+      float_t cos( float_t rad ) noexcept;
+
       //----------------------------------------------------------------------
 
       /// \brief Calculates the sine of the given \ref radian angle, \p rad
@@ -195,6 +198,9 @@ namespace bit {
       /// \param deg the angle
       /// \return the result of \c sin(deg)
       float_t sin( degree deg ) noexcept;
+
+      /// \copydoc sin( radian )
+      float_t sin( float_t rad ) noexcept;
 
       //----------------------------------------------------------------------
 
@@ -210,16 +216,59 @@ namespace bit {
       /// \return the result of \c tan(deg)
       float_t tan( degree deg ) noexcept;
 
+      /// \copydoc tan( radian )
+      float_t tan( float_t rad ) noexcept;
+
       //----------------------------------------------------------------------
 
+      /// \brief Calculates the secant of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c sec(rad)
       float_t sec( radian rad ) noexcept;
+
+      /// \brief Calculates the secant of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c sec(deg)
       float_t sec( degree deg ) noexcept;
 
+      /// \copydoc sec( radian )
+      float_t sec( float_t rad ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the cosecant of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c csc(rad)
       float_t csc( radian rad ) noexcept;
+
+      /// \brief Calculates the cosecant of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c csc(deg)
       float_t csc( degree deg ) noexcept;
 
+      /// \copydoc csc( radian )
+      float_t csc( float_t rad ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the cotangent of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c cot(rad)
       float_t cot( radian rad ) noexcept;
+
+      /// \brief Calculates the cotangent of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c cot(deg)
       float_t cot( degree deg ) noexcept;
+
+      /// \copydoc cot( radian )
+      float_t cot( float_t rad ) noexcept;
 
       //----------------------------------------------------------------------
       // Inverse Trigonometry
@@ -249,27 +298,110 @@ namespace bit {
 
       } // namespace detail
 
+
+      //----------------------------------------------------------------------
+      // Trigonometry
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the cosine of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c cos(rad)
       float_t cos( radian rad ) noexcept;
+
+      /// \brief Calculates the cosine of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c cos(deg)
       float_t cos( degree deg ) noexcept;
 
+      /// \copydoc cos( radian )
+      float_t cos( float_t rad ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the sine of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c sin(rad)
       float_t sin( radian rad ) noexcept;
+
+      /// \brief Calculates the sine of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c sin(deg)
       float_t sin( degree deg ) noexcept;
 
+      /// \copydoc sin( radian )
+      float_t sin( float_t rad ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the tangent of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c tan(rad)
       float_t tan( radian rad ) noexcept;
+
+      /// \brief Calculates the tangent of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c tan(deg)
       float_t tan( degree deg ) noexcept;
 
-      //----------------------------------------------------------------------
-      //
+      /// \copydoc tan( radian )
+      float_t tan( float_t rad ) noexcept;
+
       //----------------------------------------------------------------------
 
+      /// \brief Calculates the secant of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c sec(rad)
       float_t sec( radian rad ) noexcept;
+
+      /// \brief Calculates the secant of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c sec(deg)
       float_t sec( degree deg ) noexcept;
 
+      /// \copydoc sec( radian )
+      float_t sec( float_t rad ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the cosecant of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c csc(rad)
       float_t csc( radian rad ) noexcept;
+
+      /// \brief Calculates the cosecant of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c csc(deg)
       float_t csc( degree deg ) noexcept;
 
+      /// \copydoc csc( radian )
+      float_t csc( float_t rad ) noexcept;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Calculates the cotangent of the given \ref radian angle, \p rad
+      ///
+      /// \param rad the angle
+      /// \return the result of \c cot(rad)
       float_t cot( radian rad ) noexcept;
+
+      /// \brief Calculates the cotangent of the given \ref degree angle, \p deg
+      ///
+      /// \param deg the angle
+      /// \return the result of \c cot(deg)
       float_t cot( degree deg ) noexcept;
+
+      /// \copydoc cot( radian )
+      float_t cot( float_t rad ) noexcept;
 
       //----------------------------------------------------------------------
       // Inverse Table Trig

@@ -6,6 +6,19 @@
 #endif
 
 //----------------------------------------------------------------------------
+// Constant Expressions
+//----------------------------------------------------------------------------
+
+namespace bit {
+  namespace math {
+    namespace detail {
+      constexpr auto deg_to_rad = pi<float_t>() / float_t{180};
+      constexpr auto rad_to_deg = float_t{180} / pi<float_t>();
+    } // namespace detail
+  } // namespace math
+} // namespace bit
+
+//----------------------------------------------------------------------------
 // Literals
 //----------------------------------------------------------------------------
 
@@ -43,15 +56,6 @@ inline constexpr bit::math::degree bit::math::casts::angle_cast( degree from )
   return from;
 }
 
-namespace bit {
-  namespace math {
-    namespace detail {
-      constexpr auto deg_to_rad = pi<float_t>() / float_t{180};
-      constexpr auto rad_to_deg = float_t{180} / pi<float_t>();
-    }
-  }
-}
-
 template<>
 inline constexpr bit::math::radian bit::math::casts::angle_cast( degree angle )
   noexcept
@@ -68,19 +72,19 @@ inline constexpr bit::math::degree bit::math::casts::angle_cast( radian angle )
 }
 
 //----------------------------------------------------------------------------
-//
+// Rounding
 //----------------------------------------------------------------------------
 
 inline bit::math::radian bit::math::round( radian angle )
   noexcept
 {
-  return radian{ round(angle.value()) };
+  return radian{ std::round(angle.value()) };
 }
 
 inline bit::math::degree bit::math::round( degree angle )
   noexcept
 {
-  return degree{ round(angle.value()) };
+  return degree{ std::round(angle.value()) };
 }
 
 //----------------------------------------------------------------------------
@@ -88,13 +92,13 @@ inline bit::math::degree bit::math::round( degree angle )
 inline bit::math::radian bit::math::trunc( radian angle )
   noexcept
 {
-  return radian( trunc(angle.value()) );
+  return radian( std::trunc(angle.value()) );
 }
 
 inline bit::math::degree bit::math::trunc( degree angle )
   noexcept
 {
-  return degree( trunc(angle.value()) );
+  return degree( std::trunc(angle.value()) );
 }
 
 //----------------------------------------------------------------------------
@@ -102,13 +106,13 @@ inline bit::math::degree bit::math::trunc( degree angle )
 inline bit::math::radian bit::math::ceil( radian angle )
   noexcept
 {
-  return radian( ceil(angle.value()) );
+  return radian( std::ceil(angle.value()) );
 }
 
 inline bit::math::degree bit::math::ceil( degree angle )
   noexcept
 {
-  return degree( ceil(angle.value()) );
+  return degree( std::ceil(angle.value()) );
 }
 
 //----------------------------------------------------------------------------
@@ -116,13 +120,13 @@ inline bit::math::degree bit::math::ceil( degree angle )
 inline bit::math::radian bit::math::floor( radian angle )
   noexcept
 {
-  return radian( floor(angle.value()) );
+  return radian( std::floor(angle.value()) );
 }
 
 inline bit::math::degree bit::math::floor( degree angle )
   noexcept
 {
-  return degree( floor(angle.value()) );
+  return degree( std::floor(angle.value()) );
 }
 
 //----------------------------------------------------------------------------
@@ -130,13 +134,13 @@ inline bit::math::degree bit::math::floor( degree angle )
 inline bit::math::radian bit::math::abs( radian angle )
   noexcept
 {
-  return radian( abs(angle.value()) );
+  return radian( std::abs(angle.value()) );
 }
 
 inline bit::math::degree bit::math::abs( degree angle )
   noexcept
 {
-  return degree( abs(angle.value()) );
+  return degree( std::abs(angle.value()) );
 }
 
 //----------------------------------------------------------------------------
@@ -152,7 +156,13 @@ inline bit::math::float_t bit::math::runtime::cos( radian rad )
 inline bit::math::float_t bit::math::runtime::cos( degree deg )
   noexcept
 {
-  return cos( angle_cast<radian>(deg) );
+  return runtime::cos( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::runtime::cos( float_t rad )
+  noexcept
+{
+  return runtime::cos( radian(rad) );
 }
 
 //----------------------------------------------------------------------------
@@ -166,7 +176,13 @@ inline bit::math::float_t bit::math::runtime::sin( radian rad )
 inline bit::math::float_t bit::math::runtime::sin( degree deg )
   noexcept
 {
-  return sin( angle_cast<radian>(deg) );
+  return runtime::sin( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::runtime::sin( float_t rad )
+  noexcept
+{
+  return runtime::sin( radian(rad) );
 }
 
 //----------------------------------------------------------------------------
@@ -180,7 +196,13 @@ inline bit::math::float_t bit::math::runtime::tan( radian rad )
 inline bit::math::float_t bit::math::runtime::tan( degree deg )
   noexcept
 {
-  return tan( angle_cast<radian>(deg) );
+  return runtime::tan( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::runtime::tan( float_t rad )
+  noexcept
+{
+  return runtime::tan( radian(rad) );
 }
 
 //----------------------------------------------------------------------------
@@ -190,13 +212,19 @@ inline bit::math::float_t bit::math::runtime::tan( degree deg )
 inline bit::math::float_t bit::math::runtime::sec( radian rad )
   noexcept
 {
-  return (1.0) / cos(rad);
+  return (1.0) / runtime::cos(rad);
 }
 
 inline bit::math::float_t bit::math::runtime::sec( degree deg )
   noexcept
 {
-  return (1.0) / cos(deg);
+  return runtime::sec( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::runtime::sec( float_t rad )
+  noexcept
+{
+  return runtime::sec( radian(rad) );
 }
 
 //----------------------------------------------------------------------------
@@ -204,13 +232,19 @@ inline bit::math::float_t bit::math::runtime::sec( degree deg )
 inline bit::math::float_t bit::math::runtime::csc( radian rad )
   noexcept
 {
-  return (1.0) / sin(rad);
+  return (1.0) / runtime::sin(rad);
 }
 
 inline bit::math::float_t bit::math::runtime::csc( degree deg )
   noexcept
 {
-  return (1.0) / sin(deg);
+  return runtime::csc( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::runtime::csc( float_t rad )
+  noexcept
+{
+  return runtime::csc( radian(rad) );
 }
 
 //----------------------------------------------------------------------------
@@ -218,13 +252,19 @@ inline bit::math::float_t bit::math::runtime::csc( degree deg )
 inline bit::math::float_t bit::math::runtime::cot( radian rad )
   noexcept
 {
-  return (1.0) / tan(rad);
+  return (1.0) / runtime::tan(rad);
 }
 
 inline bit::math::float_t bit::math::runtime::cot( degree deg )
   noexcept
 {
-  return (1.0) / tan(deg);
+  return runtime::cot( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::runtime::cot( float_t rad )
+  noexcept
+{
+  return runtime::cot( radian(rad) );
 }
 
 //----------------------------------------------------------------------------
@@ -269,6 +309,12 @@ inline bit::math::float_t bit::math::cached::sin( degree deg )
   return cached::sin( angle_cast<radian>(deg) );
 }
 
+inline bit::math::float_t bit::math::cached::sin( float_t rad )
+  noexcept
+{
+  return cached::sin( radian(rad) );
+}
+
 //----------------------------------------------------------------------------
 
 inline bit::math::float_t bit::math::cached::cos( radian rad )
@@ -281,6 +327,12 @@ inline bit::math::float_t bit::math::cached::cos( degree deg )
   noexcept
 {
   return cached::cos( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::cached::cos( float_t rad )
+  noexcept
+{
+  return cached::cos( radian(rad) );
 }
 
 //----------------------------------------------------------------------------
@@ -297,6 +349,12 @@ inline bit::math::float_t bit::math::cached::tan( degree deg )
   return cached::tan( angle_cast<radian>(deg) );
 }
 
+inline bit::math::float_t bit::math::cached::tan( float_t rad )
+  noexcept
+{
+  return cached::tan( radian(rad) );
+}
+
 //------------------------------------------------------------------------
 
 inline bit::math::float_t bit::math::cached::sec( radian rad )
@@ -308,7 +366,13 @@ inline bit::math::float_t bit::math::cached::sec( radian rad )
 inline bit::math::float_t bit::math::cached::sec( degree deg )
   noexcept
 {
-  return (1.0) / cached::cos(deg);
+  return cached::sec( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::cached::sec( float_t rad )
+  noexcept
+{
+  return cached::sec( radian(rad) );
 }
 
 //------------------------------------------------------------------------
@@ -322,7 +386,13 @@ inline bit::math::float_t bit::math::cached::csc( radian rad )
 inline bit::math::float_t bit::math::cached::csc( degree deg )
   noexcept
 {
-  return (1.0) / cached::sin(deg);
+  return cached::csc( angle_cast<radian>(deg) );
+}
+
+inline bit::math::float_t bit::math::cached::csc( float_t rad )
+  noexcept
+{
+  return cached::csc( radian(rad) );
 }
 
 //------------------------------------------------------------------------
@@ -336,11 +406,13 @@ inline bit::math::float_t bit::math::cached::cot( radian rad )
 inline bit::math::float_t bit::math::cached::cot( degree deg )
   noexcept
 {
-  return (1.0) / cached::tan(deg);
+  return cached::cot( angle_cast<radian>(deg) );
 }
 
-//------------------------------------------------------------------------
-// Cached Inverse Trigonometry
-//------------------------------------------------------------------------
+inline bit::math::float_t bit::math::cached::cot( float_t rad )
+  noexcept
+{
+  return cached::cot( radian(rad) );
+}
 
 #endif /* BIT_MATH_DETAIL_ANGLES_INL */
