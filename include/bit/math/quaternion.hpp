@@ -604,6 +604,21 @@ namespace bit {
                        const quaternion& rhs,
                        Arithmetic tolerance ) noexcept;
 
+    //----------------------------------------------------------------------------
+    // Type Traits
+    //----------------------------------------------------------------------------
+
+    /// \brief Trait to detect whether \p T is a \ref quaternion
+    ///
+    /// The result is aliased as \c ::value
+    template<typename T> struct is_quaternion : std::false_type{};
+
+    template<> struct is_quaternion<quaternion> : std::true_type{};
+
+    /// \brief Helper variable template to retrieve the result of \ref is_quaternion
+    template<typename T>
+    constexpr bool is_quaternion_v = is_quaternion<T>::value;
+
   } // namespace math
 } // namespace bit
 

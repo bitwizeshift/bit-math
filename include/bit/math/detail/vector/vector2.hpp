@@ -440,6 +440,21 @@ namespace bit {
                                  const vector2<U>& rhs,
                                  Arithmetic tolerance ) noexcept;
 
+    //----------------------------------------------------------------------------
+    // Type Traits
+    //----------------------------------------------------------------------------
+
+    /// \brief Trait to detect whether \p T is a \ref vector2
+    ///
+    /// The result is aliased as \c ::value
+    template<typename T> struct is_vector2 : std::false_type{};
+
+    template<typename T> struct is_vector2<vector2<T>> : std::true_type{};
+
+    /// \brief Helper variable template to retrieve the result of \ref is_vector2
+    template<typename T>
+    constexpr bool is_vector2_v = is_vector2<T>::value;
+
   } // namespace math
 } // namespace bit
 

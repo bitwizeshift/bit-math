@@ -455,6 +455,22 @@ namespace bit {
     constexpr bool almost_equal( const matrix3<T>& lhs,
                                  const matrix3<U>& rhs,
                                  Arithmetic tolerance ) noexcept;
+
+    //----------------------------------------------------------------------------
+    // Type Traits
+    //----------------------------------------------------------------------------
+
+    /// \brief Trait to detect whether \p T is a \ref matrix3
+    ///
+    /// The result is aliased as \c ::value
+    template<typename T> struct is_matrix3 : std::false_type{};
+
+    template<typename T> struct is_matrix3<matrix3<T>> : std::true_type{};
+
+    /// \brief Helper variable template to retrieve the result of \ref is_matrix3
+    template<typename T>
+    constexpr bool is_matrix3_v = is_matrix3<T>::value;
+
   } // namespace math
 } // namespace bit
 

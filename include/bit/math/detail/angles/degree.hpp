@@ -256,6 +256,21 @@ namespace bit {
                                  const degree& rhs,
                                  Arithmetic tolerance ) noexcept;
 
+    //----------------------------------------------------------------------------
+    // Type Traits
+    //----------------------------------------------------------------------------
+
+    /// \brief Trait to detect whether \p T is a \ref degree
+    ///
+    /// The result is aliased as \c ::value
+    template<typename T> struct is_degree : std::false_type{};
+
+    template<> struct is_degree<degree> : std::true_type{};
+
+    /// \brief Helper variable template to retrieve the result of \ref is_degree
+    template<typename T>
+    constexpr bool is_degree_v = is_degree<T>::value;
+
   } // namespace math
 } // namespace bit
 
