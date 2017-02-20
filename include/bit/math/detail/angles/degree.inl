@@ -125,16 +125,23 @@ inline constexpr bit::math::degree
 //----------------------------------------------------------------------------
 
 inline constexpr bit::math::degree
-  bit::math::operator*( const degree& lhs, radian::value_type rhs )
+  bit::math::operator*( const degree& lhs, degree::value_type rhs )
   noexcept
 {
   return degree( lhs.value() * rhs );
 }
 
+inline constexpr bit::math::degree
+  bit::math::operator*( degree::value_type lhs, const degree& rhs )
+  noexcept
+{
+  return degree( rhs.value() * lhs );
+}
+
 //----------------------------------------------------------------------------
 
 inline constexpr bit::math::degree
-  bit::math::operator/( const degree& lhs, radian::value_type rhs )
+  bit::math::operator/( const degree& lhs, degree::value_type rhs )
   noexcept
 {
   return degree( lhs.value() / rhs );
@@ -148,6 +155,70 @@ inline void bit::math::swap( degree& lhs, degree& rhs )
   noexcept
 {
   lhs.swap(rhs);
+}
+
+//------------------------------------------------------------------------
+// Comparisons
+//------------------------------------------------------------------------
+
+inline constexpr bool bit::math::operator == ( const degree& lhs,
+                                               const degree& rhs )
+  noexcept
+{
+  return lhs.value() == rhs.value();
+}
+
+inline constexpr bool bit::math::operator != ( const degree& lhs,
+                                               const degree& rhs )
+  noexcept
+{
+  return !(lhs==rhs);
+}
+
+inline constexpr bool bit::math::operator < ( const degree& lhs,
+                                              const degree& rhs )
+  noexcept
+{
+  return lhs.value() < rhs.value();
+}
+
+inline constexpr bool bit::math::operator > ( const degree& lhs,
+                                              const degree& rhs )
+  noexcept
+{
+  return lhs.value() > rhs.value();
+}
+
+inline constexpr bool bit::math::operator <= ( const degree& lhs,
+                                               const degree& rhs )
+  noexcept
+{
+  return lhs.value() <= rhs.value();
+}
+
+inline constexpr bool bit::math::operator >= ( const degree& lhs,
+                                               const degree& rhs )
+  noexcept
+{
+  return lhs.value() >= rhs.value();
+}
+
+//----------------------------------------------------------------------------
+
+inline constexpr bool bit::math::almost_equal( const degree& lhs,
+                                               const degree& rhs )
+  noexcept
+{
+  return almost_equal(lhs.value(),rhs.value());
+}
+
+template<typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>*>
+inline constexpr bool bit::math::almost_equal( const degree& lhs,
+                                               const degree& rhs,
+                                               Arithmetic tolerance )
+  noexcept
+{
+  return almost_equal(lhs,rhs,tolerance);
 }
 
 #endif /* BIT_MATH_DETAIL_ANGLES_DEGREE_INL */

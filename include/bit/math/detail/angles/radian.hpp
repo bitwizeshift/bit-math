@@ -163,6 +163,13 @@ namespace bit {
     /// \return the result of \c lhs * \c rhs
     constexpr radian operator*( const radian& lhs, radian::value_type rhs ) noexcept;
 
+    /// \brief Multiplies \c rhs by the multiplier \c lhs
+    ///
+    /// \param lhs the float multiplier
+    /// \param rhs the radian on the left side of the equation
+    /// \return the result of \c lhs * \c rhs
+    constexpr radian operator*( radian::value_type rhs, const radian& lhs ) noexcept;
+
     /// \brief Divides the radian \c lhs by the divisor \c rhs
     ///
     /// \param lhs the radian on the left side of the equation
@@ -179,6 +186,73 @@ namespace bit {
     /// \param lhs the left radian to swap
     /// \param rhs the right radian to swap
     void swap( radian& lhs, radian& rhs ) noexcept;
+
+    //------------------------------------------------------------------------
+    // Comparisons
+    //------------------------------------------------------------------------
+
+    /// \brief Determines exact equality between two radian
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if the two radian contain identical values
+    constexpr bool operator == ( const radian& lhs, const radian& rhs ) noexcept;
+
+    /// \brief Determines exact inequality between two radian
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if the two radian contain at least 1 different value
+    constexpr bool operator != ( const radian& lhs, const radian& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically less than \p rhs
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if \p lhs < \p rhs
+    constexpr bool operator < ( const radian& lhs, const radian& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically greater than \p rhs
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if \p lhs > \p rhs
+    constexpr bool operator > ( const radian& lhs, const radian& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically less than or equal
+    ///        to \p rhs
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if \p lhs <= \p rhs
+    constexpr bool operator <= ( const radian& lhs, const radian& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically greater than or equal
+    ///        to \p rhs
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if \p lhs >= \p rhs
+    constexpr bool operator >= ( const radian& lhs, const radian& rhs ) noexcept;
+
+    //----------------------------------------------------------------------------
+
+    /// \brief Determines equality between two radian relative to \ref default_tolerance
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if the two radian contain almost equal values
+    constexpr bool almost_equal( const radian& lhs, const radian& rhs ) noexcept;
+
+    /// \brief Determines equality between two radian relative to \ref tolerance
+    ///
+    /// \param lhs the left radian
+    /// \param rhs the right radian
+    /// \return \c true if the two radian contain almost equal values
+    template<typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>* = nullptr>
+    constexpr bool almost_equal( const radian& lhs,
+                                 const radian& rhs,
+                                 Arithmetic tolerance ) noexcept;
 
   } // namespace math
 } // namespace bit

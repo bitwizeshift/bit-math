@@ -128,6 +128,14 @@ inline constexpr bit::math::radian
   return radian( lhs.value() * rhs );
 }
 
+
+inline constexpr bit::math::radian
+  bit::math::operator*( radian::value_type lhs, const radian& rhs )
+  noexcept
+{
+  return radian( rhs.value() * lhs );
+}
+
 //----------------------------------------------------------------------------
 
 inline constexpr bit::math::radian
@@ -145,6 +153,70 @@ inline void bit::math::swap( radian& lhs, radian& rhs )
   noexcept
 {
   lhs.swap(rhs);
+}
+
+//------------------------------------------------------------------------
+// Comparisons
+//------------------------------------------------------------------------
+
+inline constexpr bool bit::math::operator == ( const radian& lhs,
+                                               const radian& rhs )
+  noexcept
+{
+  return lhs.value() == rhs.value();
+}
+
+inline constexpr bool bit::math::operator != ( const radian& lhs,
+                                               const radian& rhs )
+  noexcept
+{
+  return !(lhs==rhs);
+}
+
+inline constexpr bool bit::math::operator < ( const radian& lhs,
+                                              const radian& rhs )
+  noexcept
+{
+  return lhs.value() < rhs.value();
+}
+
+inline constexpr bool bit::math::operator > ( const radian& lhs,
+                                              const radian& rhs )
+  noexcept
+{
+  return lhs.value() > rhs.value();
+}
+
+inline constexpr bool bit::math::operator <= ( const radian& lhs,
+                                               const radian& rhs )
+  noexcept
+{
+  return lhs.value() <= rhs.value();
+}
+
+inline constexpr bool bit::math::operator >= ( const radian& lhs,
+                                               const radian& rhs )
+  noexcept
+{
+  return lhs.value() >= rhs.value();
+}
+
+//----------------------------------------------------------------------------
+
+inline constexpr bool bit::math::almost_equal( const radian& lhs,
+                                               const radian& rhs )
+  noexcept
+{
+  return almost_equal(lhs.value(),rhs.value());
+}
+
+template<typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>*>
+inline constexpr bool bit::math::almost_equal( const radian& lhs,
+                                               const radian& rhs,
+                                               Arithmetic tolerance )
+  noexcept
+{
+  return almost_equal(lhs,rhs,tolerance);
 }
 
 #endif /* BIT_MATH_DETAIL_ANGLES_RADIAN_INL */

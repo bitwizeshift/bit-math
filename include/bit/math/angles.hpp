@@ -257,6 +257,20 @@ namespace bit {
     float_t tcot( radian rad ) noexcept;
     float_t tcot( degree deg ) noexcept;
 
+#ifdef BIT_MATH_CACHED_TRIG
+    inline
+#endif
+    namespace cached {
+
+    } // namespace cached
+
+#ifndef BIT_MATH_CACHED_TRIG
+    inline
+#endif
+    namespace runtime {
+
+    } // namespace runtime
+
   } // namespace math
 } // namespace bit
 

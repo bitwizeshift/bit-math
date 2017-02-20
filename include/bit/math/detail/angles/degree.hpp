@@ -98,9 +98,9 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-      /// \brief Swaps this \ref radian with another one
+      /// \brief Swaps this \ref degree with another one
       ///
-      /// \param other the other radian
+      /// \param other the other degree
       void swap( degree& other ) noexcept;
 
       //----------------------------------------------------------------------
@@ -163,14 +163,21 @@ namespace bit {
     /// \param lhs the degree on the left side of the equation
     /// \param rhs the float multiplier
     /// \return the result of \c lhs * \c rhs
-    constexpr degree operator * ( const degree& lhs, radian::value_type rhs ) noexcept;
+    constexpr degree operator * ( const degree& lhs, degree::value_type rhs ) noexcept;
+
+    /// \brief Multiplies \c rhs by the multiplier \c lhs
+    ///
+    /// \param lhs the float multiplier
+    /// \param rhs the degree on the left side of the equation
+    /// \return the result of \c lhs * \c rhs
+    constexpr degree operator*( degree::value_type rhs, const degree& lhs ) noexcept;
 
     /// \brief Divides the degree \c lhs by the divisor \c rhs
     ///
     /// \param lhs the degree on the left side of the equation
     /// \param rhs the float divisor
     /// \return the result of \c lhs / \c rhs
-    constexpr degree operator / ( const degree& lhs, radian::value_type rhs ) noexcept;
+    constexpr degree operator / ( const degree& lhs, degree::value_type rhs ) noexcept;
 
     //------------------------------------------------------------------------
     // Free Functions
@@ -181,6 +188,73 @@ namespace bit {
     /// \param lhs the left degree to swap
     /// \param rhs the right degree to swap
     void swap( degree& lhs, degree& rhs ) noexcept;
+
+    //------------------------------------------------------------------------
+    // Comparisons
+    //------------------------------------------------------------------------
+
+    /// \brief Determines exact equality between two degree
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if the two degree contain identical values
+    constexpr bool operator == ( const degree& lhs, const degree& rhs ) noexcept;
+
+    /// \brief Determines exact inequality between two degree
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if the two degree contain at least 1 different value
+    constexpr bool operator != ( const degree& lhs, const degree& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically less than \p rhs
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if \p lhs < \p rhs
+    constexpr bool operator < ( const degree& lhs, const degree& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically greater than \p rhs
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if \p lhs > \p rhs
+    constexpr bool operator > ( const degree& lhs, const degree& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically less than or equal
+    ///        to \p rhs
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if \p lhs <= \p rhs
+    constexpr bool operator <= ( const degree& lhs, const degree& rhs ) noexcept;
+
+    /// \brief Determines whether \p lhs is numerically greater than or equal
+    ///        to \p rhs
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if \p lhs >= \p rhs
+    constexpr bool operator >= ( const degree& lhs, const degree& rhs ) noexcept;
+
+    //----------------------------------------------------------------------------
+
+    /// \brief Determines equality between two degree relative to \ref default_tolerance
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if the two degree contain almost equal values
+    constexpr bool almost_equal( const degree& lhs, const degree& rhs ) noexcept;
+
+    /// \brief Determines equality between two degree relative to \ref tolerance
+    ///
+    /// \param lhs the left degree
+    /// \param rhs the right degree
+    /// \return \c true if the two degree contain almost equal values
+    template<typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>* = nullptr>
+    constexpr bool almost_equal( const degree& lhs,
+                                 const degree& rhs,
+                                 Arithmetic tolerance ) noexcept;
 
   } // namespace math
 } // namespace bit
