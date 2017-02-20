@@ -31,6 +31,7 @@ set(headers
       "include/bit/math/vector.hpp"
       "include/bit/math/matrix.hpp"
       "include/bit/math/quaternion.hpp"
+      "include/bit/math/clamped.hpp"
 )
 
 set(sources
@@ -223,6 +224,7 @@ if( BIT_COMPILE_UNIT_TESTS )
         test/main.test.cpp
         test/bit/math/vector2.test.cpp
         test/bit/math/matrix2.test.cpp
+        test/bit/math/clamped.test.cpp
   )
 
   add_test_executable(bit_math_test ${test_sources})
