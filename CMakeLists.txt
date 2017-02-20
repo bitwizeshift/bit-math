@@ -47,11 +47,13 @@ set(headers
       "include/bit/math/angles.hpp"
       "include/bit/math/vector.hpp"
       "include/bit/math/matrix.hpp"
+      "include/bit/math/quaternion.hpp"
 )
 set(sources
       "src/bit/math/angles.cpp"
       "src/bit/math/vector.cpp"
       "src/bit/math/matrix.cpp"
+      "src/bit/math/quaternion.cpp"
 )
 
 #-----------------------------------------------------------------------------
