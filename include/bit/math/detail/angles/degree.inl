@@ -65,6 +65,22 @@ inline void bit::math::degree::swap( degree& other )
 }
 
 //----------------------------------------------------------------------------
+// Unary Operators
+//----------------------------------------------------------------------------
+
+constexpr bit::math::degree bit::math::degree::operator+()
+  const noexcept
+{
+  return (*this);
+}
+
+constexpr bit::math::degree bit::math::degree::operator-()
+  const noexcept
+{
+  return degree(-m_angle);
+}
+
+//----------------------------------------------------------------------------
 // Compound Assignment
 //----------------------------------------------------------------------------
 

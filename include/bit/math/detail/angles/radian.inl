@@ -62,6 +62,22 @@ inline void bit::math::radian::swap( radian& other )
 }
 
 //----------------------------------------------------------------------------
+// Unary Operators
+//----------------------------------------------------------------------------
+
+constexpr bit::math::radian bit::math::radian::operator+()
+  const noexcept
+{
+  return (*this);
+}
+
+constexpr bit::math::radian bit::math::radian::operator-()
+  const noexcept
+{
+  return radian(-m_angle);
+}
+
+//----------------------------------------------------------------------------
 // Compound Assignment
 //----------------------------------------------------------------------------
 

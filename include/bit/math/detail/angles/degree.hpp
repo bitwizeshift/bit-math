@@ -104,6 +104,21 @@ namespace bit {
       void swap( degree& other ) noexcept;
 
       //----------------------------------------------------------------------
+      // Unary Operators
+      //----------------------------------------------------------------------
+    public:
+
+      /// \brief Unary operator that returns itself
+      ///
+      /// \return itself
+      constexpr degree operator+() const noexcept;
+
+      /// \brief Unary negation operator
+      ///
+      /// \return negated degree
+      constexpr degree operator-() const noexcept;
+
+      //----------------------------------------------------------------------
       // Compound Assignment
       //----------------------------------------------------------------------
     public:

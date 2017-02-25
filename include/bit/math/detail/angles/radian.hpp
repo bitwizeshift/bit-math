@@ -32,6 +32,14 @@ namespace bit {
 #endif
 
       //----------------------------------------------------------------------
+      // Public Static Members
+      //----------------------------------------------------------------------
+    public:
+
+//      static constexpr radian revolution;
+//      static constexpr radian half_revolution;
+
+      //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
     public:
@@ -100,6 +108,21 @@ namespace bit {
       ///
       /// \param other the other radian
       void swap( radian& other ) noexcept;
+
+      //----------------------------------------------------------------------
+      // Unary Operators
+      //----------------------------------------------------------------------
+    public:
+
+      /// \brief Unary operator that returns itself
+      ///
+      /// \return itself
+      constexpr radian operator+() const noexcept;
+
+      /// \brief Unary negation operator
+      ///
+      /// \return negated radian
+      constexpr radian operator-() const noexcept;
 
       //----------------------------------------------------------------------
       // Compound Assignment
