@@ -25,6 +25,12 @@ inline bit::math::quaternion::quaternion( radian angle,
   from_angle_axis(angle,axis);
 }
 
+inline bit::math::quaternion::quaternion( radian yaw, radian pitch, radian roll )
+  noexcept
+{
+  from_angles(yaw,pitch,roll);
+}
+
 //----------------------------------------------------------------------------
 
 inline bit::math::quaternion::quaternion( value_type x )

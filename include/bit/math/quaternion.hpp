@@ -92,6 +92,14 @@ namespace bit {
       /// \param axis  the axis of the rotation
       quaternion( radian angle, const vector_type& axis ) noexcept;
 
+      /// \brief Constructs a quaternion from the \p yaw, \p pitch, and
+      ///        \p roll angles
+      ///
+      /// \param yaw the yaw angle
+      /// \param pitch the pitch angle
+      /// \param roll the roll angle
+      quaternion( radian yaw, radian pitch, radian roll ) noexcept;
+
       /// \brief Constructs a quaternion with only 1 real component
       ///
       /// \param x the real component of the quaternion
@@ -463,6 +471,14 @@ namespace bit {
       /// \param angle the angle
       /// \param axis the axis
       void from_angle_axis( radian angle, const vector_type& axis ) noexcept;
+
+      /// \brief Initializes the quaternion from a \p yaw, \p pitch, and
+      ///        \p roll
+      ///
+      /// \param yaw the yaw angle
+      /// \param pitch the pitch angle
+      /// \param roll the roll angle
+      void from_angles( radian yaw, radian pitch, radian roll ) noexcept;
 
       /// \brief Initializes the quaternion from a 3x3 rotation matrix
       ///

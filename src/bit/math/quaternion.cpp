@@ -322,13 +322,19 @@ bit::math::radian bit::math::quaternion::roll( reproject_axis_t reproject )
   const auto tyy = ty * y();
   const auto tzz = tz * z();
 
-  return arctan2(txy+twz, 1 - (tyy + tzz));
+  auto angle = arctan2(txy+twz, 1 - (tyy + tzz));
+  return angle >= radian(pi<value_type>())
+       ? (angle - radian(pi<value_type>()))
+       :  angle;
 }
 
 bit::math::radian bit::math::quaternion::roll()
   const noexcept
 {
-  return arctan2(2*(x()*y() + w()*z()), w()*w() + x()*x() - y()*y() - z()*z());
+  auto angle = arctan2(2*(x()*y() + w()*z()), w()*w() + x()*x() - y()*y() - z()*z());
+  return angle >= radian(pi<value_type>())
+       ? (angle - radian(pi<value_type>()))
+       :  angle;
 }
 
 //----------------------------------------------------------------------------
@@ -343,13 +349,19 @@ bit::math::radian bit::math::quaternion::pitch( reproject_axis_t )
   const auto tyz = tz * y();
   const auto tzz = tz * z();
 
-  return arctan2(tyz + twx, 1 - (txx + tzz));
+  auto angle = arctan2(tyz + twx, 1 - (txx + tzz));
+  return angle >= radian(pi<value_type>())
+       ? (angle - radian(pi<value_type>()))
+       :  angle;
 }
 
 bit::math::radian bit::math::quaternion::pitch()
   const noexcept
 {
-  return arctan2(2*(y()*z() + w()*x()), w()*w() - x()*x() - y()*y() + z()*z());
+  auto angle = arctan2(2*(y()*z() + w()*x()), w()*w() - x()*x() - y()*y() + z()*z());
+  return angle >= radian(pi<value_type>())
+       ? (angle - radian(pi<value_type>()))
+       :  angle;
 }
 
 //----------------------------------------------------------------------------
@@ -365,14 +377,20 @@ bit::math::radian bit::math::quaternion::yaw( reproject_axis_t )
   const auto txz = tz * x();
   const auto tyy = ty * y();
 
-  return arctan2(txz + twy, 1 - (txx + tyy));
-
+  auto angle = arctan2(txz + twy, 1 - (txx + tyy));
+  return angle >= radian(pi<value_type>())
+       ? (angle - radian(pi<value_type>()))
+       :  angle;
 }
 
 bit::math::radian bit::math::quaternion::yaw()
   const noexcept
 {
-  return arcsin(-2*(x()*z() - w()*y()));
+  // arcsin(-2*(x()*z() - w()*y()))
+  auto angle = arcsin(-2*(x()*z() - w()*y()));
+  return angle >= radian(pi<value_type>())
+       ? (angle - radian(pi<value_type>()))
+       :  angle;
 }
 
 //----------------------------------------------------------------------------
@@ -405,10 +423,14 @@ bit::math::quaternion&
   bit::math::quaternion::operator *= ( const quaternion& rhs )
   noexcept
 {
-  w() = w() * rhs.w() - x() * rhs.x() - y() * rhs.y() - z() * rhs.z();
-  x() = w() * rhs.x() + x() * rhs.w() + y() * rhs.z() - z() * rhs.y();
-  y() = w() * rhs.y() + y() * rhs.w() + z() * rhs.x() - x() * rhs.z();
-  z() = w() * rhs.z() + z() * rhs.w() + x() * rhs.y() - y() * rhs.x();
+  auto tmp0 = w() * rhs.w() - x() * rhs.x() - y() * rhs.y() - z() * rhs.z();
+  auto tmp1 = w() * rhs.x() + x() * rhs.w() + y() * rhs.z() - z() * rhs.y();
+  auto tmp2 = w() * rhs.y() + y() * rhs.w() + z() * rhs.x() - x() * rhs.z();
+  z()       = w() * rhs.z() + z() * rhs.w() + x() * rhs.y() - y() * rhs.x();
+
+  w() = tmp0;
+  x() = tmp1;
+  y() = tmp2;
   return (*this);
 }
 
@@ -463,6 +485,46 @@ void bit::math::quaternion::from_angle_axis( radian angle,
   x() = norm_axis.x() * result;
   y() = norm_axis.y() * result;
   z() = norm_axis.z() * result;
+}
+
+void bit::math::quaternion::from_angles( radian yaw, radian pitch, radian roll )
+  noexcept
+{
+  // Half Angles
+  const auto half_yaw   = yaw * 0.5;
+  const auto half_pitch = pitch * 0.5;
+  const auto half_roll  = roll * 0.5;
+
+  // y-vector
+  const auto v0w = cos( half_yaw );
+  const auto v0x = 0.0;
+  const auto v0y = sin( half_yaw );
+  const auto v0z = 0.0;
+
+  // x-vector
+  const auto v1w = cos( half_pitch );
+  const auto v1x = sin( half_pitch );
+  const auto v1y = 0.0;
+  const auto v1z = 0.0;
+
+  // z-vector
+  const auto v2w = cos( half_roll );
+  const auto v2x = 0.0;
+  const auto v2y = 0.0;
+  const auto v2z = sin( half_roll );
+
+  // y * x vector
+  const auto w1 = (v0w * v1w);
+  const auto x1 = (v0w * v1x);
+  const auto y1 = (v0y * v1w);
+  const auto z1 = -(v0y * v1x);
+
+  // (x * y) * z vector
+  w() = (w1 * v2w) - (z1 * v2z);
+  x() = (x1 * v2w) + (y1 * v2z);
+  y() = (y1 * v2w) - (x1 * v2z);
+  z() = (w1 * v2z) + (z1 * v2w);
+
 }
 
 void bit::math::quaternion::from_rotation_matrix( const matrix3_type& rot )
