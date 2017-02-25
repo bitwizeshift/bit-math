@@ -292,15 +292,15 @@ namespace bit {
       ///
       /// \param scalar the scalar multiplier to modify this vector4 by
       /// \return reference to \c (*this)
-      template<typename U>
-      constexpr vector4<T>& operator*=( U&& scalar ) noexcept;
+      template<typename U, typename std::enable_if<std::is_arithmetic<U>::value>* = nullptr>
+      constexpr vector4<T>& operator*=( U scalar ) noexcept;
 
       /// \brief Divides \c this by \p scalar
       ///
       /// \param scalar the scalar divisor to modify this vector4 by
       /// \return reference to \c (*this)
-      template<typename U>
-      constexpr vector4<T>& operator/=( U&& scalar ) noexcept;
+      template<typename U, typename std::enable_if<std::is_arithmetic<U>::value>* = nullptr>
+      constexpr vector4<T>& operator/=( U scalar ) noexcept;
 
       //----------------------------------------------------------------------
       // Private Members
@@ -337,27 +337,27 @@ namespace bit {
     /// \param lhs the left vector4
     /// \param scalar the scalar to multiply by
     /// \return the result of \p lhs * \c scalar
-    template<typename T, typename U>
+    template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>* = nullptr>
     constexpr vector4<std::common_type_t<T,U>>
-      operator*( const vector4<T>& lhs, U&& scalar ) noexcept;
+      operator*( const vector4<T>& lhs, U scalar ) noexcept;
 
     /// \brief Multiplies a vector4 by a scalar multiplier
     ///
     /// \param lhs the left vector4
     /// \param scalar the scalar to multiply by
     /// \return the result of \p scalar * \c rhs
-    template<typename T, typename U>
+    template<typename T, typename U, typename std::enable_if<std::is_arithmetic<T>::value>* = nullptr>
     constexpr vector4<std::common_type_t<T,U>>
-      operator*( U&& scalar, const vector4<T>& rhs ) noexcept;
+      operator*( T scalar, const vector4<U>& rhs ) noexcept;
 
     /// \brief Divides a vector4 by a scalar constant
     ///
     /// \param lhs the left vector4
     /// \param scalar the scalar to multiply by
     /// \return the result of \p lhs / \c scalar
-    template<typename T, typename U>
+    template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>* = nullptr>
     constexpr vector4<std::common_type_t<T,U>>
-      operator/( const vector4<T>& lhs, U&& scalar ) noexcept;
+      operator/( const vector4<T>& lhs, U scalar ) noexcept;
 
     //------------------------------------------------------------------------
     // Free Functions

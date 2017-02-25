@@ -21,6 +21,15 @@ const bit::math::vector3<T> bit::math::vector3<T>::unit_y = {T(0),T(1),T(0)};
 template<typename T>
 const bit::math::vector3<T> bit::math::vector3<T>::unit_z = {T(0),T(0),T(1)};
 
+template<typename T>
+const bit::math::vector3<T> bit::math::vector3<T>::neg_unit_x = {T(-1),T(0),T(0)};
+
+template<typename T>
+const bit::math::vector3<T> bit::math::vector3<T>::neg_unit_y = {T(0),T(-1),T(0)};
+
+template<typename T>
+const bit::math::vector3<T> bit::math::vector3<T>::neg_unit_z = {T(0),T(0),T(-1)};
+
 //----------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------
@@ -465,25 +474,25 @@ inline constexpr bit::math::vector3<std::common_type_t<T,U>>
   return vector3<std::common_type_t<T,U>>(lhs)-=rhs;
 }
 
-template<typename T, typename U>
+template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>*>
 inline constexpr bit::math::vector3<std::common_type_t<T,U>>
-  bit::math::operator*( const vector3<T>& lhs, U&& scalar )
+  bit::math::operator*( const vector3<T>& lhs, U scalar )
   noexcept
 {
   return vector3<std::common_type_t<T,U>>(lhs)*=scalar;
 }
 
-template<typename T, typename U>
+template<typename T, typename U, typename std::enable_if<std::is_arithmetic<T>::value>*>
 inline constexpr bit::math::vector3<std::common_type_t<T,U>>
-  bit::math::operator*( U&& scalar, const vector3<T>& lhs )
+  bit::math::operator*( T scalar, const vector3<U>& lhs )
   noexcept
 {
   return vector3<std::common_type_t<T,U>>(lhs)*=scalar;
 }
 
-template<typename T, typename U>
+template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>*>
 inline constexpr bit::math::vector3<std::common_type_t<T,U>>
-  bit::math::operator/( const vector3<T>& lhs, U&& scalar )
+  bit::math::operator/( const vector3<T>& lhs, U scalar )
   noexcept
 {
   return vector3<std::common_type_t<T,U>>(lhs)/=scalar;

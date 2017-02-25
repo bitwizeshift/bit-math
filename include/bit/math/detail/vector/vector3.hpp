@@ -37,10 +37,13 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-      static const vector3<T> zero;   ///< A zero-length vector
-      static const vector3<T> unit_x; ///< A unit-vector in the x-direction
-      static const vector3<T> unit_y; ///< A unit-vector in the y-direction
-      static const vector3<T> unit_z; ///< A unit-vector in the z-direction
+      static const vector3<T> zero;       ///< A zero-length vector
+      static const vector3<T> unit_x;     ///< A unit-vector in the x-direction
+      static const vector3<T> unit_y;     ///< A unit-vector in the y-direction
+      static const vector3<T> unit_z;     ///< A unit-vector in the z-direction
+      static const vector3<T> neg_unit_x; ///< A unit-vector in the -x-direction
+      static const vector3<T> neg_unit_y; ///< A unit-vector in the -y-direction
+      static const vector3<T> neg_unit_z; ///< A unit-vector in the -z-direction
 
       //----------------------------------------------------------------------
       // Constructors
@@ -348,27 +351,27 @@ namespace bit {
     /// \param lhs the left vector3
     /// \param scalar the scalar to multiply by
     /// \return the result of \p lhs * \c scalar
-    template<typename T, typename U>
+    template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>* = nullptr>
     constexpr vector3<std::common_type_t<T,U>>
-      operator*( const vector3<T>& lhs, U&& scalar ) noexcept;
+      operator*( const vector3<T>& lhs, U scalar ) noexcept;
 
     /// \brief Multiplies a vector3 by a scalar multiplier
     ///
     /// \param lhs the left vector3
     /// \param scalar the scalar to multiply by
     /// \return the result of \p scalar * \c rhs
-    template<typename T, typename U>
+    template<typename T, typename U, typename std::enable_if<std::is_arithmetic<T>::value>* = nullptr>
     constexpr vector3<std::common_type_t<T,U>>
-      operator*( U&& scalar, const vector3<T>& rhs ) noexcept;
+      operator*( T scalar, const vector3<U>& rhs ) noexcept;
 
     /// \brief Divides a vector3 by a scalar constant
     ///
     /// \param lhs the left vector3
     /// \param scalar the scalar to multiply by
     /// \return the result of \p lhs / \c scalar
-    template<typename T, typename U>
+    template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>* = nullptr>
     constexpr vector3<std::common_type_t<T,U>>
-      operator/( const vector3<T>& lhs, U&& scalar ) noexcept;
+      operator/( const vector3<T>& lhs, U scalar ) noexcept;
 
     //------------------------------------------------------------------------
     // Free Functions

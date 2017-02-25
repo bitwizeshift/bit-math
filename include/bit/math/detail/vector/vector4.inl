@@ -412,9 +412,9 @@ inline constexpr bit::math::vector4<T>&
 //----------------------------------------------------------------------------
 
 template<typename T>
-template<typename U>
+template<typename U, typename std::enable_if<std::is_arithmetic<U>::value>*>
 inline constexpr bit::math::vector4<T>&
-  bit::math::vector4<T>::operator*=( U&& scalar )
+  bit::math::vector4<T>::operator*=( U scalar )
   noexcept
 {
   for(auto i = 0; i < 4; ++i) {
@@ -427,9 +427,9 @@ inline constexpr bit::math::vector4<T>&
 //----------------------------------------------------------------------------
 
 template<typename T>
-template<typename U>
+template<typename U, typename std::enable_if<std::is_arithmetic<U>::value>*>
 inline constexpr bit::math::vector4<T>&
-  bit::math::vector4<T>::operator/=( U&& scalar )
+  bit::math::vector4<T>::operator/=( U scalar )
   noexcept
 {
   const auto inv = (1.0 / scalar);
@@ -461,25 +461,25 @@ inline constexpr bit::math::vector4<std::common_type_t<T,U>>
   return vector4<std::common_type_t<T,U>>(lhs)-=rhs;
 }
 
-template<typename T, typename U>
+template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>*>
 inline constexpr bit::math::vector4<std::common_type_t<T,U>>
-  bit::math::operator*( const vector4<T>& lhs, U&& scalar )
+  bit::math::operator*( const vector4<T>& lhs, U scalar )
   noexcept
 {
   return vector4<std::common_type_t<T,U>>(lhs)*=scalar;
 }
 
-template<typename T, typename U>
+template<typename T, typename U, typename std::enable_if<std::is_arithmetic<T>::value>*>
 inline constexpr bit::math::vector4<std::common_type_t<T,U>>
-  bit::math::operator*( U&& scalar, const vector4<T>& lhs )
+  bit::math::operator*( T scalar, const vector4<U>& lhs )
   noexcept
 {
   return vector4<std::common_type_t<T,U>>(lhs)*=scalar;
 }
 
-template<typename T, typename U>
+template<typename T, typename U, typename std::enable_if<std::is_arithmetic<U>::value>*>
 inline constexpr bit::math::vector4<std::common_type_t<T,U>>
-  bit::math::operator/( const vector4<T>& lhs, U&& scalar )
+  bit::math::operator/( const vector4<T>& lhs, U scalar )
   noexcept
 {
   return vector4<std::common_type_t<T,U>>(lhs)/=scalar;
