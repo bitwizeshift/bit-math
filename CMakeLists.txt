@@ -2,25 +2,42 @@ cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 
-include(GitBuildNumber)
+include(GitBuildInformation)
+include(MakeVersionHeader)
+include(AddIndependenceCheck)
+include(AddTestExecutable)
 
-include("${CMAKE_CURRENT_LIST_DIR}/cmake/modules/add_header_library.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/cmake/modules/add_test_executable.cmake")
-
-project("bit::math")
+project("bit-math")
 
 # This project requires at least c++14 support
 set(CMAKE_CXX_VERSION 14)
 
-git_build_number(BIT_MATH_BUILD_NUMBER)
+git_build_information( MINOR_VARIABLE BIT_MATH_VERSION_MINOR
+                       PATCH_VARIABLE BIT_MATH_VERSION_PATCH
+                       BUILD_VARIABLE BIT_MATH_BUILD_NUMBER
+                       BRANCH_VARIABLE BIT_MATH_BRANCH
+                       HASH 574bf75d354bf269e0e5aa1fbb4290166bdba74d
+)
 
 set(BIT_MATH_VERSION_MAJOR 0 CACHE STRING "major version of bit::math" FORCE)
-set(BIT_MATH_VERSION_MINOR 1 CACHE STRING "minor version of bit::math" FORCE)
-set(BIT_MATH_VERSION_PATCH 0 CACHE STRING "patch version of bit::math" FORCE)
+set(BIT_MATH_VERSION_MINOR ${BIT_MATH_VERSION_MINOR} CACHE STRING "minor version of bit::math" FORCE)
+set(BIT_MATH_VERSION_PATCH ${BIT_MATH_VERSION_PATCH} CACHE STRING "patch version of bit::math" FORCE)
 set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}" CACHE STRING "version of bit::math" FORCE)
 set(BIT_MATH_BUILD_NUMBER "${BIT_MATH_BUILD_NUMBER}" CACHE STRING "build number of bit::math" FORCE)
 
-message(STATUS "bit::math ${BIT_MATH_VERSION}-${BIT_MATH_BUILD_NUMBER}")
+message(STATUS "bit::math ${BIT_MATH_VERSION} (${BIT_MATH_BRANCH} ${BIT_MATH_BUILD_NUMBER})")
+
+make_version_header("${CMAKE_CURRENT_BINARY_DIR}/include/version.hpp"
+  MAJOR ${BIT_MATH_VERSION_MAJOR}
+  MINOR ${BIT_MATH_VERSION_MINOR}
+  PATCH ${BIT_MATH_VERSION_PATCH}
+  BUILD ${BIT_MATH_BUILD_NUMBER}
+  PREFIX BIT_MATH
+  SUFFIX "a"
+  TAG ${BIT_MATH_BRANCH}
+)
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/include")
 
 #-----------------------------------------------------------------------------
 # bit::stl : Sources
@@ -32,13 +49,16 @@ set(headers
       "include/bit/math/matrix.hpp"
       "include/bit/math/quaternion.hpp"
       "include/bit/math/clamped.hpp"
+      "include/bit/math/euler.hpp"
 )
 
 set(sources
+      "${CMAKE_CURRENT_BINARY_DIR}/include/version.hpp"
       "src/bit/math/angles.cpp"
       "src/bit/math/vector.cpp"
       "src/bit/math/matrix.cpp"
       "src/bit/math/quaternion.cpp"
+      "src/bit/math/euler.cpp"
 )
 
 #-----------------------------------------------------------------------------
@@ -206,7 +226,7 @@ endif()
 
 if( BIT_COMPILE_INDEPENDENCE_TESTS )
 
-  add_header_library(bit_math_interface ${headers} INCLUDE_DIRECTORIES "include")
+  add_independence_check(bit_math_interface ${headers})
   target_include_directories("bit_math_interface" INTERFACE "include")
   target_compile_options(bit_math_interface INTERFACE $<TARGET_PROPERTY:bit_math,INTERFACE_COMPILE_OPTIONS>)
 
@@ -224,6 +244,7 @@ if( BIT_COMPILE_UNIT_TESTS )
         test/main.test.cpp
         test/bit/math/vector2.test.cpp
         test/bit/math/matrix2.test.cpp
+        test/bit/math/quaternion.test.cpp
         test/bit/math/clamped.test.cpp
   )
 
