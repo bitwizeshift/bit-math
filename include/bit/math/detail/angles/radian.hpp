@@ -36,8 +36,12 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-//      static constexpr radian revolution;
-//      static constexpr radian half_revolution;
+      static const radian revolution;
+      static const radian half_revolution;
+      static const radian quarter_revolution;
+      static const radian neg_revolution;
+      static const radian neg_half_revolution;
+      static const radian neg_quarter_revolution;
 
       //----------------------------------------------------------------------
       // Constructors

@@ -34,6 +34,18 @@ namespace bit {
 #endif
 
       //----------------------------------------------------------------------
+      // Public Static Members
+      //----------------------------------------------------------------------
+    public:
+
+      static const degree revolution;
+      static const degree half_revolution;
+      static const degree quarter_revolution;
+      static const degree neg_revolution;
+      static const degree neg_half_revolution;
+      static const degree neg_quarter_revolution;
+
+      //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
     public:

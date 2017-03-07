@@ -5,6 +5,7 @@
 # error "degree.inl included without first including declaration header degree.hpp"
 #endif
 
+
 //----------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------

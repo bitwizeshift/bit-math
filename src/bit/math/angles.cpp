@@ -16,6 +16,40 @@
 
 #define BIT_MATH_UNUSED(...) ((void) __VA_ARGS__)
 
+//----------------------------------------------------------------------
+// Public Static Members
+//----------------------------------------------------------------------
+
+const bit::math::degree
+  bit::math::degree::revolution = degree(360);
+const bit::math::degree
+  bit::math::degree::half_revolution = degree(180);
+const bit::math::degree
+  bit::math::degree::quarter_revolution = degree(90);
+
+const bit::math::degree
+  bit::math::degree::neg_revolution = degree(-360);
+const bit::math::degree
+  bit::math::degree::neg_half_revolution = degree(-180);
+const bit::math::degree
+  bit::math::degree::neg_quarter_revolution = degree(-90);
+
+//----------------------------------------------------------------------
+
+const bit::math::radian
+  bit::math::radian::revolution = radian( two_pi<bit::math::radian::value_type>() );
+const bit::math::radian
+  bit::math::radian::half_revolution = radian( pi<bit::math::radian::value_type>() );
+const bit::math::radian
+  bit::math::radian::quarter_revolution = radian( half_pi<bit::math::radian::value_type>() );
+
+const bit::math::radian
+  bit::math::radian::neg_revolution = radian( -two_pi<bit::math::radian::value_type>() );
+const bit::math::radian
+  bit::math::radian::neg_half_revolution = radian( -pi<bit::math::radian::value_type>() );
+const bit::math::radian
+  bit::math::radian::neg_quarter_revolution = radian( -half_pi<bit::math::radian::value_type>() );
+
 #ifdef BIT_MATH_CACHED_TRIG
 # ifndef BIT_MATH_TRIG_TABLE_SIZE
 #   define BIT_MATH_TRIG_TABLE_SIZE 1024
