@@ -47,10 +47,18 @@ namespace bit {
     extern template class vector2<double>;
     extern template class vector3<double>;
     extern template class vector4<double>;
+
+    using vec2 = vector2<double>;
+    using vec3 = vector3<double>;
+    using vec4 = vector3<double>;
 #else
     extern template class vector2<float>;
     extern template class vector3<float>;
     extern template class vector4<float>;
+
+    using vec2 = vector2<float>;
+    using vec3 = vector3<float>;
+    using vec4 = vector3<float>;
 #endif
 
   } // namespace math

@@ -34,10 +34,18 @@ namespace bit {
     extern template class matrix2<double>;
     extern template class matrix3<double>;
     extern template class matrix4<double>;
+
+    using mat2 = matrix2<double>;
+    using mat3 = matrix3<double>;
+    using mat4 = matrix4<double>;
 #else
     extern template class matrix2<float>;
     extern template class matrix3<float>;
     extern template class matrix4<float>;
+
+    using mat2 = matrix2<float>;
+    using mat3 = matrix3<float>;
+    using mat4 = matrix4<float>;
 #endif
 
   } // namespace math

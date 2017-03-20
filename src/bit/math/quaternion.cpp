@@ -323,8 +323,8 @@ bit::math::radian bit::math::quaternion::roll( reproject_axis_t reproject )
   const auto tzz = tz * z();
 
   auto angle = arctan2(txy+twz, 1 - (tyy + tzz));
-  return angle >= radian(pi<value_type>())
-       ? (angle - radian(pi<value_type>()))
+  return angle >= radian::half_revolution
+       ? (angle - radian::half_revolution)
        :  angle;
 }
 
@@ -332,8 +332,8 @@ bit::math::radian bit::math::quaternion::roll()
   const noexcept
 {
   auto angle = arctan2(2*(x()*y() + w()*z()), w()*w() + x()*x() - y()*y() - z()*z());
-  return angle >= radian(pi<value_type>())
-       ? (angle - radian(pi<value_type>()))
+  return angle >= radian::half_revolution
+       ? (angle - radian::half_revolution)
        :  angle;
 }
 
@@ -350,8 +350,8 @@ bit::math::radian bit::math::quaternion::pitch( reproject_axis_t )
   const auto tzz = tz * z();
 
   auto angle = arctan2(tyz + twx, 1 - (txx + tzz));
-  return angle >= radian(pi<value_type>())
-       ? (angle - radian(pi<value_type>()))
+  return angle >= radian::half_revolution
+       ? (angle - radian::half_revolution)
        :  angle;
 }
 
@@ -359,8 +359,8 @@ bit::math::radian bit::math::quaternion::pitch()
   const noexcept
 {
   auto angle = arctan2(2*(y()*z() + w()*x()), w()*w() - x()*x() - y()*y() + z()*z());
-  return angle >= radian(pi<value_type>())
-       ? (angle - radian(pi<value_type>()))
+  return angle >= radian::half_revolution
+       ? (angle - radian::half_revolution)
        :  angle;
 }
 
@@ -378,18 +378,17 @@ bit::math::radian bit::math::quaternion::yaw( reproject_axis_t )
   const auto tyy = ty * y();
 
   auto angle = arctan2(txz + twy, 1 - (txx + tyy));
-  return angle >= radian(pi<value_type>())
-       ? (angle - radian(pi<value_type>()))
+  return angle >= radian::half_revolution
+       ? (angle - radian::half_revolution)
        :  angle;
 }
 
 bit::math::radian bit::math::quaternion::yaw()
   const noexcept
 {
-  // arcsin(-2*(x()*z() - w()*y()))
   auto angle = arcsin(-2*(x()*z() - w()*y()));
-  return angle >= radian(pi<value_type>())
-       ? (angle - radian(pi<value_type>()))
+  return angle >= radian::half_revolution
+       ? (angle - radian::half_revolution)
        :  angle;
 }
 
@@ -423,14 +422,15 @@ bit::math::quaternion&
   bit::math::quaternion::operator *= ( const quaternion& rhs )
   noexcept
 {
-  auto tmp0 = w() * rhs.w() - x() * rhs.x() - y() * rhs.y() - z() * rhs.z();
-  auto tmp1 = w() * rhs.x() + x() * rhs.w() + y() * rhs.z() - z() * rhs.y();
-  auto tmp2 = w() * rhs.y() + y() * rhs.w() + z() * rhs.x() - x() * rhs.z();
-  z()       = w() * rhs.z() + z() * rhs.w() + x() * rhs.y() - y() * rhs.x();
+  const auto tmp0 = w() * rhs.w() - x() * rhs.x() - y() * rhs.y() - z() * rhs.z();
+  const auto tmp1 = w() * rhs.x() + x() * rhs.w() + y() * rhs.z() - z() * rhs.y();
+  const auto tmp2 = w() * rhs.y() + y() * rhs.w() + z() * rhs.x() - x() * rhs.z();
+  const auto tmp3 = w() * rhs.z() + z() * rhs.w() + x() * rhs.y() - y() * rhs.x();
 
   w() = tmp0;
   x() = tmp1;
   y() = tmp2;
+  z() = tmp3;
   return (*this);
 }
 

@@ -12,15 +12,14 @@ project("bit-math")
 # This project requires at least c++14 support
 set(CMAKE_CXX_VERSION 14)
 
-git_build_information( MINOR_VARIABLE BIT_MATH_VERSION_MINOR
-                       PATCH_VARIABLE BIT_MATH_VERSION_PATCH
+git_build_information( PATCH_VARIABLE BIT_MATH_VERSION_PATCH
                        BUILD_VARIABLE BIT_MATH_BUILD_NUMBER
                        BRANCH_VARIABLE BIT_MATH_BRANCH
-                       HASH 574bf75d354bf269e0e5aa1fbb4290166bdba74d
+                       REF 574bf75d354bf269e0e5aa1fbb4290166bdba74d
 )
 
 set(BIT_MATH_VERSION_MAJOR 0 CACHE STRING "major version of bit::math" FORCE)
-set(BIT_MATH_VERSION_MINOR ${BIT_MATH_VERSION_MINOR} CACHE STRING "minor version of bit::math" FORCE)
+set(BIT_MATH_VERSION_MINOR 1 CACHE STRING "minor version of bit::math" FORCE)
 set(BIT_MATH_VERSION_PATCH ${BIT_MATH_VERSION_PATCH} CACHE STRING "patch version of bit::math" FORCE)
 set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}" CACHE STRING "version of bit::math" FORCE)
 set(BIT_MATH_BUILD_NUMBER "${BIT_MATH_BUILD_NUMBER}" CACHE STRING "build number of bit::math" FORCE)
@@ -203,17 +202,23 @@ endif()
 # bit::math : Library
 #-----------------------------------------------------------------------------
 
-add_library("bit_math" ${sources} ${headers})
-add_library("bit::math" ALIAS bit_math)
-target_include_directories("bit_math" PUBLIC "include")
-target_compile_options(bit_math PUBLIC -std=c++14 -DDEBUG)
+add_library(math ${sources} ${headers})
+add_library("bit::math" ALIAS math)
+target_include_directories(math PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+)
+target_compile_options(math PUBLIC -std=c++14
+  $<$<CONFIG:DEBUG>:-DDEBUG>
+  $<$<CONFIG:RELEASE>:-DNDEBUG -DRELEASE>
+)
 
 if( BIT_MATH_DOUBLE_PRECISION )
-  target_compile_options(bit_math PUBLIC "-DBIT_MATH_DOUBLE_PRECISION")
+  target_compile_options(math PUBLIC "-DBIT_MATH_DOUBLE_PRECISION")
 endif()
 
 if( BIT_MATH_CACHED_TRIG )
-  target_compile_definitions(bit_math PUBLIC
+  target_compile_definitions(math PUBLIC
     "-DBIT_MATH_CACHED_TRIG"
     "-DBIT_MATH_TRIG_TABLE_SIZE=${BIT_MATH_TRIG_TABLE_SIZE}"
     "-DBIT_MATH_INVERSE_TRIG_TABLE_SIZE=${BIT_MATH_INVERSE_TRIG_TABLE_SIZE}"
@@ -227,8 +232,8 @@ endif()
 if( BIT_COMPILE_INDEPENDENCE_TESTS )
 
   add_independence_check(bit_math_interface ${headers})
-  target_include_directories("bit_math_interface" INTERFACE "include")
-  target_compile_options(bit_math_interface INTERFACE $<TARGET_PROPERTY:bit_math,INTERFACE_COMPILE_OPTIONS>)
+  target_include_directories("bit_math_interface" PRIVATE "include")
+  target_compile_options(bit_math_interface PRIVATE $<TARGET_PROPERTY:math,INTERFACE_COMPILE_OPTIONS>)
 
 endif()
 
@@ -252,3 +257,23 @@ if( BIT_COMPILE_UNIT_TESTS )
   target_link_libraries(bit_math_test "bit::math" "philsquared::Catch")
 
 endif()
+
+#-----------------------------------------------------------------------------
+# bit::math : Export
+#-----------------------------------------------------------------------------
+
+include(ExportLibrary)
+
+if( EXISTS "$ENV{BIT_HOME}" )
+  set(CMAKE_INSTALL_PREFIX "$ENV{BIT_HOME}")
+endif()
+
+export_library( TARGETS math
+                PACKAGE math
+                VERSION ${BIT_MATH_VERSION}
+                MAJOR_VERSION ${BIT_MATH_VERSION_MAJOR}
+                MINOR_VERSION ${BIT_MATH_VERSION_MINOR}
+                INCLUDE_PATHS "${CMAKE_CURRENT_LIST_DIR}/include"
+                              "${CMAKE_CURRENT_BINARY_DIR}/include"
+                NAMESPACE "bit::"
+                PREFIX_PACKAGE )
