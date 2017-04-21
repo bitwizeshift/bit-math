@@ -26,7 +26,6 @@ namespace bit {
     using float_t = float;
 #endif
 
-
     template<typename T>
     using enable_if_float = std::enable_if<std::is_floating_point<T>::value>;
 

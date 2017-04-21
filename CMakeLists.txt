@@ -269,7 +269,7 @@ if( EXISTS "$ENV{BIT_HOME}" )
 endif()
 
 export_library( TARGETS math
-                PACKAGE math
+                PACKAGE Math
                 VERSION ${BIT_MATH_VERSION}
                 MAJOR_VERSION ${BIT_MATH_VERSION_MAJOR}
                 MINOR_VERSION ${BIT_MATH_VERSION_MINOR}

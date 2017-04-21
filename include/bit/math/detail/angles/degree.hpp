@@ -1,11 +1,11 @@
 /**
  * \file degree.hpp
  *
- * \brief todo: fill in documentation
+ * \brief This internal header defines a type representing a degree angle
  *
- * \author Matthew Rodusek (matthew.rodusek@gmail.com)
+ * \note This is an internal header file, included by other library headers.
+ *       Do not attempt to use it directly.
  */
-
 #ifndef BIT_MATH_DETAIL_ANGLES_DEGREE_HPP
 #define BIT_MATH_DETAIL_ANGLES_DEGREE_HPP
 
@@ -27,11 +27,7 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-#ifdef BIT_MATH_DOUBLE_PRECISION
-      using value_type = double;
-#else
-      using value_type = float;
-#endif
+      using value_type = float_t;
 
       //----------------------------------------------------------------------
       // Public Static Members

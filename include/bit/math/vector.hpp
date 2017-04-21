@@ -9,18 +9,21 @@
 #ifndef BIT_MATH_VECTOR_HPP
 #define BIT_MATH_VECTOR_HPP
 
+// bit::math library
+#include "math.hpp"
+#include "angles.hpp"
+
+// std library
 #include <utility>
 #include <stdexcept>
 #include <cstddef>
 #include <cstdint>
 
-#include "math.hpp"
-#include "angles.hpp"
-
-// Include vector types
+// IWYU pragma: begin_exports
 #include "detail/vector/vector2.hpp"
 #include "detail/vector/vector3.hpp"
 #include "detail/vector/vector4.hpp"
+// IWYU pragma: end_exports
 
 namespace bit {
   namespace math {
@@ -43,23 +46,14 @@ namespace bit {
     } // inline namespace casts
 
     // Optimize the common case by pre-instantiating the vector
-#ifdef BIT_MATH_DOUBLE_PRECISION
-    extern template class vector2<double>;
-    extern template class vector3<double>;
-    extern template class vector4<double>;
 
-    using vec2 = vector2<double>;
-    using vec3 = vector3<double>;
-    using vec4 = vector3<double>;
-#else
-    extern template class vector2<float>;
-    extern template class vector3<float>;
-    extern template class vector4<float>;
+    extern template class vector2<float_t>;
+    extern template class vector3<float_t>;
+    extern template class vector4<float_t>;
 
-    using vec2 = vector2<float>;
-    using vec3 = vector3<float>;
-    using vec4 = vector3<float>;
-#endif
+    using vec2 = vector2<float_t>;
+    using vec3 = vector3<float_t>;
+    using vec4 = vector3<float_t>;
 
   } // namespace math
 } // namespace bit

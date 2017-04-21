@@ -23,7 +23,7 @@ namespace bit {
 //----------------------------------------------------------------------------
 
 inline constexpr bit::math::radian
-  bit::math::literals::operator""_rad( long double angle )
+  bit::math::literals::angle_literals::operator""_rad( long double angle )
   noexcept
 {
   return radian(angle);
@@ -32,7 +32,7 @@ inline constexpr bit::math::radian
 //----------------------------------------------------------------------------
 
 inline constexpr bit::math::degree
-  bit::math::literals::operator""_deg( long double angle )
+  bit::math::literals::angle_literals::operator""_deg( long double angle )
   noexcept
 {
   return degree(angle);
@@ -268,32 +268,6 @@ inline bit::math::float_t bit::math::runtime::cot( float_t rad )
 }
 
 //----------------------------------------------------------------------------
-
-inline bit::math::radian bit::math::runtime::arccos( float_t f )
-  noexcept
-{
-  return radian{ std::acos(f) };
-}
-
-inline bit::math::radian bit::math::runtime::arcsin( float_t f )
-  noexcept
-{
-  return radian{ std::asin(f) };
-}
-
-inline bit::math::radian bit::math::runtime::arctan( float_t f )
-  noexcept
-{
-  return radian{ std::atan(f) };
-}
-
-inline bit::math::radian bit::math::runtime::arctan2( float_t f1, float_t f2 )
-  noexcept
-{
-  return radian{ std::atan2(f1,f2) };
-}
-
-//----------------------------------------------------------------------------
 // Cached Trigonometry
 //----------------------------------------------------------------------------
 
@@ -413,6 +387,34 @@ inline bit::math::float_t bit::math::cached::cot( float_t rad )
   noexcept
 {
   return cached::cot( radian(rad) );
+}
+
+//----------------------------------------------------------------------------
+// Inverse Trigonometry
+//----------------------------------------------------------------------------
+
+inline bit::math::radian bit::math::arccos( float_t f )
+  noexcept
+{
+  return radian{ std::acos(f) };
+}
+
+inline bit::math::radian bit::math::arcsin( float_t f )
+  noexcept
+{
+  return radian{ std::asin(f) };
+}
+
+inline bit::math::radian bit::math::arctan( float_t f )
+  noexcept
+{
+  return radian{ std::atan(f) };
+}
+
+inline bit::math::radian bit::math::arctan2( float_t f1, float_t f2 )
+  noexcept
+{
+  return radian{ std::atan2(f1,f2) };
 }
 
 #endif /* BIT_MATH_DETAIL_ANGLES_INL */

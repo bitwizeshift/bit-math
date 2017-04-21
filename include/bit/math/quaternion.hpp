@@ -9,10 +9,12 @@
 #ifndef BIT_MATH_QUATERNION_HPP
 #define BIT_MATH_QUATERNION_HPP
 
+// bit::math library
 #include "angles.hpp"
 #include "vector.hpp"
 #include "matrix.hpp"
 
+// std library
 #include <utility>
 #include <tuple>
 
@@ -376,7 +378,7 @@ namespace bit {
       ///
       /// \param reproject tag used for tag dispatch
       /// \return the pitch angle
-      radian pitch( reproject_axis_t ) const noexcept;
+      radian pitch( reproject_axis_t reproject ) const noexcept;
 
       /// \brief Computes the pitch angle by reprojecting the axis
       ///
@@ -389,7 +391,7 @@ namespace bit {
       ///
       /// \param reproject tag used for tag dispatch
       /// \return the yaw angle
-      radian yaw( reproject_axis_t ) const noexcept;
+      radian yaw( reproject_axis_t reproject ) const noexcept;
 
       /// \brief Computes the yaw angle by reprojecting the axis
       ///

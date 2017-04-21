@@ -11,9 +11,11 @@
 
 #include "vector.hpp"
 
+// IWYU pragma: begin_exports
 #include "detail/matrix/matrix2.hpp"
 #include "detail/matrix/matrix3.hpp"
 #include "detail/matrix/matrix4.hpp"
+// IWYU pragma: end_exports
 
 namespace bit {
   namespace math {
@@ -30,23 +32,14 @@ namespace bit {
     } // inline namespace casts
 
     // Optimize the common case by pre-instantiating the matrix
-#ifdef BIT_MATH_DOUBLE_PRECISION
-    extern template class matrix2<double>;
-    extern template class matrix3<double>;
-    extern template class matrix4<double>;
 
-    using mat2 = matrix2<double>;
-    using mat3 = matrix3<double>;
-    using mat4 = matrix4<double>;
-#else
-    extern template class matrix2<float>;
-    extern template class matrix3<float>;
-    extern template class matrix4<float>;
+    extern template class matrix2<float_t>;
+    extern template class matrix3<float_t>;
+    extern template class matrix4<float_t>;
 
-    using mat2 = matrix2<float>;
-    using mat3 = matrix3<float>;
-    using mat4 = matrix4<float>;
-#endif
+    using mat2 = matrix2<float_t>;
+    using mat3 = matrix3<float_t>;
+    using mat4 = matrix4<float_t>;
 
   } // namespace math
 } // namespace bit

@@ -9,10 +9,10 @@
 #ifndef BIT_MATH_EULER_HPP
 #define BIT_MATH_EULER_HPP
 
-#include "vector.hpp"
-#include "matrix.hpp"
-#include "angles.hpp"
-#include "quaternion.hpp"
+#include "vector.hpp"     // bit::math::vector3 / bit::math::vector4
+#include "matrix.hpp"     // bit::math::matrix3 / bit::math::matrix4
+#include "angles.hpp"     // bit::math::radian
+#include "quaternion.hpp" // bit::math::quaternion
 
 namespace bit {
   namespace math {

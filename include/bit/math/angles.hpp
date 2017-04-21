@@ -11,8 +11,10 @@
 
 #include "math.hpp"
 
+// IWYU pragma: begin_exports
 #include "detail/angles/radian.hpp"
 #include "detail/angles/degree.hpp"
+// IWYU pragma: end_exports
 
 namespace bit {
   namespace math {
@@ -22,11 +24,13 @@ namespace bit {
     //------------------------------------------------------------------------
 
     inline namespace literals {
+      inline namespace angle_literals {
 
-      constexpr radian operator""_rad( long double angle ) noexcept;
+        constexpr radian operator""_rad( long double angle ) noexcept;
 
-      constexpr degree operator""_deg( long double angle ) noexcept;
+        constexpr degree operator""_deg( long double angle ) noexcept;
 
+      } // inline namespace angle_literals
     } // inline namespace literals
 
     //------------------------------------------------------------------------
@@ -270,16 +274,7 @@ namespace bit {
       /// \copydoc cot( radian )
       float_t cot( float_t rad ) noexcept;
 
-      //----------------------------------------------------------------------
-      // Inverse Trigonometry
-      //----------------------------------------------------------------------
-
-      radian arccos( float_t f ) noexcept;
-      radian arcsin( float_t f ) noexcept;
-      radian arctan( float_t f ) noexcept;
-      radian arctan2( float_t f1, float_t f2 ) noexcept;
-
-    } // namespace runtime
+    } // [inline] namespace runtime
 
     //------------------------------------------------------------------------
     // Cached Trigonometry
@@ -403,16 +398,16 @@ namespace bit {
       /// \copydoc cot( radian )
       float_t cot( float_t rad ) noexcept;
 
-      //----------------------------------------------------------------------
-      // Inverse Table Trig
-      //----------------------------------------------------------------------
+    } // [inline] namespace cached
 
-      radian arccos( float_t f ) noexcept;
-      radian arcsin( float_t f ) noexcept;
-      radian arctan( float_t f ) noexcept;
-      radian arctan2( float_t f1, float_t f2 ) noexcept;
+    //------------------------------------------------------------------------
+    // Inverse Trigonometry
+    //------------------------------------------------------------------------
 
-    } // namespace cached
+    radian arccos( float_t f ) noexcept;
+    radian arcsin( float_t f ) noexcept;
+    radian arctan( float_t f ) noexcept;
+    radian arctan2( float_t f1, float_t f2 ) noexcept;
 
   } // namespace math
 } // namespace bit
