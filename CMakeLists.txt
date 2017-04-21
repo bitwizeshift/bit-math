@@ -49,6 +49,7 @@ set(headers
       "include/bit/math/quaternion.hpp"
       "include/bit/math/clamped.hpp"
       "include/bit/math/euler.hpp"
+      "include/bit/math/interpolation.hpp"
 )
 
 set(sources
