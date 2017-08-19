@@ -264,6 +264,27 @@ inline constexpr bit::math::vector3<std::common_type_t<T,U>>
 }
 
 template<typename T>
+template<typename U>
+inline constexpr bit::math::vector3<std::common_type_t<T,U>>
+  bit::math::vector3<T>::projection( const vector3<U>& vector )
+  const noexcept
+{
+  return vector3<std::common_type_t<T,U>>{
+    (dot(vector) / dot(*this)) * vector
+  };
+}
+
+template<typename T>
+template<typename U>
+inline constexpr bit::math::vector3<std::common_type_t<T,U>>
+  bit::math::vector3<T>::rejection( const vector3<U>& vector )
+  const noexcept
+{
+  return (*this) - projection( vector );
+}
+
+
+template<typename T>
 inline constexpr bit::math::vector3<T>
   bit::math::vector3<T>::perpendicular()
   const noexcept

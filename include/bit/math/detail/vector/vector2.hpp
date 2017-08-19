@@ -219,6 +219,22 @@ namespace bit {
       constexpr vector2<std::common_type_t<T,U>>
         reflection( const vector2<U>& normal ) const noexcept;
 
+      /// \brief Projects the components of this vector onto \p vector
+      ///
+      /// \param vector the vector to project onto
+      /// \return the projection
+      template<typename U>
+      constexpr vector2<std::common_type_t<T,U>>
+        projection( const vector2<U>& vector ) const noexcept;
+
+      /// \brief Projects the components of this vector off of \p vector
+      ///
+      /// \param vector the vector to project off of
+      /// \return the rejection
+      template<typename U>
+      constexpr vector2<std::common_type_t<T,U>>
+        rejection( const vector2<U>& vector ) const noexcept;
+
       /// \brief Gets the perpendicular of this vector2
       ///
       /// \return the perpendicular vector2 to \c this

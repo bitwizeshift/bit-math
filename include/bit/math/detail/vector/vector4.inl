@@ -281,6 +281,28 @@ inline constexpr bit::math::vector4<std::common_type_t<T,U>>
 //----------------------------------------------------------------------------
 
 template<typename T>
+template<typename U>
+inline constexpr bit::math::vector4<std::common_type_t<T,U>>
+  bit::math::vector4<T>::projection( const vector4<U>& vector )
+  const noexcept
+{
+  return vector4<std::common_type_t<T,U>>{
+    (dot(vector) / dot(*this)) * vector
+  };
+}
+
+template<typename T>
+template<typename U>
+inline constexpr bit::math::vector4<std::common_type_t<T,U>>
+  bit::math::vector4<T>::rejection( const vector4<U>& vector )
+  const noexcept
+{
+  return (*this) - projection( vector );
+}
+
+//----------------------------------------------------------------------------
+
+template<typename T>
 inline bit::math::vector4<T>
   bit::math::vector4<T>::normalized()
   const noexcept

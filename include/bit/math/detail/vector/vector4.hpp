@@ -224,6 +224,22 @@ namespace bit {
       constexpr vector4<std::common_type_t<T,U>>
         midpoint( const vector4<U>& vec ) const noexcept;
 
+      /// \brief Projects the components of this vector onto \p vector
+      ///
+      /// \param vector the vector to project onto
+      /// \return the projection
+      template<typename U>
+      constexpr vector4<std::common_type_t<T,U>>
+        projection( const vector4<U>& vector ) const noexcept;
+
+      /// \brief Projects the components of this vector off of \p vector
+      ///
+      /// \param vector the vector to project off of
+      /// \return the rejection
+      template<typename U>
+      constexpr vector4<std::common_type_t<T,U>>
+        rejection( const vector4<U>& vector ) const noexcept;
+
       /// \brief Gets the normalized vector4 of \c this
       ///
       /// \param the normalized vector4 of \c this
