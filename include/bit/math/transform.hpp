@@ -121,7 +121,7 @@ namespace bit {
       radian pitch() const noexcept;
       radian yaw() const noexcept;
 
-      const mat4& data() const noexcept;
+      const mat4& matrix() const noexcept;
 
       //----------------------------------------------------------------------
       // Private Members

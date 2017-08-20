@@ -246,6 +246,8 @@ inline void bit::math::transform::set_scale_z( float_t scale )
 }
 
 //----------------------------------------------------------------------------
+// Observers
+//----------------------------------------------------------------------------
 
 inline const bit::math::vec3& bit::math::transform::scale()
   const noexcept
@@ -265,6 +267,8 @@ inline const bit::math::quaternion& bit::math::transform::rotation()
   return m_rotation;
 }
 
+//----------------------------------------------------------------------------
+
 inline bit::math::float_t bit::math::transform::scale_x()
   const noexcept
 {
@@ -282,6 +286,8 @@ inline bit::math::float_t bit::math::transform::scale_z()
 {
   return m_scale.z();
 }
+
+//----------------------------------------------------------------------------
 
 inline bit::math::float_t bit::math::transform::x()
   const noexcept
@@ -301,6 +307,8 @@ inline bit::math::float_t bit::math::transform::z()
   return m_translation.z();
 }
 
+//----------------------------------------------------------------------------
+
 inline bit::math::radian bit::math::transform::roll()
   const noexcept
 {
@@ -319,13 +327,17 @@ inline bit::math::radian bit::math::transform::yaw()
   return m_rotation.yaw();
 }
 
-inline const bit::math::mat4& bit::math::transform::data()
+//----------------------------------------------------------------------------
+
+inline const bit::math::mat4& bit::math::transform::matrix()
   const noexcept
 {
   if( m_is_dirty ) update();
   return m_transform;
 }
 
+//----------------------------------------------------------------------------
+// Private Member Functions
 //----------------------------------------------------------------------------
 
 inline void bit::math::transform::update()
