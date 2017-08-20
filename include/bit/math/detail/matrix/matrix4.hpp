@@ -345,7 +345,7 @@ namespace bit {
       //----------------------------------------------------------------------
     private:
 
-      value_type m_matrix[rows][columns]; ///< Linear array that represents the matrix
+      alignas(16) value_type m_matrix[rows][columns]; ///< Linear array that represents the matrix
 
       template<typename> friend class matrix4;
 
