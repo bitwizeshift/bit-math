@@ -50,6 +50,7 @@ set(headers
       "include/bit/math/clamped.hpp"
       "include/bit/math/euler.hpp"
       "include/bit/math/interpolation.hpp"
+      "include/bit/math/transform.hpp"
 )
 
 set(sources
