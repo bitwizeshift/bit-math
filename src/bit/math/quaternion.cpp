@@ -137,17 +137,19 @@ void bit::math::quaternion::extract_rotation_matrix( matrix3_type* rot )
 
   //--------------------------------------------------------------------------
 
-  (*rot)(0,0) = 1.0 - (tyy + tzz);
-  (*rot)(0,1) = txy - twz;
-  (*rot)(0,2) = txz + twy;
+  auto& matrix = (*rot);
 
-  (*rot)(1,0) = txy + twz;
-  (*rot)(1,1) = 1.0 - (txx + tzz);
-  (*rot)(1,2) = tyz - twx;
+  matrix(0,0) = 1.0 - (tyy + tzz);
+  matrix(0,1) = txy - twz;
+  matrix(0,2) = txz + twy;
 
-  (*rot)(2,0) = txz - twy;
-  (*rot)(2,1) = tyz + twx;
-  (*rot)(2,2) = 1.0f - (txx + tyy);
+  matrix(1,0) = txy + twz;
+  matrix(1,1) = 1.0 - (txx + tzz);
+  matrix(1,2) = tyz - twx;
+
+  matrix(2,0) = txz - twy;
+  matrix(2,1) = tyz + twx;
+  matrix(2,2) = 1.0 - (txx + tyy);
 }
 
 //----------------------------------------------------------------------------
@@ -170,25 +172,27 @@ void bit::math::quaternion::extract_rotation_matrix( matrix4_type* rot )
 
   //--------------------------------------------------------------------------
 
-  (*rot)(0,0) = 1.0 - (tyy + tzz);
-  (*rot)(0,1) = txy - twz;
-  (*rot)(0,2) = 0.0;
-  (*rot)(0,3) = txz + twy;
+  auto& matrix = (*rot);
 
-  (*rot)(1,0) = txy + twz;
-  (*rot)(1,1) = 1.0 - (txx + tzz);
-  (*rot)(1,2) = 0.0;
-  (*rot)(1,3) = tyz - twx;
+  matrix(0,0) = 1.0 - (tyy + tzz);
+  matrix(0,1) = txy - twz;
+  matrix(0,2) = txz + twy;
+  matrix(0,3) = 0.0f;
 
-  (*rot)(2,0) = 0.0;
-  (*rot)(2,1) = 0.0;
-  (*rot)(2,2) = 1.0;
-  (*rot)(2,3) = 0.0;
+  matrix(1,0) = txy + twz;
+  matrix(1,1) = 1.0 - (txx + tzz);
+  matrix(1,2) = tyz - twx;
+  matrix(1,3) = 0.0f;
 
-  (*rot)(3,0) = txz - twy;
-  (*rot)(3,1) = tyz + twx;
-  (*rot)(3,2) = 0.0;
-  (*rot)(3,3) = 1.0f - (txx + tyy);
+  matrix(2,0) = txz - twy;
+  matrix(2,1) = tyz + twx;
+  matrix(2,2) = 1.0 - (txx + tyy);
+  matrix(2,3) = 0.0;
+
+  matrix(3,0) = 0.0;
+  matrix(3,1) = 0.0;
+  matrix(3,2) = 0.0;
+  matrix(3,3) = 1.0;
 }
 
 //----------------------------------------------------------------------------
