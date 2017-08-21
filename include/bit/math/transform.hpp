@@ -140,8 +140,8 @@ namespace bit {
     private:
 
       void update() const noexcept;
-
     };
+
   } // namespace math
 } // namespace bit
 

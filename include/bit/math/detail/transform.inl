@@ -134,38 +134,38 @@ inline void bit::math::transform::rotate_roll( radian angle )
 
 //----------------------------------------------------------------------------
 
-void bit::math::transform::set_rotation( radian yaw, radian pitch, radian roll )
+inline void bit::math::transform::set_rotation( radian yaw, radian pitch, radian roll )
   noexcept
 {
   set_rotation( quaternion{ yaw, pitch, roll } );
 }
 
-void bit::math::transform::set_rotation( radian angle, const vec3& axis )
+inline void bit::math::transform::set_rotation( radian angle, const vec3& axis )
   noexcept
 {
   set_rotation( quaternion{ angle, axis } );
 }
 
-void bit::math::transform::set_rotation( const quaternion& quaternion )
+inline void bit::math::transform::set_rotation( const quaternion& quaternion )
   noexcept
 {
   m_rotation = quaternion;
   m_is_dirty = true;
 }
 
-void bit::math::transform::set_angle_roll( radian angle )
+inline void bit::math::transform::set_angle_roll( radian angle )
   noexcept
 {
   set_rotation( quaternion{ angle, {}, {} } );
 }
 
-void bit::math::transform::set_angle_pitch( radian angle )
+inline void bit::math::transform::set_angle_pitch( radian angle )
   noexcept
 {
   set_rotation( quaternion{ {}, angle, {} } );
 }
 
-void bit::math::transform::set_angle_yaw( radian angle )
+inline void bit::math::transform::set_angle_yaw( radian angle )
   noexcept
 {
   set_rotation( quaternion{ {}, {}, angle } );
