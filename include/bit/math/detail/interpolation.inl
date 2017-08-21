@@ -119,4 +119,15 @@ inline constexpr std::common_type_t<V00,V10,V01,V11,Tx,Ty>
   return linear( linear(v00,v10,tx), linear(v01,v11,tx), ty );
 }
 
+template<typename V000, typename V100, typename V010, typename V110, typename V001,
+         typename V101, typename V011, typename V111, typename Tx, typename Ty, typename Tz>
+inline constexpr std::common_type_t<V000,V100,V010,V110,V001,V101,V011,V111>
+  bit::math::trilinear( const V000& v000, const V100& v100, const V010& v010, const V110& v110,
+                        const V001& v001, const V101& v101, const V011& v011, const V111& v111,
+                        const Tx& tx, const Ty& ty, const Tz& tz )
+  noexcept
+{
+  return linear( bilinear(v000,v100,v010,v110,tx,ty), bilinear(v001, v101, v011, v111, tx, ty), tz );
+}
+
 #endif /* BIT_MATH_DETAIL_INTERPOLATION_INL */

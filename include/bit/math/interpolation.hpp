@@ -152,6 +152,13 @@ namespace bit {
       bilinear( const V00& v00, const V10 v10, const V01& v01,
                 const V11& v11, const Tx& tx, const Ty& ty ) noexcept;
 
+    template<typename V000, typename V100, typename V010, typename V110, typename V001,
+             typename V101, typename V011, typename V111, typename Tx, typename Ty, typename Tz>
+    constexpr std::common_type_t<V000,V100,V010,V110,V001,V101,V011,V111>
+      trilinear( const V000& v000, const V100& v100, const V010& v010, const V110& v110,
+                 const V001& v001, const V101& v101, const V011& v011, const V111& v111,
+                 const Tx& tx, const Ty& ty, const Tz& tz ) noexcept;
+
   } // namespace math
 } // namespace bit
 
