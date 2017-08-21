@@ -388,6 +388,15 @@ namespace bit {
     constexpr std::common_type_t<T,U>
       dot( const vector4<T>& lhs, const vector4<U>& rhs ) noexcept;
 
+    /// \brief Performs the cross product between \p lhs and \p rhs
+    ///
+    /// \param lhs the left vector4
+    /// \param rhs the right vector4
+    /// \return the result of the dot product
+    template<typename T, typename U>
+    constexpr vector4<std::common_type_t<T,U>>
+      cross( const vector4<T>& lhs, const vector4<U>& rhs ) noexcept;
+
     /// \brief Calculates the magnitude of the vector4 \p vec
     ///
     /// \param vec the vector4 to calculate the magnitude from

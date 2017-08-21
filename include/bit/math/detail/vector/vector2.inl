@@ -496,6 +496,14 @@ inline constexpr std::common_type_t<T,U>
   return lhs.dot(rhs);
 }
 
+template<typename T, typename U>
+inline constexpr bit::math::vector2<std::common_type_t<T,U>>
+  bit::math::cross( const vector2<T>& lhs, const vector2<U>& rhs )
+  noexcept
+{
+  return lhs.cross(rhs);
+}
+
 template<typename T>
 typename bit::math::vector2<T>::value_type
   bit::math::magnitude( const vector2<T>& vec )
