@@ -64,9 +64,9 @@ namespace bit {
       /// \param z the z-component of the vector4
       /// \param w the w-component of the vector4
       constexpr vector4( value_type x,
-                          value_type y,
-                          value_type z,
-                          value_type w ) noexcept;
+                         value_type y,
+                         value_type z,
+                         value_type w ) noexcept;
 
       /// \brief Copy-constructs a vector4 with the value of another
       ///        vector4

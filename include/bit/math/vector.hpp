@@ -45,6 +45,15 @@ namespace bit {
 
     } // inline namespace casts
 
+    /// \brief Trait to detect whether \p T is a \ref vector4
+    ///
+    /// The result is aliased as \c ::value
+    template<typename T> struct is_vector : std::false_type{};
+
+    template<typename T> struct is_vector<vector2<T>> : std::true_type{};
+    template<typename T> struct is_vector<vector3<T>> : std::true_type{};
+    template<typename T> struct is_vector<vector4<T>> : std::true_type{};
+
     // Optimize the common case by pre-instantiating the vector
 
     extern template class vector2<float_t>;

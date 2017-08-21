@@ -543,7 +543,6 @@ bit::math::matrix4<T>&
 
   for( auto r = 0; r < rows; ++r ) {
     for( auto c = 0; c < columns; ++c ) {
-
       auto sum = std::common_type_t<T,U>(0);
 
       for( auto i = 0; i < rows; ++i ) {
