@@ -193,21 +193,21 @@ inline constexpr Float bit::math::saturate( Float val )
 // Equality
 //----------------------------------------------------------------------------
 
+template<typename T, typename U>
+inline constexpr bool bit::math::almost_equal( T lhs, U rhs )
+  noexcept
+{
+  return almost_equal(lhs,rhs,default_tolerance);
+}
+
+//----------------------------------------------------------------------------
+
 template<typename T, typename U, typename V>
 inline constexpr bool bit::math::almost_equal( T lhs, U rhs, V tolerance )
   noexcept
 {
   auto tmp = (lhs - rhs);
   return (((tmp < 0) ? -tmp : tmp) <= tolerance);
-}
-
-//----------------------------------------------------------------------------
-
-template<typename T, typename U>
-inline constexpr bool bit::math::almost_equal( T lhs, U rhs )
-  noexcept
-{
-  return almost_equal(lhs,rhs,default_tolerance);
 }
 
 //----------------------------------------------------------------------------

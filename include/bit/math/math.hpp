@@ -20,7 +20,9 @@ namespace bit {
     // Types
     //------------------------------------------------------------------------
 
-#ifdef BIT_MATH_DOUBLE_PRECISION
+#ifdef BIT_MATH_LONG_DOUBLE_PRECISION
+    using float_t = long double;
+#elif defined(BIT_MATH_DOUBLE_PRECISION)
     using float_t = double;
 #else
     using float_t = float;
@@ -67,7 +69,7 @@ namespace bit {
     /// \param lhs the left array
     /// \param rhs the right array
     /// \return the dot product of the two arrays
-    template<typename T, typename U, size_t N>
+    template<typename T, typename U, std::size_t N>
     constexpr std::common_type_t<T,U> dot( T(&lhs)[N], U(&rhs)[N] ) noexcept;
 
     //------------------------------------------------------------------------
