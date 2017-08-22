@@ -51,6 +51,7 @@ set(headers
       "include/bit/math/euler.hpp"
       "include/bit/math/interpolation.hpp"
       "include/bit/math/transform.hpp"
+      "include/bit/math/simplex.hpp"
 )
 
 set(sources
@@ -60,6 +61,7 @@ set(sources
       "src/bit/math/matrix.cpp"
       "src/bit/math/quaternion.cpp"
       "src/bit/math/euler.cpp"
+      "src/bit/math/simplex.cpp"
 )
 
 #-----------------------------------------------------------------------------
