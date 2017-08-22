@@ -307,20 +307,7 @@ inline bit::math::vector4<T>
   bit::math::vector4<T>::normalized()
   const noexcept
 {
-  const value_type mag = magnitude();
-
-  if( mag > 0 )
-  {
-    const auto mag_inv = 1.0 / mag;
-
-    return vector4<T>(
-      x() * mag_inv,
-      y() * mag_inv,
-      z() * mag_inv,
-      w() * mag_inv
-    );
-  }
-  return (*this);
+  return vector4<T>(*this).normalize();
 }
 
 //----------------------------------------------------------------------------
@@ -330,7 +317,7 @@ inline constexpr bit::math::vector4<T>
   bit::math::vector4<T>::inverse()
   const noexcept
 {
-  return vector4<T>{ -x(), -y(), -z(), -w() };
+  return vector4<T>{*this}.invert();
 }
 
 //----------------------------------------------------------------------------
@@ -359,10 +346,9 @@ inline constexpr bit::math::vector4<T>& bit::math::vector4<T>::normalize()
   {
     const auto mag_inv = 1.0 / mag;
 
-    x() *= mag_inv;
-    y() *= mag_inv;
-    z() *= mag_inv;
-    w() *= mag_inv;
+    for(auto i = 0; i < 4; ++i) {
+      m_data[i] *= mag_inv;
+    }
   }
 
   return (*this);
@@ -372,10 +358,9 @@ template<typename T>
 inline constexpr bit::math::vector4<T>& bit::math::vector4<T>::invert()
   noexcept
 {
-  x() = -x();
-  y() = -y();
-  z() = -z();
-  w() = -w();
+  for(auto i = 0; i < 4; ++i) {
+    m_data[i] *= -1;
+  }
 
   return (*this);
 }
@@ -397,7 +382,7 @@ template<typename T>
 inline constexpr bit::math::vector4<T> bit::math::vector4<T>::operator-()
   const noexcept
 {
-  return vector4<T>{ -x(), -y(), -z(), -w() };
+  return vector4<T>(*this).invert();
 }
 
 //----------------------------------------------------------------------------
@@ -411,7 +396,7 @@ inline constexpr bit::math::vector4<T>&
   noexcept
 {
   for(auto i = 0; i < 4; ++i) {
-    m_data[i] += rhs[i];
+    m_data[i] += rhs.m_data[i];
   }
   return (*this);
 }
@@ -425,7 +410,7 @@ inline constexpr bit::math::vector4<T>&
   noexcept
 {
   for(auto i = 0; i < 4; ++i) {
-    m_data[i] -= rhs[i];
+    m_data[i] -= rhs.m_data[i];
   }
 
   return (*this);
@@ -551,7 +536,7 @@ inline constexpr bool bit::math::operator == ( const vector4<T>& lhs,
                                                const vector4<U>& rhs )
   noexcept
 {
-  for(auto i=0;i<4;++i) {
+  for(auto i=0; i<4; ++i) {
     if( lhs[i]!=rhs[i] ) return false;
   }
   return true;
@@ -572,8 +557,8 @@ inline constexpr bool bit::math::almost_equal( const vector4<T>& lhs,
                                                const vector4<U>& rhs )
   noexcept
 {
-  for(auto i=0;i<4;++i) {
-    if( !almost_equal(rhs[i],rhs[i]) ) return false;
+  for(auto i=0; i<4; ++i) {
+    if( !almost_equal(rhs[i], rhs[i]) ) return false;
   }
   return true;
 }
@@ -584,8 +569,8 @@ inline constexpr bool bit::math::almost_equal( const vector4<T>& lhs,
                                                Arithmetic tolerance )
   noexcept
 {
-  for(auto i=0;i<4;++i) {
-    if( !almost_equal(rhs[i],rhs[i],tolerance) ) return false;
+  for(auto i=0; i<4; ++i) {
+    if( !almost_equal(rhs[i], rhs[i], tolerance) ) return false;
   }
   return true;
 }

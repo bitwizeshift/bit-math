@@ -326,15 +326,15 @@ bit::math::radian
   bit::math::vector3<T>::angle_between( const vector3<U>& other )
   const noexcept
 {
-  float_t mag_product = magnitude() * other.magnitude();
+  auto mag_product = magnitude() * other.magnitude();
 
   if( almost_equal( mag_product, 0, default_tolerance ) ){
     mag_product = default_tolerance;
   }
 
-  float_t f = dot(other) / mag_product;
+  auto f = dot(other) / mag_product;
 
-  f = clamp<float_t>( f, -1.0, 1.0 );
+  f = clamp( f, -1.0, 1.0 );
   return arccos( f );
 }
 
