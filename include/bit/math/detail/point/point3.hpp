@@ -47,11 +47,54 @@ namespace bit {
       /// \brief Default-constructs a point3 at the origin
       constexpr point3() noexcept;
 
-      /// \brief Constructs a point3 at coordinates \c {x,y}
+      /// \brief Constructs a point3 at coordinates \c {x,y,z}
       ///
       /// \param x the x-coordinate
       /// \param y the y-coordinate
       constexpr point3( value_type x, value_type y, value_type z ) noexcept;
+
+      /// \brief Move-constructs a point3 from another point3
+      ///
+      /// \param other the other point3 to move
+      point3( point3&& other ) noexcept = default;
+
+      /// \brief Copy-constructs a point3 from another point3
+      ///
+      /// \param other the other point3 to copy
+      point3( const point3& other ) noexcept = default;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Move-assigns a point3 from another point3
+      ///
+      /// \param other the other point3 to move
+      /// \return reference to \c (*this)
+      point3& operator=( point3&& other ) noexcept = default;
+
+      /// \brief Copy-assigns a point3 from another point3
+      ///
+      /// \param other the other point3 to copy
+      /// \return reference to \c (*this)
+      point3& operator=( const point3& other ) noexcept = default;
+
+      //----------------------------------------------------------------------
+      // Compound Operators
+      //----------------------------------------------------------------------
+    public:
+
+      /// \brief Translates this point3 by the components of \p rhs
+      ///
+      /// \param rhs the direction to translate this point
+      /// \return reference to \c (*this)
+      template<typename T>
+      point3& operator+=( const vector3<T>& rhs ) noexcept;
+
+      /// \brief Translates this point3 by the components of \p rhs
+      ///
+      /// \param rhs the direction to translate this point
+      /// \return reference to \c (*this)
+      template<typename T>
+      point3& operator-=( const vector3<T>& rhs ) noexcept;
 
       //----------------------------------------------------------------------
       // Observers
@@ -119,7 +162,7 @@ namespace bit {
     point3 operator + ( const point3& lhs, const vector3<T>& rhs ) noexcept;
 
     template<typename T>
-    point3 operator + ( const vector3<T>& lhs, const point3& rhs ) noexcept;
+    point3 operator - ( const point3& lhs, const vector3<T>& rhs ) noexcept;
 
     //------------------------------------------------------------------------
     // Free Functions

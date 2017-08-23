@@ -19,6 +19,32 @@ inline constexpr bit::math::point2::point2( value_type x, value_type y )
 
 }
 
+
+//----------------------------------------------------------------------------
+// Compound Operators
+//----------------------------------------------------------------------------
+
+template<typename T>
+bit::math::point2& bit::math::point2::operator+=( const vector2<T>& rhs )
+  noexcept
+{
+  for( auto i=0; i<2; ++i ) {
+    m_data[i] += rhs[i];
+  }
+  return (*this);
+}
+
+
+template<typename T>
+bit::math::point2& bit::math::point2::operator-=( const vector2<T>& rhs )
+  noexcept
+{
+  for( auto i=0; i<2; ++i ) {
+    m_data[i] -= rhs[i];
+  }
+  return (*this);
+}
+
 //----------------------------------------------------------------------------
 // Observers
 //----------------------------------------------------------------------------
@@ -92,15 +118,15 @@ inline bit::math::point2
   bit::math::operator + ( const point2& lhs, const vector2<T>& rhs )
   noexcept
 {
-  return { lhs.x() + rhs.x(), lhs.y() + rhs.y() };
+  return point2(lhs)+=rhs;
 }
 
 template<typename T>
 inline bit::math::point2
-  bit::math::operator + ( const vector2<T>& lhs, const point2& rhs )
+  bit::math::operator - ( const point2& lhs, const vector2<T>& rhs )
   noexcept
 {
-  return { lhs.x() + rhs.x(), lhs.y() + rhs.y() };
+  return point2(lhs)-=rhs;
 }
 
 //------------------------------------------------------------------------
@@ -165,7 +191,8 @@ inline constexpr bool bit::math::almost_equal( const point2& lhs,
                                                const point2& rhs )
   noexcept
 {
-  return almost_equal( lhs, rhs, default_tolerance );
+  return almost_equal( lhs.x(), rhs.x() ) &&
+         almost_equal( lhs.y(), rhs.y() );
 }
 
 template<typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>*>

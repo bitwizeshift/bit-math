@@ -1,4 +1,4 @@
-#ifndef BIT_MATH_DETAIL_POINT_POINT3_INL
+ #ifndef BIT_MATH_DETAIL_POINT_POINT3_INL
 #define BIT_MATH_DETAIL_POINT_POINT3_INL
 
 //----------------------------------------------------------------------------
@@ -17,6 +17,31 @@ inline constexpr bit::math::point3::point3( value_type x, value_type y, value_ty
   : m_data{x,y,z}
 {
 
+}
+
+//----------------------------------------------------------------------------
+// Compound Operators
+//----------------------------------------------------------------------------
+
+template<typename T>
+bit::math::point3& bit::math::point3::operator+=( const vector3<T>& rhs )
+  noexcept
+{
+  for( auto i=0; i<3; ++i ) {
+    m_data[i] += rhs[i];
+  }
+  return (*this);
+}
+
+
+template<typename T>
+bit::math::point3& bit::math::point3::operator-=( const vector3<T>& rhs )
+  noexcept
+{
+  for( auto i=0; i<3; ++i ) {
+    m_data[i] += rhs[i];
+  }
+  return (*this);
 }
 
 //----------------------------------------------------------------------------
@@ -107,15 +132,15 @@ inline bit::math::point3
   bit::math::operator + ( const point3& lhs, const vector3<T>& rhs )
   noexcept
 {
-  return { lhs.x() + rhs.x(), lhs.y() + rhs.y(), lhs.z() + rhs.z() };
+  return point3(lhs)+=rhs;
 }
 
 template<typename T>
 inline bit::math::point3
-  bit::math::operator + ( const vector3<T>& lhs, const point3& rhs )
+  bit::math::operator - ( const point3& lhs, const vector3<T>& rhs )
   noexcept
 {
-  return { lhs.x() + rhs.x(), lhs.y() + rhs.y(), lhs.z() + rhs.z() };
+  return point3(lhs)-=rhs;
 }
 
 //------------------------------------------------------------------------
@@ -180,7 +205,9 @@ inline constexpr bool bit::math::almost_equal( const point3& lhs,
                                                const point3& rhs )
   noexcept
 {
-  return almost_equal( lhs, rhs, default_tolerance );
+  return almost_equal( lhs.x(), rhs.x() ) &&
+         almost_equal( lhs.y(), rhs.y() ) &&
+         almost_equal( lhs.z(), rhs.z() );
 }
 
 template<typename Arithmetic, std::enable_if_t<std::is_arithmetic<Arithmetic>::value>*>

@@ -53,6 +53,50 @@ namespace bit {
       /// \param y the y-coordinate
       constexpr point2( value_type x, value_type y ) noexcept;
 
+
+      /// \brief Move-constructs a point2 from another point2
+      ///
+      /// \param other the other point2 to move
+      point2( point2&& other ) noexcept = default;
+
+      /// \brief Copy-constructs a point2 from another point2
+      ///
+      /// \param other the other point2 to copy
+      point2( const point2& other ) noexcept = default;
+
+      //----------------------------------------------------------------------
+
+      /// \brief Move-assigns a point2 from another point2
+      ///
+      /// \param other the other point2 to move
+      /// \return reference to \c (*this)
+      point2& operator=( point2&& other ) noexcept = default;
+
+      /// \brief Copy-assigns a point2 from another point2
+      ///
+      /// \param other the other point2 to copy
+      /// \return reference to \c (*this)
+      point2& operator=( const point2& other ) noexcept = default;
+
+      //----------------------------------------------------------------------
+      // Compound Operators
+      //----------------------------------------------------------------------
+    public:
+
+      /// \brief Translates this point2 by the components of \p rhs
+      ///
+      /// \param rhs the direction to translate this point
+      /// \return reference to \c (*this)
+      template<typename T>
+      point2& operator+=( const vector2<T>& rhs ) noexcept;
+
+      /// \brief Translates this point2 by the components of \p rhs
+      ///
+      /// \param rhs the direction to translate this point
+      /// \return reference to \c (*this)
+      template<typename T>
+      point2& operator-=( const vector2<T>& rhs ) noexcept;
+
       //----------------------------------------------------------------------
       // Observers
       //----------------------------------------------------------------------
@@ -110,7 +154,7 @@ namespace bit {
     point2 operator + ( const point2& lhs, const vector2<T>& rhs ) noexcept;
 
     template<typename T>
-    point2 operator + ( const vector2<T>& lhs, const point2& rhs ) noexcept;
+    point2 operator - ( const point2& lhs, const vector2<T>& rhs ) noexcept;
 
     //------------------------------------------------------------------------
     // Free Functions
