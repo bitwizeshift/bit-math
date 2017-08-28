@@ -12,6 +12,38 @@ project("bit-math")
 # This project requires at least c++14 support
 set(CMAKE_CXX_VERSION 14)
 
+#-----------------------------------------------------------------------------
+# Options
+#-----------------------------------------------------------------------------
+
+option(BIT_MATH_DOUBLE_PRECISION "Use double precision for mathematics." off)
+
+option(BIT_COMPILE_INDEPENDENCE_TESTS "Include each header independently in a .cpp file to determine header independence" on)
+option(BIT_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" on)
+
+option(BIT_MATH_CACHED_TRIG "Build a cached table for triginometrec function results." off)
+
+set(BIT_MATH_TRIG_TABLE_SIZE 1024 CACHE STRING "The size of the trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
+set(BIT_MATH_INVERSE_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the inverse trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
+
+#-----------------------------------------------------------------------------
+# Option Validation
+#-----------------------------------------------------------------------------
+
+if( BIT_MATH_CACHED_TRIG AND NOT BIT_MATH_TRIG_TABLE_SIZE MATCHES "[1-9][0-9]+" )
+  message(FATAL_ERROR "'BIT_MATH_TRIG_TABLE_SIZE' contains an invalid value. This must be a numeric entry")
+endif()
+
+#-----------------------------------------------------------------------------
+
+if( BIT_MATH_CACHED_TRIG AND NOT BIT_MATH_INVERSE_TRIG_TABLE_SIZE MATCHES "[1-9][0-9]+" )
+  message(FATAL_ERROR "'BIT_MATH_INVERSE_TRIG_TABLE_SIZE' contains an invalid value. This must be a numeric entry")
+endif()
+
+#-----------------------------------------------------------------------------
+# Version Settings
+#-----------------------------------------------------------------------------
+
 git_build_information( PATCH_VARIABLE BIT_MATH_VERSION_PATCH
                        BUILD_VARIABLE BIT_MATH_BUILD_NUMBER
                        BRANCH_VARIABLE BIT_MATH_BRANCH
@@ -21,22 +53,20 @@ git_build_information( PATCH_VARIABLE BIT_MATH_VERSION_PATCH
 set(BIT_MATH_VERSION_MAJOR 0 CACHE STRING "major version of bit::math" FORCE)
 set(BIT_MATH_VERSION_MINOR 1 CACHE STRING "minor version of bit::math" FORCE)
 set(BIT_MATH_VERSION_PATCH ${BIT_MATH_VERSION_PATCH} CACHE STRING "patch version of bit::math" FORCE)
-set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}" CACHE STRING "version of bit::math" FORCE)
+set(BIT_MATH_VERSION_SUFFIX "a" CACHE STRING "version suffix" FORCE)
 set(BIT_MATH_BUILD_NUMBER "${BIT_MATH_BUILD_NUMBER}" CACHE STRING "build number of bit::math" FORCE)
+set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}${BIT_MATH_VERSION_SUFFIX}" CACHE STRING "version of bit::math" FORCE)
+set(BIT_MATH_VERSION_FULL "${BIT_MATH_VERSION} (${BIT_MATH_BRANCH} ${BIT_MATH_BUILD_NUMBER})" CACHE STRING "The long version string, including branch" FORCE)
+
+# Note: This generates into the current 'include' directory so that
+#       other local headers can use it from relative path includes, rather
+#       than requiring a specific include path to the library for this to work
+set(__template_file "${CMAKE_CURRENT_LIST_DIR}/version.hpp.in")
+set(__output_file "${CMAKE_CURRENT_LIST_DIR}/include/bit/math/version.hpp")
+
+configure_file("${__template_file}" "${__output_file}")
 
 message(STATUS "bit::math ${BIT_MATH_VERSION} (${BIT_MATH_BRANCH} ${BIT_MATH_BUILD_NUMBER})")
-
-make_version_header("${CMAKE_CURRENT_BINARY_DIR}/include/version.hpp"
-  MAJOR ${BIT_MATH_VERSION_MAJOR}
-  MINOR ${BIT_MATH_VERSION_MINOR}
-  PATCH ${BIT_MATH_VERSION_PATCH}
-  BUILD ${BIT_MATH_BUILD_NUMBER}
-  PREFIX BIT_MATH
-  SUFFIX "a"
-  TAG ${BIT_MATH_BRANCH}
-)
-
-include_directories("${CMAKE_CURRENT_BINARY_DIR}/include")
 
 #-----------------------------------------------------------------------------
 # bit::stl : Sources
@@ -64,35 +94,6 @@ set(sources
       "src/bit/math/euler.cpp"
       "src/bit/math/simplex.cpp"
 )
-
-#-----------------------------------------------------------------------------
-# Options
-#-----------------------------------------------------------------------------
-
-option(BIT_MATH_DOUBLE_PRECISION "Use double precision for mathematics." off)
-
-option(BIT_COMPILE_INDEPENDENCE_TESTS "Include each header independently in a .cpp file to determine header independence" on)
-option(BIT_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" on)
-
-option(BIT_MATH_CACHED_TRIG "Build a cached table for triginometrec function results." off)
-
-set(BIT_MATH_TRIG_TABLE_SIZE 1024 CACHE STRING "The size of the trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
-
-set(BIT_MATH_INVERSE_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the inverse trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
-
-#-----------------------------------------------------------------------------
-# Option Validation
-#-----------------------------------------------------------------------------
-
-if( BIT_MATH_CACHED_TRIG AND NOT BIT_MATH_TRIG_TABLE_SIZE MATCHES "[1-9][0-9]+" )
-  message(FATAL_ERROR "'BIT_MATH_TRIG_TABLE_SIZE' contains an invalid value. This must be a numeric entry")
-endif()
-
-#-----------------------------------------------------------------------------
-
-if( BIT_MATH_CACHED_TRIG AND NOT BIT_MATH_INVERSE_TRIG_TABLE_SIZE MATCHES "[1-9][0-9]+" )
-  message(FATAL_ERROR "'BIT_MATH_INVERSE_TRIG_TABLE_SIZE' contains an invalid value. This must be a numeric entry")
-endif()
 
 #-----------------------------------------------------------------------------
 # Generate trig-table
@@ -145,7 +146,7 @@ int main()
   if( NOT EXISTS "${sin_table_file}.in" )
     file(WRITE "${sin_table_file}.in"
 "
-// This file is autogenerated, do not modify
+// This file is autogenerated through cmake; do not modify
 //
 //
 

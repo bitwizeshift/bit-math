@@ -10,12 +10,6 @@
 #include <cassert>
 #include <array>
 
-#ifndef BIT_MATH_TRIG_TABLE_SIZE
-# define BIT_MATH_TRIG_TABLE_SIZE 4096
-#endif
-
-#define BIT_MATH_UNUSED(...) ((void) __VA_ARGS__)
-
 //----------------------------------------------------------------------
 // Public Static Members
 //----------------------------------------------------------------------
@@ -66,7 +60,7 @@ const bit::math::gradian
 const bit::math::gradian
   bit::math::gradian::neg_quarter_revolution = gradian(-100);
 
-#ifdef BIT_MATH_CACHED_TRIG
+#if BIT_MATH_CACHED_TRIG
 # ifndef BIT_MATH_TRIG_TABLE_SIZE
 #   define BIT_MATH_TRIG_TABLE_SIZE 1024
 # endif
@@ -114,8 +108,7 @@ namespace {
 bit::math::float_t bit::math::cached::detail::sin_lookup( float_t angle )
   noexcept
 {
-#ifdef BIT_MATH_CACHED_TRIG
-
+#if BIT_MATH_CACHED_TRIG
   auto i = std::ptrdiff_t();
 
   if( angle >= 0 ){
@@ -129,20 +122,3 @@ bit::math::float_t bit::math::cached::detail::sin_lookup( float_t angle )
   return 0; // fake return statement to suppress warnings
 #endif
 }
-
-//----------------------------------------------------------------------------
-
-bit::math::float_t bit::math::cached::detail::tan_lookup( float_t angle )
-  noexcept
-{
-#ifdef BIT_MATH_CACHED_TRIG
-  BIT_MATH_UNUSED(g_table_ptr);
-
-  std::ptrdiff_t i = int(angle * g_trig_factor) % BIT_MATH_TRIG_TABLE_SIZE;
-  return g_tan_table[i];
-#else
-  assert(false && "table-lookup not defined");
-  return 0; // fake return statement to suppress warnings
-#endif
-}
-

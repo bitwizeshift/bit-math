@@ -10,6 +10,7 @@
 #define BIT_MATH_QUATERNION_HPP
 
 // bit::math library
+#include "math.hpp"   // float_t
 #include "angles.hpp"
 #include "vector.hpp"
 #include "matrix.hpp"
@@ -52,11 +53,7 @@ namespace bit {
       //----------------------------------------------------------------------
     public:
 
-#ifdef BIT_MATH_DOUBLE_PRECISION
-      using value_type = double; ///< The underlying value type
-#else
-      using value_type = float;  ///< The underlying value type
-#endif
+      using value_type      = float_t;           ///< The underlying value type
       using pointer         = value_type*;       ///< The pointer type
       using reference       = value_type&;       ///< The reference type
       using const_pointer   = const value_type*; ///< The const reference type

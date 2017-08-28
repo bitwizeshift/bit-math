@@ -9,7 +9,8 @@
 #ifndef BIT_MATH_ANGLES_HPP
 #define BIT_MATH_ANGLES_HPP
 
-#include "math.hpp"
+#include "version.hpp" // BIT_MATH_CACHED_TRIG
+#include "math.hpp"    // bit::math::float_t
 
 // IWYU pragma: begin_exports
 #include "detail/angles/radian.hpp"
@@ -194,7 +195,7 @@ namespace bit {
     // Runtime Trigonometry
     //------------------------------------------------------------------------
 
-#ifndef BIT_MATH_CACHED_TRIG
+#if !BIT_MATH_CACHED_TRIG
     inline
 #endif
     namespace runtime {
@@ -345,7 +346,7 @@ namespace bit {
     // Cached Trigonometry
     //------------------------------------------------------------------------
 
-#ifdef BIT_MATH_CACHED_TRIG
+#if BIT_MATH_CACHED_TRIG
     inline
 #endif
     namespace cached {
@@ -354,10 +355,7 @@ namespace bit {
 
         float_t sin_lookup( float_t angle ) noexcept;
 
-        float_t tan_lookup( float_t angle ) noexcept;
-
       } // namespace detail
-
 
       //----------------------------------------------------------------------
       // Trigonometry
@@ -519,7 +517,6 @@ namespace bit {
   inline namespace casts {
     using namespace math::casts;
   } // inline namespace casts
-
 } // namespace bit
 
 #include "detail/angles.inl"

@@ -1,0 +1,52 @@
+/**
+ * \file version.hpp
+ *
+ * \brief This header defines the version information of this library, and
+ *        some details required for using this library externally (e.g.
+ *        floating-point type, trig table size, etc)
+ *
+ * \note This header is generated through CMake as part of the build system
+ */
+#ifndef BIT_MATH_VERSION_HPP
+#define BIT_MATH_VERSION_HPP
+
+/// Major version of this library
+#define BIT_MATH_VERSION_MAJOR @BIT_MATH_VERSION_MAJOR@
+
+/// Minor version of this library
+#cmakedefine BIT_MATH_VERSION_MINOR @BIT_MATH_VERSION_MINOR@
+
+/// Patch version of this library
+#cmakedefine BIT_MATH_VERSION_PATCH @BIT_MATH_VERSION_PATCH@
+
+/// The current build number
+#cmakedefine BIT_MATH_BUILD_NUMBER @BIT_MATH_BUILD_NUMBER@
+
+/// The version suffix
+#cmakedefine BIT_MATH_VERSION_SUFFIX "@BIT_MATH_VERSION_SUFFIX@"
+
+/// The version string (major.minor.patch)
+#cmakedefine BIT_MATH_VERSION "@BIT_MATH_VERSION@"
+
+/// The full version string (major.minor.patch (branch build-number))
+#cmakedefine BIT_MATH_VERSION_FULL "@BIT_MATH_VERSION_FULL@"
+
+//----------------------------------------------------------------------------
+
+/// Whether this library is using cached trig functionality or not
+#cmakedefine01 BIT_MATH_CACHED_TRIG
+
+/// Whether this library only uses double precision floating points
+#cmakedefine01 BIT_MATH_DOUBLE_PRECISION
+
+#if BIT_MATH_CACHED_TRIG
+
+  /// The size of the trig table
+  #cmakedefine BIT_MATH_TRIG_TABLE_SIZE @BIT_MATH_TRIG_TABLE_SIZE@
+
+  /// The size of the inverse trig table
+  #cmakedefine BIT_MATH_INVERSE_TRIG_TABLE_SIZE @BIT_MATH_INVERSE_TRIG_TABLE_SIZE@
+
+#endif
+
+#endif // BIT_MATH_VERSION_HPP

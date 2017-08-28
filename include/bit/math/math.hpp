@@ -9,6 +9,8 @@
 #ifndef BIT_MATH_MATH_HPP
 #define BIT_MATH_MATH_HPP
 
+#include "version.hpp"
+
 #include <cmath>
 #include <type_traits>
 #include <utility>
@@ -20,9 +22,7 @@ namespace bit {
     // Types
     //------------------------------------------------------------------------
 
-#ifdef BIT_MATH_LONG_DOUBLE_PRECISION
-    using float_t = long double;
-#elif defined(BIT_MATH_DOUBLE_PRECISION)
+#if BIT_MATH_DOUBLE_PRECISION
     using float_t = double;
 #else
     using float_t = float;

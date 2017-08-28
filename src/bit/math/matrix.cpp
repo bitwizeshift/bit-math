@@ -8,18 +8,6 @@
 
 #include <bit/math/matrix.hpp>
 
-#ifdef BIT_MATH_DOUBLE_PRECISION
-
-template class bit::math::matrix2<double>;
-template class bit::math::matrix3<double>;
-template class bit::math::matrix4<double>;
-
-#else
-
-template class bit::math::matrix2<float>;
-template class bit::math::matrix3<float>;
-template class bit::math::matrix4<float>;
-
-#endif
-
-
+template class bit::math::matrix2<bit::math::float_t>;
+template class bit::math::matrix3<bit::math::float_t>;
+template class bit::math::matrix4<bit::math::float_t>;

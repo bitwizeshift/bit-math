@@ -2,3 +2,7 @@
 .project
 .settings/
 /build/
+/Debug/
+
+# Generate files
+/include/bit/math/version.hpp
