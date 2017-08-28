@@ -512,18 +512,12 @@ namespace bit {
 
   } // namespace math
 
-  // Note: Below is a pair of namespace aliases + using directives. Normally
-  // in headers, using directives are an anti-pattern; but this is done
-  // to import inline namespaces into a new inline namespace
-
   inline namespace literals {
-    namespace angle_literals = math::literals::angle_literals;
-    using namespace angle_literals;
+    using namespace math::literals;
   } // inline namespace literals
 
   inline namespace casts {
-    namespace angle_casts = math::casts::angle_casts;
-    using namespace angle_casts;
+    using namespace math::casts;
   } // inline namespace casts
 
 } // namespace bit
