@@ -36,50 +36,42 @@ namespace bit {
       } // inline namespace angle_literals
     } // inline namespace literals
 
+    template<typename T>
+    struct is_angle : std::false_type{};
+
+    template<> struct is_angle<radian> : std::true_type{};
+    template<> struct is_angle<gradian> : std::true_type{};
+    template<> struct is_angle<degree> : std::true_type{};
+
     //------------------------------------------------------------------------
     // Casting
     //------------------------------------------------------------------------
 
     inline namespace casts {
+      inline namespace angle_casts {
 
-      /// \brief Performs a cast between angle types
-      ///
-      /// \tparam To the angle type to cast to
-      /// \param from the angle to cast from
-      /// \return the casted angle
-      template<typename To, typename From>
-      constexpr To angle_cast( From from ) noexcept;
+        /// \{
+        /// \brief Performs a cast between angle types
+        ///
+        /// \tparam To the angle type to cast to
+        /// \param from the angle to cast from
+        /// \return the casted angle
+        template<typename To, typename From>
+        constexpr To angle_cast( From from ) noexcept;
 
-      /// \brief Identity angle cast
-      ///
-      /// \tparam To the type to cast to
-      /// \param from the angle to cast
-      /// \return itself
-      template<>
-      constexpr radian angle_cast( radian angle ) noexcept;
+        template<> constexpr radian angle_cast( radian from ) noexcept;
+        template<> constexpr degree angle_cast( radian from ) noexcept;
+        template<> constexpr gradian angle_cast( radian from ) noexcept;
 
-      /// \brief Identity angle cast
-      ///
-      /// \tparam To the type to cast to
-      /// \param from the angle to cast
-      /// \return itself
-      template<>
-      constexpr degree angle_cast( degree angle ) noexcept;
+        template<> constexpr degree angle_cast( degree from ) noexcept;
+        template<> constexpr radian angle_cast( degree from ) noexcept;
+        template<> constexpr gradian angle_cast( degree from ) noexcept;
 
-      /// \brief Casts a \ref degree \p angle to a \ref radian
-      ///
-      /// \param angle the degree to cast to radians
-      /// \return the angle in radians
-      template<>
-      constexpr radian angle_cast( degree angle ) noexcept;
-
-      /// \brief Casts a \ref radian \p angle to a \ref degree
-      ///
-      /// \param angle the radian to cast to degrees
-      /// \return the angle in degrees
-      template<>
-      constexpr degree angle_cast( radian angle ) noexcept;
-
+        template<> constexpr gradian angle_cast( gradian from ) noexcept;
+        template<> constexpr radian angle_cast( gradian from ) noexcept;
+        template<> constexpr degree angle_cast( gradian from ) noexcept;
+        /// \}
+      } // inline namespace math_casts
     } // inline namespace casts
 
     //------------------------------------------------------------------------
@@ -519,6 +511,21 @@ namespace bit {
     radian arctan2( float_t f1, float_t f2 ) noexcept;
 
   } // namespace math
+
+  // Note: Below is a pair of namespace aliases + using directives. Normally
+  // in headers, using directives are an anti-pattern; but this is done
+  // to import inline namespaces into a new inline namespace
+
+  inline namespace literals {
+    namespace angle_literals = math::literals::angle_literals;
+    using namespace angle_literals;
+  } // inline namespace literals
+
+  inline namespace casts {
+    namespace angle_casts = math::casts::angle_casts;
+    using namespace angle_casts;
+  } // inline namespace casts
+
 } // namespace bit
 
 #include "detail/angles.inl"

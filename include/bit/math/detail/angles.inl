@@ -58,21 +58,24 @@ inline constexpr bit::math::degree
 //----------------------------------------------------------------------------
 
 template<>
-inline constexpr bit::math::radian bit::math::casts::angle_cast( radian from )
-  noexcept
-{
-  return from;
-}
-
-template<>
-inline constexpr bit::math::degree bit::math::casts::angle_cast( radian from )
+inline constexpr bit::math::degree
+  bit::math::casts::angle_casts::angle_cast( radian from )
   noexcept
 {
   return degree{ from.value() * detail::rad_to_deg };
 }
 
 template<>
-inline constexpr bit::math::gradian bit::math::casts::angle_cast( radian from )
+inline constexpr bit::math::radian
+  bit::math::casts::angle_casts::angle_cast( radian from )
+  noexcept
+{
+  return from;
+}
+
+template<>
+inline constexpr bit::math::gradian
+  bit::math::casts::angle_casts::angle_cast( radian from )
   noexcept
 {
   return gradian{ from.value() * detail::rad_to_grad };
@@ -81,45 +84,50 @@ inline constexpr bit::math::gradian bit::math::casts::angle_cast( radian from )
 //----------------------------------------------------------------------------
 
 template<>
-inline constexpr bit::math::gradian bit::math::casts::angle_cast( gradian from )
-  noexcept
-{
-  return from;
-}
-
-template<>
-inline constexpr bit::math::radian bit::math::casts::angle_cast( gradian from )
-  noexcept
-{
-
-  return radian{ from.value() * detail::grad_to_rad };
-}
-
-template<>
-inline constexpr bit::math::degree bit::math::casts::angle_cast( gradian from )
+inline constexpr bit::math::degree
+  bit::math::casts::angle_casts::angle_cast( gradian from )
   noexcept
 {
   return degree{ from.value() * detail::grad_to_deg };
 }
 
+template<>
+inline constexpr bit::math::radian
+  bit::math::casts::angle_casts::angle_cast( gradian from )
+  noexcept
+{
+  return radian{ from.value() * detail::grad_to_rad };
+}
+
+template<>
+inline constexpr bit::math::gradian
+  bit::math::casts::angle_casts::angle_cast( gradian from )
+  noexcept
+{
+  return from;
+}
+
 //----------------------------------------------------------------------------
 
 template<>
-inline constexpr bit::math::degree bit::math::casts::angle_cast( degree from )
+inline constexpr bit::math::degree
+  bit::math::casts::angle_casts::angle_cast( degree from )
   noexcept
 {
   return from;
 }
 
 template<>
-inline constexpr bit::math::radian bit::math::casts::angle_cast( degree from )
+inline constexpr bit::math::radian
+  bit::math::casts::angle_casts::angle_cast( degree from )
   noexcept
 {
   return radian{ from.value() * detail::deg_to_rad };
 }
 
 template<>
-inline constexpr bit::math::gradian bit::math::casts::angle_cast( degree from )
+inline constexpr bit::math::gradian
+  bit::math::casts::angle_casts::angle_cast( degree from )
   noexcept
 {
   return gradian{ from.value() * detail::deg_to_grad };
