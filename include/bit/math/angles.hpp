@@ -14,6 +14,7 @@
 // IWYU pragma: begin_exports
 #include "detail/angles/radian.hpp"
 #include "detail/angles/degree.hpp"
+#include "detail/angles/gradian.hpp"
 // IWYU pragma: end_exports
 
 namespace bit {
@@ -27,6 +28,8 @@ namespace bit {
       inline namespace angle_literals {
 
         constexpr radian operator""_rad( long double angle ) noexcept;
+
+        constexpr gradian operator""_grad( long double angle ) noexcept;
 
         constexpr degree operator""_deg( long double angle ) noexcept;
 
@@ -89,6 +92,12 @@ namespace bit {
     /// \return the rounded radian
     radian round( radian rad ) noexcept;
 
+    /// \brief Rounds a given \ref gradian \p grad
+    ///
+    /// \param grad the gradian to round
+    /// \return the rounded gradian
+    gradian round( gradian grad ) noexcept;
+
     /// \brief Rounds a given \ref degree \p deg
     ///
     /// \param deg the degree to round
@@ -103,6 +112,13 @@ namespace bit {
     /// \param rad the radian to round up
     /// \return the rounded radian
     radian ceil( radian rad ) noexcept;
+
+    /// \brief Rounds a given \ref gradian \p rad up as if by calling
+    ///        \code ceil( grad.value() ) \endcode
+    ///
+    /// \param grad the gradian to round up
+    /// \return the rounded gradian
+    gradian ceil( gradian grad ) noexcept;
 
     /// \brief Rounds a given \ref degree \p deg up as if by calling
     ///        \code ceil( deg.value() ) \endcode
@@ -120,6 +136,13 @@ namespace bit {
     /// \return the rounded radian
     radian floor( radian rad ) noexcept;
 
+    /// \brief Rounds a given \ref gradian \p grad up as if by calling
+    ///        \code floor( grad.value() ) \endcode
+    ///
+    /// \param grad the gradian to round down
+    /// \return the rounded radian
+    gradian floor( gradian grad ) noexcept;
+
     /// \brief Rounds a given \ref degree \p deg up as if by calling
     ///        \code floor( deg.value() ) \endcode
     ///
@@ -135,6 +158,13 @@ namespace bit {
     /// \param rad the radian to truncate
     /// \return the rounded radian
     radian trunc( radian rad ) noexcept;
+
+    /// \brief Truncates the given \ref gradian \p grad as if by calling
+    ///        \code trunc( grad.value() ) \endcode
+    ///
+    /// \param grad the gradian to truncate
+    /// \return the rounded gradian
+    gradian trunc( gradian rad ) noexcept;
 
     /// \brief Truncates the given \ref degree \p deg as if by calling
     ///        \code trunc( deg.value() ) \endcode
@@ -153,6 +183,13 @@ namespace bit {
     /// \param rad the radian to retrieve the absolute value of
     /// \return the rounded radian
     radian abs( radian rad ) noexcept;
+
+    /// \brief Retrieves the absolute value of the given \ref gradian \p grad
+    ///        as if by calling \code abs( grad.value() ) \endcode
+    ///
+    /// \param rad the gradian to retrieve the absolute value of
+    /// \return the rounded gradian
+    gradian abs( gradian grad ) noexcept;
 
     /// \brief Retrieves the absolute value of the given \ref degree \p deg
     ///        as if by calling \code abs( deg.value() ) \endcode
@@ -180,6 +217,12 @@ namespace bit {
       /// \return the result of \c cos(rad)
       float_t cos( radian rad ) noexcept;
 
+      /// \brief Calculates the cosine of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c cos(grad)
+      float_t cos( gradian grad ) noexcept;
+
       /// \brief Calculates the cosine of the given \ref degree angle, \p deg
       ///
       /// \param deg the angle
@@ -196,6 +239,12 @@ namespace bit {
       /// \param rad the angle
       /// \return the result of \c sin(rad)
       float_t sin( radian rad ) noexcept;
+
+      /// \brief Calculates the sine of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c sin(grad)
+      float_t sin( gradian grad ) noexcept;
 
       /// \brief Calculates the sine of the given \ref degree angle, \p deg
       ///
@@ -214,6 +263,12 @@ namespace bit {
       /// \return the result of \c tan(rad)
       float_t tan( radian rad ) noexcept;
 
+      /// \brief Calculates the tangent of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c tan(grad)
+      float_t tan( gradian grad ) noexcept;
+
       /// \brief Calculates the tangent of the given \ref degree angle, \p deg
       ///
       /// \param deg the angle
@@ -230,6 +285,12 @@ namespace bit {
       /// \param rad the angle
       /// \return the result of \c sec(rad)
       float_t sec( radian rad ) noexcept;
+
+      /// \brief Calculates the secant of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c sec(grad)
+      float_t sec( gradian grad ) noexcept;
 
       /// \brief Calculates the secant of the given \ref degree angle, \p deg
       ///
@@ -248,6 +309,12 @@ namespace bit {
       /// \return the result of \c csc(rad)
       float_t csc( radian rad ) noexcept;
 
+      /// \brief Calculates the cosecant of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c csc(grad)
+      float_t csc( gradian grad ) noexcept;
+
       /// \brief Calculates the cosecant of the given \ref degree angle, \p deg
       ///
       /// \param deg the angle
@@ -264,6 +331,12 @@ namespace bit {
       /// \param rad the angle
       /// \return the result of \c cot(rad)
       float_t cot( radian rad ) noexcept;
+
+      /// \brief Calculates the cotangent of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c cot(grad)
+      float_t cot( gradian grad ) noexcept;
 
       /// \brief Calculates the cotangent of the given \ref degree angle, \p deg
       ///
@@ -304,6 +377,12 @@ namespace bit {
       /// \return the result of \c cos(rad)
       float_t cos( radian rad ) noexcept;
 
+      /// \brief Calculates the cosine of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c cos(grad)
+      float_t cos( gradian grad ) noexcept;
+
       /// \brief Calculates the cosine of the given \ref degree angle, \p deg
       ///
       /// \param deg the angle
@@ -320,6 +399,12 @@ namespace bit {
       /// \param rad the angle
       /// \return the result of \c sin(rad)
       float_t sin( radian rad ) noexcept;
+
+      /// \brief Calculates the sine of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c sin(grad)
+      float_t sin( gradian grad ) noexcept;
 
       /// \brief Calculates the sine of the given \ref degree angle, \p deg
       ///
@@ -338,6 +423,12 @@ namespace bit {
       /// \return the result of \c tan(rad)
       float_t tan( radian rad ) noexcept;
 
+      /// \brief Calculates the tangent of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c tan(grad)
+      float_t tan( gradian grad ) noexcept;
+
       /// \brief Calculates the tangent of the given \ref degree angle, \p deg
       ///
       /// \param deg the angle
@@ -354,6 +445,12 @@ namespace bit {
       /// \param rad the angle
       /// \return the result of \c sec(rad)
       float_t sec( radian rad ) noexcept;
+
+      /// \brief Calculates the secant of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c sec(grad)
+      float_t sec( gradian grad ) noexcept;
 
       /// \brief Calculates the secant of the given \ref degree angle, \p deg
       ///
@@ -372,6 +469,12 @@ namespace bit {
       /// \return the result of \c csc(rad)
       float_t csc( radian rad ) noexcept;
 
+      /// \brief Calculates the cosecant of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c csc(grad)
+      float_t csc( gradian grad ) noexcept;
+
       /// \brief Calculates the cosecant of the given \ref degree angle, \p deg
       ///
       /// \param deg the angle
@@ -388,6 +491,12 @@ namespace bit {
       /// \param rad the angle
       /// \return the result of \c cot(rad)
       float_t cot( radian rad ) noexcept;
+
+      /// \brief Calculates the cotangent of the given \ref gradian angle, \p grad
+      ///
+      /// \param grad the angle
+      /// \return the result of \c cot(grad)
+      float_t cot( gradian grad ) noexcept;
 
       /// \brief Calculates the cotangent of the given \ref degree angle, \p deg
       ///

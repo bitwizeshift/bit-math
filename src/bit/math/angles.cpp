@@ -50,6 +50,22 @@ const bit::math::radian
 const bit::math::radian
   bit::math::radian::neg_quarter_revolution = radian( -half_pi<bit::math::radian::value_type>() );
 
+//----------------------------------------------------------------------
+
+const bit::math::gradian
+  bit::math::gradian::revolution = gradian(400);
+const bit::math::gradian
+  bit::math::gradian::half_revolution = gradian(200);
+const bit::math::gradian
+  bit::math::gradian::quarter_revolution = gradian(100);
+
+const bit::math::gradian
+  bit::math::gradian::neg_revolution = gradian(-400);
+const bit::math::gradian
+  bit::math::gradian::neg_half_revolution = gradian(-200);
+const bit::math::gradian
+  bit::math::gradian::neg_quarter_revolution = gradian(-100);
+
 #ifdef BIT_MATH_CACHED_TRIG
 # ifndef BIT_MATH_TRIG_TABLE_SIZE
 #   define BIT_MATH_TRIG_TABLE_SIZE 1024
