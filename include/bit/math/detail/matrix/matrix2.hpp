@@ -1,11 +1,11 @@
 /**
  * \file matrix2.hpp
  *
- * \brief todo: fill in documentation
+ * \brief This header defines a 2x2 matrix class
  *
- * \author Matthew Rodusek (matthew.rodusek@gmail.com)
+ * \note This is an internal header file, included by other library headers.
+ *       Do not attempt to use it directly.
  */
-
 #ifndef BIT_MATH_DETAIL_MATRIX_MATRIX2_HPP
 #define BIT_MATH_DETAIL_MATRIX_MATRIX2_HPP
 
