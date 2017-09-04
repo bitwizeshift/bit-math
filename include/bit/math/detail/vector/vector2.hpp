@@ -1,11 +1,11 @@
 /**
  * \file vector2.hpp
  *
- * \brief todo: fill in documentation
+ * \brief This header contains the implementation for a 2-component vector
  *
- * \author Matthew Rodusek (matthew.rodusek@gmail.com)
+ * \note This is an internal header file, included by other library headers.
+ *       Do not attempt to use it directly.
  */
-
 #ifndef BIT_MATH_DETAIL_VECTOR_VECTOR2_HPP
 #define BIT_MATH_DETAIL_VECTOR_VECTOR2_HPP
 

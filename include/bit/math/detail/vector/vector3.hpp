@@ -1,20 +1,26 @@
-/**
+ /**
  * \file vector3.hpp
  *
- * \brief todo: fill in documentation
+ * \brief This header contains the implementation for a 3-component vector
  *
- * \author Matthew Rodusek (matthew.rodusek@gmail.com)
+ * \note This is an internal header file, included by other library headers.
+ *       Do not attempt to use it directly.
  */
-
 #ifndef BIT_MATH_DETAIL_VECTOR_VECTOR3_HPP
 #define BIT_MATH_DETAIL_VECTOR_VECTOR3_HPP
 
 namespace bit {
   namespace math {
 
-    //////////////////////////////////////////////////////////////////////////
-    ///
-    //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  /// \brief This object represents a 3-component vector in linear algebra
+  ///
+  /// Most operations are marked \c constexpr to allow for compile-time
+  /// forward-calculations of vector sums and products.
+  ///
+  /// Operations on this type are able to promote results to reduce loss of
+  /// data, depending on what the operands are.
+  //////////////////////////////////////////////////////////////////////////
     template<typename T>
     class vector3
     {
