@@ -1,5 +1,5 @@
- #ifndef BIT_MATH_DETAIL_POINT_POINT3_INL
-#define BIT_MATH_DETAIL_POINT_POINT3_INL
+#ifndef BIT_MATH_DETAIL_GEOMETRY_POINT_POINT3_INL
+#define BIT_MATH_DETAIL_GEOMETRY_POINT_POINT3_INL
 
 //----------------------------------------------------------------------------
 // Constructors
@@ -116,6 +116,28 @@ inline void bit::math::point3::swap( point3& other )
   swap(m_data[2],other.m_data[2]);
 }
 
+
+inline constexpr bit::math::float_t bit::math::dot( const point3& lhs,
+                                                    const point3& rhs )
+  noexcept
+{
+  return lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z();
+}
+
+inline constexpr bit::math::float_t bit::math::dot( const vec3& lhs,
+                                                    const point3& rhs )
+  noexcept
+{
+  return lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z();
+}
+
+inline constexpr bit::math::float_t bit::math::dot( const point3& lhs,
+                                                    const vec3& rhs )
+  noexcept
+{
+  return lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z();
+}
+
 //----------------------------------------------------------------------------
 // Free Operators
 //----------------------------------------------------------------------------
@@ -221,4 +243,4 @@ inline constexpr bool bit::math::almost_equal( const point3& lhs,
          almost_equal( lhs.z(), rhs.z(), tolerance );
 }
 
-#endif /* BIT_MATH_DETAIL_POINT_POINT3_INL */
+#endif /* BIT_MATH_DETAIL_GEOMETRY_POINT_POINT3_INL */

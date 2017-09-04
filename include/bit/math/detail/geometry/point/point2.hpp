@@ -6,8 +6,8 @@
  * \note This is an internal header file, included by other library headers.
  *       Do not attempt to use it directly.
  */
-#ifndef BIT_MATH_DETAIL_POINT_POINT2_HPP
-#define BIT_MATH_DETAIL_POINT_POINT2_HPP
+#ifndef BIT_MATH_DETAIL_GEOMETRY_POINT_POINT2_HPP
+#define BIT_MATH_DETAIL_GEOMETRY_POINT_POINT2_HPP
 
 namespace bit {
   namespace math {
@@ -166,6 +166,17 @@ namespace bit {
     /// \param rhs the right point2 to swap
     constexpr void swap( point2& lhs, point2& rhs ) noexcept;
 
+    /// \{
+    /// \brief Performs the dot product between \p lhs and \p rhs
+    ///
+    /// \param lhs the left operand
+    /// \param rhs the right operand
+    /// \return the result of the dot product
+    constexpr float_t dot( const point2& lhs, const point2& rhs ) noexcept;
+    constexpr float_t dot( const vec2& lhs, const point2& rhs ) noexcept;
+    constexpr float_t dot( const point2& lhs, const vec2& rhs ) noexcept;
+    /// \}
+
     //------------------------------------------------------------------------
     // Comparisons
     //------------------------------------------------------------------------
@@ -231,4 +242,4 @@ namespace bit {
 
 #include "point2.inl"
 
-#endif /* BIT_MATH_DETAIL_POINT_POINT2_HPP */
+#endif /* BIT_MATH_DETAIL_GEOMETRY_POINT_POINT2_HPP */

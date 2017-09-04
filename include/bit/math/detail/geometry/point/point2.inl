@@ -1,5 +1,5 @@
-#ifndef BIT_MATH_DETAIL_POINT_POINT2_INL
-#define BIT_MATH_DETAIL_POINT_POINT2_INL
+#ifndef BIT_MATH_DETAIL_GEOMETRY_POINT_POINT2_INL
+#define BIT_MATH_DETAIL_GEOMETRY_POINT_POINT2_INL
 
 //----------------------------------------------------------------------------
 // Constructors
@@ -139,6 +139,27 @@ inline constexpr void  bit::math::swap( point2& lhs, point2& rhs )
   lhs.swap(rhs);
 }
 
+inline constexpr bit::math::float_t bit::math::dot( const point2& lhs,
+                                                    const point2& rhs )
+  noexcept
+{
+  return lhs.x() * rhs.x() + lhs.y() * rhs.y();
+}
+
+inline constexpr bit::math::float_t bit::math::dot( const vec2& lhs,
+                                                    const point2& rhs )
+  noexcept
+{
+  return lhs.x() * rhs.x() + lhs.y() * rhs.y();
+}
+
+inline constexpr bit::math::float_t bit::math::dot( const point2& lhs,
+                                                    const vec2& rhs )
+  noexcept
+{
+  return lhs.x() * rhs.x() + lhs.y() * rhs.y();
+}
+
 //------------------------------------------------------------------------
 // Comparisons
 //------------------------------------------------------------------------
@@ -205,4 +226,4 @@ inline constexpr bool bit::math::almost_equal( const point2& lhs,
          almost_equal( lhs.y(), rhs.y(), tolerance );
 }
 
-#endif /* BIT_MATH_DETAIL_POINT_POINT2_INL */
+#endif /* BIT_MATH_DETAIL_GEOMETRY_POINT_POINT2_INL */
