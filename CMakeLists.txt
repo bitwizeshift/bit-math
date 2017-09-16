@@ -22,6 +22,7 @@ option(BIT_COMPILE_INDEPENDENCE_TESTS "Include each header independently in a .c
 option(BIT_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" on)
 
 option(BIT_MATH_CACHED_TRIG "Build a cached table for triginometrec function results." off)
+option(BIT_MATH_INCLUDE_HALF "Includes bit::math::half for IEEE half-precision floating points" on)
 
 set(BIT_MATH_TRIG_TABLE_SIZE 1024 CACHE STRING "The size of the trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
 set(BIT_MATH_INVERSE_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the inverse trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
@@ -86,7 +87,6 @@ set(headers
 )
 
 set(sources
-      "${CMAKE_CURRENT_BINARY_DIR}/include/version.hpp"
       "src/bit/math/angles.cpp"
       "src/bit/math/vector.cpp"
       "src/bit/math/matrix.cpp"
@@ -94,6 +94,11 @@ set(sources
       "src/bit/math/euler.cpp"
       "src/bit/math/simplex.cpp"
 )
+
+if( BIT_MATH_INCLUDE_HALF )
+  list(APPEND headers "include/bit/math/half.hpp")
+  list(APPEND sources "src/bit/math/half.cpp")
+endif()
 
 #-----------------------------------------------------------------------------
 # Generate trig-table
