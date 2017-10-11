@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
+enable_testing()
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 
 include(GitBuildInformation)
@@ -7,25 +9,31 @@ include(MakeVersionHeader)
 include(AddIndependenceCheck)
 include(AddTestExecutable)
 
-project("bit-math")
-
-# This project requires at least c++14 support
-set(CMAKE_CXX_VERSION 14)
-
 #-----------------------------------------------------------------------------
-# Options
+# Project Setup
 #-----------------------------------------------------------------------------
+
+option(BIT_MATH_COMPILE_INDEPENDENCE_TESTS "Include each header independently in a .cpp file to determine header independence" on)
+option(BIT_MATH_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" on)
+option(BIT_MATH_GENERATE_DOCUMENTATION "Generates doxygen documentation" off)
 
 option(BIT_MATH_DOUBLE_PRECISION "Use double precision for mathematics." off)
-
-option(BIT_COMPILE_INDEPENDENCE_TESTS "Include each header independently in a .cpp file to determine header independence" on)
-option(BIT_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" on)
-
 option(BIT_MATH_CACHED_TRIG "Build a cached table for triginometrec function results." off)
 option(BIT_MATH_INCLUDE_HALF "Includes bit::math::half for IEEE half-precision floating points" on)
 
 set(BIT_MATH_TRIG_TABLE_SIZE 1024 CACHE STRING "The size of the trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
 set(BIT_MATH_INVERSE_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the inverse trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
+
+project("bit-math")
+
+if( CMAKE_BUILD_TYPE STREQUAL "" )
+  message(STATUS "CMAKE_BUILD_TYPE not set; defaulting to 'Debug'")
+  set(CMAKE_BUILD_TYPE DEBUG)
+endif()
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED true)
+
 
 #-----------------------------------------------------------------------------
 # Option Validation
@@ -42,22 +50,21 @@ if( BIT_MATH_CACHED_TRIG AND NOT BIT_MATH_INVERSE_TRIG_TABLE_SIZE MATCHES "[1-9]
 endif()
 
 #-----------------------------------------------------------------------------
-# Version Settings
+# Version Info
 #-----------------------------------------------------------------------------
-
-git_build_information( PATCH_VARIABLE BIT_MATH_VERSION_PATCH
-                       BUILD_VARIABLE BIT_MATH_BUILD_NUMBER
-                       BRANCH_VARIABLE BIT_MATH_BRANCH
-                       REF 574bf75d354bf269e0e5aa1fbb4290166bdba74d
-)
 
 set(BIT_MATH_VERSION_MAJOR 0 CACHE STRING "major version of bit::math" FORCE)
 set(BIT_MATH_VERSION_MINOR 1 CACHE STRING "minor version of bit::math" FORCE)
-set(BIT_MATH_VERSION_PATCH ${BIT_MATH_VERSION_PATCH} CACHE STRING "patch version of bit::math" FORCE)
+set(BIT_MATH_VERSION_PATCH 62 CACHE STRING "patch version of bit::math" FORCE)
 set(BIT_MATH_VERSION_SUFFIX "a" CACHE STRING "version suffix" FORCE)
 set(BIT_MATH_BUILD_NUMBER "${BIT_MATH_BUILD_NUMBER}" CACHE STRING "build number of bit::math" FORCE)
 set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}${BIT_MATH_VERSION_SUFFIX}" CACHE STRING "version of bit::math" FORCE)
-set(BIT_MATH_VERSION_FULL "${BIT_MATH_VERSION} (${BIT_MATH_BRANCH} ${BIT_MATH_BUILD_NUMBER})" CACHE STRING "The long version string, including branch" FORCE)
+
+message(STATUS "bit::math ${BIT_MATH_VERSION}")
+
+#-----------------------------------------------------------------------------
+# bit::math : Sources
+#-----------------------------------------------------------------------------
 
 # Note: This generates into the current 'include' directory so that
 #       other local headers can use it from relative path includes, rather
@@ -66,12 +73,6 @@ set(__template_file "${CMAKE_CURRENT_LIST_DIR}/version.hpp.in")
 set(__output_file "${CMAKE_CURRENT_LIST_DIR}/include/bit/math/version.hpp")
 
 configure_file("${__template_file}" "${__output_file}")
-
-message(STATUS "bit::math ${BIT_MATH_VERSION} (${BIT_MATH_BRANCH} ${BIT_MATH_BUILD_NUMBER})")
-
-#-----------------------------------------------------------------------------
-# bit::stl : Sources
-#-----------------------------------------------------------------------------
 
 set(headers
       "include/bit/math/angles.hpp"
@@ -171,7 +172,7 @@ namespace bit {
   # Generate Files
   #---------------------------------------------------------------------------
 
-  configure_file("${sin_table_generator_file}.in" "${sin_table_generator_file}"  @ONLY)
+  configure_file("${sin_table_generator_file}.in" "${sin_table_generator_file}" @ONLY)
 
   # Generate the cache source file if anything has changed
   if( "${sin_table_file}.in" IS_NEWER_THAN "${sin_table_file}" )
@@ -219,54 +220,40 @@ target_include_directories(math PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
 )
-target_compile_options(math PUBLIC -std=c++14
-  $<$<CONFIG:DEBUG>:-DDEBUG>
-  $<$<CONFIG:RELEASE>:-DNDEBUG -DRELEASE>
-)
-
-if( BIT_MATH_DOUBLE_PRECISION )
-  target_compile_options(math PUBLIC "-DBIT_MATH_DOUBLE_PRECISION")
-endif()
-
-if( BIT_MATH_CACHED_TRIG )
-  target_compile_definitions(math PUBLIC
-    "-DBIT_MATH_CACHED_TRIG"
-    "-DBIT_MATH_TRIG_TABLE_SIZE=${BIT_MATH_TRIG_TABLE_SIZE}"
-    "-DBIT_MATH_INVERSE_TRIG_TABLE_SIZE=${BIT_MATH_INVERSE_TRIG_TABLE_SIZE}"
-  )
+# Add compiler-specific flags
+if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  target_compile_options(math PUBLIC -Wall -pedantic)
+elseif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" )
+  target_compile_options(math PUBLIC -Wall -pedantic)
+elseif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
+  # TODO: Determine MSVC necessary compiler flags
 endif()
 
 #-----------------------------------------------------------------------------
-# bit::math : Interface (independence test)
+# bit::math : Independence Tests
 #-----------------------------------------------------------------------------
 
-if( BIT_COMPILE_INDEPENDENCE_TESTS )
+if( BIT_MATH_COMPILE_INDEPENDENCE_TESTS )
+  add_independence_check(math_independence ${headers})
 
-  add_independence_check(bit_math_interface ${headers})
-  target_include_directories("bit_math_interface" PRIVATE "include")
-  target_compile_options(bit_math_interface PRIVATE $<TARGET_PROPERTY:math,INTERFACE_COMPILE_OPTIONS>)
-
+  target_include_directories(math_independence PRIVATE $<TARGET_PROPERTY:math,INCLUDE_DIRECTORIES>)
+  target_compile_options(math_independence PRIVATE $<TARGET_PROPERTY:math,INTERFACE_COMPILE_OPTIONS>)
 endif()
 
 #-----------------------------------------------------------------------------
-# bit::math : Tests
+# bit::math : Unit Tests
 #-----------------------------------------------------------------------------
 
-if( BIT_COMPILE_UNIT_TESTS )
+if( BIT_MATH_COMPILE_UNIT_TESTS )
+  add_subdirectory(test)
+endif()
 
-  find_package(Catch)
+#-----------------------------------------------------------------------------
+# bit::math : Documentation
+#-----------------------------------------------------------------------------
 
-  set(test_sources
-        test/main.test.cpp
-        test/bit/math/vector2.test.cpp
-        test/bit/math/matrix2.test.cpp
-        test/bit/math/quaternion.test.cpp
-        test/bit/math/clamped.test.cpp
-  )
-
-  add_test_executable(bit_math_test ${test_sources})
-  target_link_libraries(bit_math_test "bit::math" "philsquared::Catch")
-
+if( BIT_MATH_GENERATE_DOCUMENTATION )
+  add_subdirectory(doc)
 endif()
 
 #-----------------------------------------------------------------------------
