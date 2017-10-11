@@ -1,8 +1,17 @@
-.cproject
-.project
-.settings/
-/build/
+# Eclipse
+/.project
+/.cproject
+/.settings/
+/.vscode/
 /Debug/
+/Release/
+
+# CLion
+/.idea/
+/cmake-build-*/
+
+# General CMake
+/build/
 
 # Generate files
 /include/bit/math/version.hpp
