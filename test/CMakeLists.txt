@@ -5,11 +5,10 @@ find_package(Catch REQUIRED)
 set(source_files
   main.test.cpp
 
-  test/main.test.cpp
-  test/bit/math/vector2.test.cpp
-  test/bit/math/matrix2.test.cpp
-  test/bit/math/quaternion.test.cpp
-  test/bit/math/clamped.test.cpp
+  bit/math/vector2.test.cpp
+  bit/math/matrix2.test.cpp
+  bit/math/quaternion.test.cpp
+  bit/math/clamped.test.cpp
 )
 
 add_executable(math_test ${source_files})

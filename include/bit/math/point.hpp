@@ -18,8 +18,8 @@
 #include <tuple>   // std::tie
 
 // IWYU pragma: begin_exports
-#include "point/point2.hpp"
-#include "point/point3.hpp"
+#include "detail/point/point2.hpp"
+#include "detail/point/point3.hpp"
 // IWYU pragma: end_exports
 
 #endif /* BIT_MATH_DETAIL_GEOMETRY_POINT_HPP */

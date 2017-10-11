@@ -84,7 +84,7 @@ set(headers
       "include/bit/math/interpolation.hpp"
       "include/bit/math/transform.hpp"
       "include/bit/math/simplex.hpp"
-      "include/bit/math/point.hpp"
+#      "include/bit/math/point.hpp"
 )
 
 set(sources
