@@ -9,10 +9,12 @@
 // Detail: Vector Casting
 //----------------------------------------------------------------------------
 
+namespace bit { namespace math { namespace detail {
+
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector2<T>,bit::math::vector2<U>>
+struct vector_caster<vector2<T>,vector2<U>>
 {
-  static constexpr bit::math::vector2<T> cast( const bit::math::vector2<U>& from )
+  static constexpr vector2<T> cast( const vector2<U>& from )
     noexcept
   {
     return vector2<T>( from );
@@ -20,9 +22,9 @@ struct bit::math::detail::vector_caster<bit::math::vector2<T>,bit::math::vector2
 };
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector3<T>,bit::math::vector2<U>>
+struct vector_caster<vector3<T>,vector2<U>>
 {
-  static constexpr bit::math::vector3<T> cast( const bit::math::vector2<U>& from )
+  static constexpr vector3<T> cast( const vector2<U>& from )
     noexcept
   {
     return vector3<T>( from.x(), from.y(), T(0) );
@@ -30,9 +32,9 @@ struct bit::math::detail::vector_caster<bit::math::vector3<T>,bit::math::vector2
 };
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector4<T>,bit::math::vector2<U>>
+struct vector_caster<vector4<T>,vector2<U>>
 {
-  static constexpr bit::math::vector4<T> cast( const bit::math::vector2<U>& from )
+  static constexpr vector4<T> cast( const vector2<U>& from )
     noexcept
   {
     return vector4<T>( from.x(), from.y(), T(0), T(0) );
@@ -42,9 +44,9 @@ struct bit::math::detail::vector_caster<bit::math::vector4<T>,bit::math::vector2
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector2<T>,bit::math::vector3<U>>
+struct vector_caster<vector2<T>,vector3<U>>
 {
-  static constexpr bit::math::vector2<T> cast( const bit::math::vector3<U>& from )
+  static constexpr vector2<T> cast( const vector3<U>& from )
     noexcept
   {
     return vector2<T>( from.x(), from.y() );
@@ -52,9 +54,9 @@ struct bit::math::detail::vector_caster<bit::math::vector2<T>,bit::math::vector3
 };
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector3<T>,bit::math::vector3<U>>
+struct vector_caster<vector3<T>,vector3<U>>
 {
-  static constexpr bit::math::vector3<T> cast( const bit::math::vector3<U>& from )
+  static constexpr vector3<T> cast( const vector3<U>& from )
     noexcept
   {
     return vector3<T>( from );
@@ -62,9 +64,9 @@ struct bit::math::detail::vector_caster<bit::math::vector3<T>,bit::math::vector3
 };
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector4<T>,bit::math::vector3<U>>
+struct vector_caster<vector4<T>,vector3<U>>
 {
-  static constexpr bit::math::vector4<T> cast( const bit::math::vector3<U>& from )
+  static constexpr vector4<T> cast( const vector3<U>& from )
     noexcept
   {
     return vector4<T>( from.x(), from.y(), from.z(), T(0) );
@@ -74,9 +76,9 @@ struct bit::math::detail::vector_caster<bit::math::vector4<T>,bit::math::vector3
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector2<T>,bit::math::vector4<U>>
+struct vector_caster<vector2<T>,vector4<U>>
 {
-  static constexpr bit::math::vector2<T> cast( const bit::math::vector4<U>& from )
+  static constexpr vector2<T> cast( const vector4<U>& from )
     noexcept
   {
     return vector2<T>( from.x(), from.y() );
@@ -84,9 +86,9 @@ struct bit::math::detail::vector_caster<bit::math::vector2<T>,bit::math::vector4
 };
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector3<T>,bit::math::vector4<U>>
+struct vector_caster<vector3<T>,vector4<U>>
 {
-  static constexpr bit::math::vector3<T> cast( const bit::math::vector4<U>& from )
+  static constexpr vector3<T> cast( const vector4<U>& from )
     noexcept
   {
     return vector3<T>( from.x(), from.y(), from.z() );
@@ -94,14 +96,16 @@ struct bit::math::detail::vector_caster<bit::math::vector3<T>,bit::math::vector4
 };
 
 template<typename T, typename U>
-struct bit::math::detail::vector_caster<bit::math::vector4<T>,bit::math::vector4<U>>
+struct vector_caster<vector4<T>,vector4<U>>
 {
-  static constexpr bit::math::vector4<T> cast( const bit::math::vector4<U>& from )
+  static constexpr vector4<T> cast( const vector4<U>& from )
     noexcept
   {
     return vector4<T>( from );
   }
 };
+
+} } } // namespace bit::math::detail
 
 //----------------------------------------------------------------------------
 // Vector Casting

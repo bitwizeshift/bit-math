@@ -5,24 +5,17 @@
 # error "matrix.inl included without first including declaration header matrix.hpp"
 #endif
 
-//----------------------------------------------------------------------------
-// Casts
-//----------------------------------------------------------------------------
-
-template<typename To, typename From>
-inline constexpr To bit::math::casts::matrix_cast(const From& from)
-{
-  return detail::matrix_caster<To,From>::cast(from);
-}
 
 //----------------------------------------------------------------------------
 // matrix2 -> matrixN
 //----------------------------------------------------------------------------
 
+namespace bit { namespace math { namespace detail {
+
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix2<T>, bit::math::matrix2<U>>
+struct matrix_caster<matrix2<T>, matrix2<U>>
 {
-  static constexpr bit::math::matrix2<T> cast( const bit::math::matrix2<U>& rhs )
+  static constexpr matrix2<T> cast( const matrix2<U>& rhs )
     noexcept
   {
     return matrix2<T>(rhs);
@@ -32,9 +25,9 @@ struct bit::math::detail::matrix_caster<bit::math::matrix2<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix3<T>, bit::math::matrix2<U>>
+struct matrix_caster<matrix3<T>, matrix2<U>>
 {
-  static constexpr bit::math::matrix3<T> cast( const bit::math::matrix2<U>& rhs )
+  static constexpr matrix3<T> cast( const matrix2<U>& rhs )
     noexcept
   {
     return matrix3<T>( rhs(0,0), rhs(0,1), T(0),
@@ -46,9 +39,9 @@ struct bit::math::detail::matrix_caster<bit::math::matrix3<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix4<T>, bit::math::matrix2<U>>
+struct matrix_caster<matrix4<T>, matrix2<U>>
 {
-  static constexpr bit::math::matrix4<T> cast( const bit::math::matrix2<U>& rhs )
+  static constexpr matrix4<T> cast( const matrix2<U>& rhs )
     noexcept
   {
     return matrix3<T>( rhs(0,0), rhs(0,1), T(0), T(0),
@@ -63,9 +56,9 @@ struct bit::math::detail::matrix_caster<bit::math::matrix4<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix2<T>, bit::math::matrix3<U>>
+struct matrix_caster<matrix2<T>, matrix3<U>>
 {
-  static constexpr bit::math::matrix2<T> cast( const bit::math::matrix3<U>& rhs )
+  static constexpr matrix2<T> cast( const matrix3<U>& rhs )
     noexcept
   {
     return matrix2<T>( rhs(0,0), rhs(0,1),
@@ -76,9 +69,9 @@ struct bit::math::detail::matrix_caster<bit::math::matrix2<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix3<T>, bit::math::matrix3<U>>
+struct matrix_caster<matrix3<T>, matrix3<U>>
 {
-  static constexpr bit::math::matrix3<T> cast( const bit::math::matrix3<U>& rhs )
+  static constexpr matrix3<T> cast( const matrix3<U>& rhs )
     noexcept
   {
     return matrix3<T>(rhs);
@@ -88,9 +81,9 @@ struct bit::math::detail::matrix_caster<bit::math::matrix3<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix4<T>, bit::math::matrix3<U>>
+struct matrix_caster<matrix4<T>, matrix3<U>>
 {
-  static constexpr bit::math::matrix4<T> cast( const bit::math::matrix3<U>& rhs )
+  static constexpr matrix4<T> cast( const matrix3<U>& rhs )
     noexcept
   {
     return matrix4<T>( rhs(0,0), rhs(0,1), T(0), rhs(0,2),
@@ -105,9 +98,9 @@ struct bit::math::detail::matrix_caster<bit::math::matrix4<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix2<T>, bit::math::matrix4<U>>
+struct matrix_caster<matrix2<T>, matrix4<U>>
 {
-  static constexpr bit::math::matrix2<T> cast( const bit::math::matrix4<U>& rhs )
+  static constexpr matrix2<T> cast( const matrix4<U>& rhs )
     noexcept
   {
     return matrix2<T>( rhs(0,0), rhs(0,1),
@@ -118,9 +111,9 @@ struct bit::math::detail::matrix_caster<bit::math::matrix2<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix3<T>, bit::math::matrix4<U>>
+struct matrix_caster<matrix3<T>, matrix4<U>>
 {
-  static constexpr bit::math::matrix3<T> cast( const bit::math::matrix4<U>& rhs )
+  static constexpr matrix3<T> cast( const matrix4<U>& rhs )
     noexcept
   {
     return matrix3<T>( rhs(0,0), rhs(0,1), rhs(0,3),
@@ -132,13 +125,25 @@ struct bit::math::detail::matrix_caster<bit::math::matrix3<T>, bit::math::matrix
 //----------------------------------------------------------------------------
 
 template<typename T, typename U>
-struct bit::math::detail::matrix_caster<bit::math::matrix4<T>, bit::math::matrix4<U>>
+struct matrix_caster<matrix4<T>, matrix4<U>>
 {
-  static constexpr bit::math::matrix4<T> cast( const bit::math::matrix4<U>& rhs )
+  static constexpr matrix4<T> cast( const matrix4<U>& rhs )
     noexcept
   {
     return matrix4<T>(rhs);
   }
 };
+
+} } } // namespace bit::math::detail
+
+//----------------------------------------------------------------------------
+// Casts
+//----------------------------------------------------------------------------
+
+template<typename To, typename From>
+inline constexpr To bit::math::casts::matrix_cast(const From& from)
+{
+  return detail::matrix_caster<To,From>::cast(from);
+}
 
 #endif /* BIT_MATH_DETAIL_MATRIX_INL */
