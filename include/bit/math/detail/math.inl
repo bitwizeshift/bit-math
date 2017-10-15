@@ -91,7 +91,7 @@ template<typename T, typename U>
 inline std::common_type_t<T,U> bit::math::mod( T num, U den )
   noexcept
 {
-  return std::fmod<std::common_type_t<T,U>>(num,den);
+  return std::fmod(num,den);
 }
 
 //----------------------------------------------------------------------------
