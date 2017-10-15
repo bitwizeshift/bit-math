@@ -37,6 +37,10 @@
 
 #include <cstring> // std::memcpy
 
+#ifndef BIT_MATH_UNUSED
+#define BIT_MATH_UNUSED(x) (void)x;
+#endif
+
 namespace {
 
   std::uint32_t half_uint32_li( std::uint32_t a );
@@ -179,7 +183,7 @@ bit::math::half::operator float()
   float_storage_t bytes;
   auto bits = half_to_float_bits(m_bits);
 
-  std::memcpy( &bits, &bytes, sizeof(float) );
+  std::memcpy( &bytes, &bits, sizeof(float) );
 
   return *reinterpret_cast<float*>(&bytes);
 }
@@ -482,6 +486,11 @@ namespace {
   inline std::uint16_t half_uint16_cntlz( std::uint16_t x )
   {
 #ifdef __GNUC__
+    // To avoid warnings when building GNUC-compliant code, mark these
+    // functions as used
+    BIT_MATH_UNUSED(&half_uint16_not);
+    BIT_MATH_UNUSED(&half_uint16_addm);
+
     const auto x32 = static_cast<std::uint32_t>(x);
     auto nlz32 = static_cast<std::uint16_t>( half_uint32_cntlz(x32) );
     auto nlz   = half_uint32_sub( nlz32, 16 );
