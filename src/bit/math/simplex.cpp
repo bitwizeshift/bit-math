@@ -51,10 +51,6 @@ namespace {
     return a[0]*x + a[1]*y;
   }
 
-  constexpr float_t dot3( const int* a, float_t x, float_t y, float_t z ) {
-    return a[0]*x + a[1]*y + a[2]*z;
-  }
-
   constexpr int floor_f_to_i( float_t x ) {
     return x > 0 ? ((int) x) : ((int) x) - 1;
   }
