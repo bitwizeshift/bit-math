@@ -23,8 +23,8 @@ inline constexpr bit::math::matrix2<T>::matrix2( const vector2<T>& v0,
                                                  const vector2<T>& v1 )
   noexcept
   : m_matrix {
-      v0.x(), v0.y(),
-      v1.x(), v1.y()
+      {v0.x(), v0.y()},
+      {v1.x(), v1.y()}
     }
 {
 
@@ -36,8 +36,8 @@ template<typename T>
 inline constexpr bit::math::matrix2<T>::matrix2( const value_type(&array)[4] )
   noexcept
   : m_matrix {
-      array[0], array[1],
-      array[2], array[3]
+      {array[0], array[1]},
+      {array[2], array[3]}
     }
 {
 
@@ -49,8 +49,8 @@ template<typename T>
 inline constexpr bit::math::matrix2<T>::matrix2( const value_type(&array)[2][2] )
   noexcept
   : m_matrix {
-      array[0][0], array[0][1],
-      array[1][0], array[1][1]
+      {array[0][0], array[0][1]},
+      {array[1][0], array[1][1]}
     }
 {
 
@@ -63,8 +63,8 @@ inline constexpr bit::math::matrix2<T>::matrix2( value_type m00, value_type m01,
                                                  value_type m10, value_type m11 )
   noexcept
   : m_matrix {
-      m00, m01,
-      m10, m11
+      {m00, m01},
+      {m10, m11}
     }
 {
 
@@ -77,8 +77,8 @@ template<typename U>
 inline constexpr bit::math::matrix2<T>::matrix2( const matrix2<U>& other )
   noexcept
   : m_matrix {
-      other.m_matrix[0][0], other.m_matrix[0][1],
-      other.m_matrix[1][0], other.m_matrix[1][1]
+      {other.m_matrix[0][0], other.m_matrix[0][1]},
+      {other.m_matrix[1][0], other.m_matrix[1][1]}
     }
 {
 
@@ -91,8 +91,8 @@ template<typename U>
 inline constexpr bit::math::matrix2<T>::matrix2( matrix2<U>&& other )
   noexcept
   : m_matrix {
-      std::move(other.m_matrix[0][0]), std::move(other.m_matrix[0][1]),
-      std::move(other.m_matrix[1][0]), std::move(other.m_matrix[1][1])
+      {std::move(other.m_matrix[0][0]), std::move(other.m_matrix[0][1])},
+      {std::move(other.m_matrix[1][0]), std::move(other.m_matrix[1][1])}
     }
 {
 

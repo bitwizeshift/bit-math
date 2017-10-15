@@ -28,10 +28,10 @@ inline constexpr bit::math::matrix4<T>::matrix4( const vector4<T>& v0,
                                                  const vector4<T>& v3 )
   noexcept
   : m_matrix {
-      v0.x(), v0.y(), v0.z(), v0.w(),
-      v1.x(), v1.y(), v1.z(), v1.w(),
-      v2.x(), v2.y(), v2.z(), v2.w(),
-      v3.x(), v3.y(), v3.z(), v3.w()
+      {v0.x(), v0.y(), v0.z(), v0.w()},
+      {v1.x(), v1.y(), v1.z(), v1.w()},
+      {v2.x(), v2.y(), v2.z(), v2.w()},
+      {v3.x(), v3.y(), v3.z(), v3.w()}
     }
 {
 
@@ -43,10 +43,10 @@ template<typename T>
 inline constexpr bit::math::matrix4<T>::matrix4( const value_type(&array)[16] )
   noexcept
   : m_matrix {
-      array[0],  array[1],  array[2],  array[3],
-      array[4],  array[5],  array[6],  array[7],
-      array[8],  array[9],  array[10], array[11],
-      array[12], array[13], array[15], array[16]
+      {array[0],  array[1],  array[2],  array[3]},
+      {array[4],  array[5],  array[6],  array[7]},
+      {array[8],  array[9],  array[10], array[11]},
+      {array[12], array[13], array[15], array[16]}
     }
 {
 
@@ -58,10 +58,10 @@ template<typename T>
 inline constexpr bit::math::matrix4<T>::matrix4( const value_type(&array)[4][4] )
   noexcept
   : m_matrix {
-      array[0][0], array[0][1], array[0][2], array[0][3],
-      array[1][0], array[1][1], array[1][2], array[1][3],
-      array[2][0], array[2][1], array[2][2], array[2][3],
-      array[3][0], array[3][1], array[3][2], array[3][3]
+      {array[0][0], array[0][1], array[0][2], array[0][3]},
+      {array[1][0], array[1][1], array[1][2], array[1][3]},
+      {array[2][0], array[2][1], array[2][2], array[2][3]},
+      {array[3][0], array[3][1], array[3][2], array[3][3]}
     }
 {
 
@@ -76,10 +76,10 @@ inline constexpr bit::math::matrix4<T>::matrix4( value_type m00, value_type m01,
                                                  value_type m30, value_type m31, value_type m32, value_type m33 )
   noexcept
   : m_matrix {
-      m00, m01, m02, m03,
-      m10, m11, m12, m13,
-      m20, m21, m23, m23,
-      m30, m31, m32, m33
+      {m00, m01, m02, m03},
+      {m10, m11, m12, m13},
+      {m20, m21, m23, m23},
+      {m30, m31, m32, m33}
     }
 {
 
@@ -92,10 +92,10 @@ template<typename U>
 inline constexpr bit::math::matrix4<T>::matrix4( const matrix4<U>& other )
   noexcept
   : m_matrix {
-      other.get(0,0), other.get(0,1), other.get(0,2), other.get(0,3),
-      other.get(1,0), other.get(1,1), other.get(1,2), other.get(1,3),
-      other.get(2,0), other.get(2,1), other.get(2,2), other.get(2,3),
-      other.get(3,0), other.get(3,1), other.get(3,2), other.get(3,3)
+      {other.get(0,0), other.get(0,1), other.get(0,2), other.get(0,3)},
+      {other.get(1,0), other.get(1,1), other.get(1,2), other.get(1,3)},
+      {other.get(2,0), other.get(2,1), other.get(2,2), other.get(2,3)},
+      {other.get(3,0), other.get(3,1), other.get(3,2), other.get(3,3)}
     }
 {
 
@@ -108,10 +108,10 @@ template<typename U>
 inline constexpr bit::math::matrix4<T>::matrix4( matrix4<U>&& other )
   noexcept
   : m_matrix {
-      std::move(other.get(0,0)), std::move(other.get(0,1)), std::move(other.get(0,2)), std::move(other.get(0,3)),
-      std::move(other.get(1,0)), std::move(other.get(1,1)), std::move(other.get(1,2)), std::move(other.get(1,3)),
-      std::move(other.get(2,0)), std::move(other.get(2,1)), std::move(other.get(2,2)), std::move(other.get(2,3)),
-      std::move(other.get(3,0)), std::move(other.get(3,1)), std::move(other.get(3,2)), std::move(other.get(3,3))
+      {std::move(other.get(0,0)), std::move(other.get(0,1)), std::move(other.get(0,2)), std::move(other.get(0,3))},
+      {std::move(other.get(1,0)), std::move(other.get(1,1)), std::move(other.get(1,2)), std::move(other.get(1,3))},
+      {std::move(other.get(2,0)), std::move(other.get(2,1)), std::move(other.get(2,2)), std::move(other.get(2,3))},
+      {std::move(other.get(3,0)), std::move(other.get(3,1)), std::move(other.get(3,2)), std::move(other.get(3,3))}
     }
 {
 
@@ -123,10 +123,10 @@ inline constexpr bit::math::matrix4<T>::matrix4( value_type m00, value_type m01,
                                                  value_type m10, value_type m11, value_type m12,
                                                  value_type m20, value_type m21, value_type m22  )
   noexcept
-  : m_matrix{ m00,  m01,  T(0), m02,
-              m10,  m11,  T(0), m12,
-              T(0), T(0), T(1), T(0),
-              m20,  m21,  T(0), m22 }
+  : m_matrix{ {m00,  m01,  T(0), m02},
+              {m10,  m11,  T(0), m12},
+              {T(0), T(0), T(1), T(0)},
+              {m20,  m21,  T(0), m22} }
 {
 
 }
@@ -136,10 +136,10 @@ inline constexpr bit::math::matrix4<T>::matrix4( const vector3<T>& v0,
                                                  const vector3<T>& v1,
                                                  const vector3<T>& v2 )
   noexcept
-  : m_matrix{ v0.x(), v0.y(), T(0), v0.z(),
-              v1.x(), v1.y(), T(0), v1.z(),
-              T(0),   T(0),   T(1), T(0),
-              v2.x(), v2.y(), T(0), v2.z() }
+  : m_matrix{ {v0.x(), v0.y(), T(0), v0.z()},
+              {v1.x(), v1.y(), T(0), v1.z()},
+              {T(0),   T(0),   T(1), T(0)},
+              {v2.x(), v2.y(), T(0), v2.z()} }
 {
 
 }
