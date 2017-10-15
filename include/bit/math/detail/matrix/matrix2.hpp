@@ -45,8 +45,8 @@ namespace bit {
       static constexpr bool column_major = false;
       static constexpr bool row_major    = true;
 
-      static constexpr size_type rows = 2;
-      static constexpr size_type columns = 2;
+      static constexpr index_type rows = 2;
+      static constexpr index_type columns = 2;
 
       //----------------------------------------------------------------------
       // Constructors
