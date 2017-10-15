@@ -11,20 +11,20 @@ set(source_files
   bit/math/clamped.test.cpp
 )
 
-add_executable(math_test ${source_files})
+add_executable(bit_math_test ${source_files})
 
-target_link_libraries(math_test PRIVATE "bit::math" "philsquared::Catch")
+target_link_libraries(bit_math_test PRIVATE "bit::math" "philsquared::Catch")
 
 #-----------------------------------------------------------------------------
 # Testing
 #-----------------------------------------------------------------------------
 
-add_test( NAME "math_test_default"
+add_test( NAME "bit_math_test_default"
           WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-          COMMAND "$<TARGET_FILE:math_test>" )
+          COMMAND "$<TARGET_FILE:bit_math_test>" )
 
 #-----------------------------------------------------------------------------
 
-add_test( NAME "math_test_all"
+add_test( NAME "bit_math_test_all"
           WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-          COMMAND "$<TARGET_FILE:math_test>" "*" )
+          COMMAND "$<TARGET_FILE:bit_math_test>" "*" )

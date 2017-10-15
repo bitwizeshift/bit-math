@@ -4,17 +4,15 @@ enable_testing()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 
-include(GitBuildInformation)
 include(MakeVersionHeader)
-include(AddIndependenceCheck)
-include(AddTestExecutable)
+include(AddHeaderSelfContainmentTest)
 
 #-----------------------------------------------------------------------------
 # Project Setup
 #-----------------------------------------------------------------------------
 
-option(BIT_MATH_COMPILE_INDEPENDENCE_TESTS "Include each header independently in a .cpp file to determine header independence" on)
-option(BIT_MATH_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" on)
+option(BIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS "Include each header independently in a .cpp file to determine header self-containment" off)
+option(BIT_MATH_COMPILE_UNIT_TESTS "Compile and run the unit tests for this library" off)
 option(BIT_MATH_GENERATE_DOCUMENTATION "Generates doxygen documentation" off)
 
 option(BIT_MATH_DOUBLE_PRECISION "Use double precision for mathematics." off)
@@ -24,16 +22,12 @@ option(BIT_MATH_INCLUDE_HALF "Includes bit::math::half for IEEE half-precision f
 set(BIT_MATH_TRIG_TABLE_SIZE 1024 CACHE STRING "The size of the trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
 set(BIT_MATH_INVERSE_TRIG_TABLE_SIZE 4096 CACHE STRING "The size of the inverse trig table to build. This is ignored unless BIT_MATH_CACHED_TRIG is on")
 
-project("bit-math")
+project("BitMemory")
 
 if( CMAKE_BUILD_TYPE STREQUAL "" )
   message(STATUS "CMAKE_BUILD_TYPE not set; defaulting to 'Debug'")
   set(CMAKE_BUILD_TYPE DEBUG)
 endif()
-
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED true)
-
 
 #-----------------------------------------------------------------------------
 # Option Validation
@@ -57,10 +51,17 @@ set(BIT_MATH_VERSION_MAJOR 0 CACHE STRING "major version of bit::math" FORCE)
 set(BIT_MATH_VERSION_MINOR 1 CACHE STRING "minor version of bit::math" FORCE)
 set(BIT_MATH_VERSION_PATCH 62 CACHE STRING "patch version of bit::math" FORCE)
 set(BIT_MATH_VERSION_SUFFIX "a" CACHE STRING "version suffix" FORCE)
-set(BIT_MATH_BUILD_NUMBER "${BIT_MATH_BUILD_NUMBER}" CACHE STRING "build number of bit::math" FORCE)
+
 set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}${BIT_MATH_VERSION_SUFFIX}" CACHE STRING "version of bit::math" FORCE)
 
 message(STATUS "bit::math ${BIT_MATH_VERSION}")
+
+#-----------------------------------------------------------------------------
+# bit::math
+#-----------------------------------------------------------------------------
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 #-----------------------------------------------------------------------------
 # bit::math : Sources
@@ -214,30 +215,32 @@ endif()
 # bit::math : Library
 #-----------------------------------------------------------------------------
 
-add_library(math ${sources} ${headers})
-add_library("bit::math" ALIAS math)
-target_include_directories(math PUBLIC
+add_library(bit_math ${sources} ${headers})
+add_library("bit::math" ALIAS bit_math)
+target_include_directories(bit_math PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
 )
+
 # Add compiler-specific flags
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  target_compile_options(math PUBLIC -Wall -pedantic)
+  target_compile_options(bit_math PUBLIC -Wall -pedantic)
 elseif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" )
-  target_compile_options(math PUBLIC -Wall -pedantic)
+  target_compile_options(bit_math PUBLIC -Wall -pedantic)
 elseif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
   # TODO: Determine MSVC necessary compiler flags
 endif()
 
 #-----------------------------------------------------------------------------
-# bit::math : Independence Tests
+# bit::math : Header Self-Containment Test
 #-----------------------------------------------------------------------------
 
-if( BIT_MATH_COMPILE_INDEPENDENCE_TESTS )
-  add_independence_check(math_independence ${headers})
+if( BIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS )
+  add_header_self_containment_test(bit_math_header_self_containment_test ${headers})
+  add_library(bit::math::header_self_containment_test ALIAS bit_math_header_self_containment_test)
 
-  target_include_directories(math_independence PRIVATE $<TARGET_PROPERTY:math,INCLUDE_DIRECTORIES>)
-  target_compile_options(math_independence PRIVATE $<TARGET_PROPERTY:math,INTERFACE_COMPILE_OPTIONS>)
+  target_include_directories(bit_math_header_self_containment_test PRIVATE $<TARGET_PROPERTY:bit_math,INCLUDE_DIRECTORIES>)
+  target_compile_options(bit_math_header_self_containment_test PRIVATE $<TARGET_PROPERTY:bit_math,INTERFACE_COMPILE_OPTIONS>)
 endif()
 
 #-----------------------------------------------------------------------------
@@ -266,7 +269,7 @@ if( EXISTS "$ENV{BIT_HOME}" )
   set(CMAKE_INSTALL_PREFIX "$ENV{BIT_HOME}")
 endif()
 
-export_library( TARGETS math
+export_library( TARGETS bit_math
                 PACKAGE Math
                 VERSION ${BIT_MATH_VERSION}
                 MAJOR_VERSION ${BIT_MATH_VERSION_MAJOR}

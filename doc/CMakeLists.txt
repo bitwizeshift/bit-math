@@ -6,7 +6,7 @@ find_program(CMAKE_DOXYGEN_PROGRAM doxygen)
 set(CMAKE_FIND_APPBUNDLE ${temp_state})
 
 # Add target for generating doxygen
-add_custom_target("bit-math-doxygen" ALL
+add_custom_target("bit_math_doxygen" ALL
                   COMMAND "${CMAKE_DOXYGEN_PROGRAM}" "Doxyfile"
                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                   COMMENT "Generating Doxygen documentation for 'bit::math'"
