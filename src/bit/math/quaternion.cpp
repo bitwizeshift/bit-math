@@ -501,20 +501,20 @@ void bit::math::quaternion::from_angles( radian yaw, radian pitch, radian roll )
 
   // y-vector
   const auto v0w = cos( half_yaw );
-  const auto v0x = 0.0;
+//  const auto v0x = 0.0;
   const auto v0y = sin( half_yaw );
-  const auto v0z = 0.0;
+//  const auto v0z = 0.0;
 
   // x-vector
   const auto v1w = cos( half_pitch );
   const auto v1x = sin( half_pitch );
-  const auto v1y = 0.0;
-  const auto v1z = 0.0;
+//  const auto v1y = 0.0;
+//  const auto v1z = 0.0;
 
   // z-vector
   const auto v2w = cos( half_roll );
-  const auto v2x = 0.0;
-  const auto v2y = 0.0;
+//  const auto v2x = 0.0;
+//  const auto v2y = 0.0;
   const auto v2z = sin( half_roll );
 
   // y * x vector
