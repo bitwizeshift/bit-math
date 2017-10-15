@@ -11,14 +11,14 @@
 
 #include "vector.hpp"
 
+#include <type_traits> // std::true_type/std::false_type
+#include <memory>      // std::addressof
+
 // IWYU pragma: begin_exports
 #include "detail/matrix/matrix2.hpp"
 #include "detail/matrix/matrix3.hpp"
 #include "detail/matrix/matrix4.hpp"
 // IWYU pragma: end_exports
-
-#include <type_traits> // std::true_type/std::false_type
-#include <memory>      // std::addressof
 
 namespace bit {
   namespace math {
