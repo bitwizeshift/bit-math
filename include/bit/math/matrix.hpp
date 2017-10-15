@@ -17,6 +17,9 @@
 #include "detail/matrix/matrix4.hpp"
 // IWYU pragma: end_exports
 
+#include <type_traits> // std::true_type/std::false_type
+#include <memory>      // std::addressof
+
 namespace bit {
   namespace math {
     namespace detail {
