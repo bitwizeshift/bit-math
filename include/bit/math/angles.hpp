@@ -167,6 +167,29 @@ namespace bit {
     degree trunc( degree deg ) noexcept;
 
     //------------------------------------------------------------------------
+
+    /// \brief Calculates the modulo of \p num by \p den
+    ///
+    /// \param num the numerator
+    /// \param den the denominator
+    /// \return the modulo of \p num and \p den
+    radian mod( radian num, radian den ) noexcept;
+
+    /// \brief Calculates the modulo of \p num by \p den
+    ///
+    /// \param num the numerator
+    /// \param den the denominator
+    /// \return the modulo of \p num and \p den
+    gradian mod( gradian num, gradian den ) noexcept;
+
+    /// \brief Calculates the modulo of \p num by \p den
+    ///
+    /// \param num the numerator
+    /// \param den the denominator
+    /// \return the modulo of \p num and \p den
+    degree mod( degree num, degree den ) noexcept;
+
+    //------------------------------------------------------------------------
     // Absolute Values
     //------------------------------------------------------------------------
 

@@ -155,24 +155,6 @@ inline bit::math::degree bit::math::round( degree angle )
   return degree{ std::round(angle.value()) };
 }
 
-//----------------------------------------------------------------------------
-
-inline bit::math::radian bit::math::trunc( radian angle )
-  noexcept
-{
-  return radian( std::trunc(angle.value()) );
-}
-
-inline bit::math::gradian bit::math::trunc( gradian angle )
-  noexcept
-{
-  return gradian( std::trunc(angle.value()) );
-}
-inline bit::math::degree bit::math::trunc( degree angle )
-  noexcept
-{
-  return degree( std::trunc(angle.value()) );
-}
 
 //----------------------------------------------------------------------------
 
@@ -213,6 +195,45 @@ inline bit::math::degree bit::math::floor( degree angle )
   noexcept
 {
   return degree( std::floor(angle.value()) );
+}
+
+//----------------------------------------------------------------------------
+
+inline bit::math::radian bit::math::trunc( radian angle )
+  noexcept
+{
+  return radian( std::trunc(angle.value()) );
+}
+
+inline bit::math::gradian bit::math::trunc( gradian angle )
+  noexcept
+{
+  return gradian( std::trunc(angle.value()) );
+}
+inline bit::math::degree bit::math::trunc( degree angle )
+  noexcept
+{
+  return degree( std::trunc(angle.value()) );
+}
+
+//----------------------------------------------------------------------------
+
+inline bit::math::radian bit::math::mod( radian num, radian den )
+  noexcept
+{
+  return radian( std::fmod(num.value(),den.value() ) );
+}
+
+inline bit::math::gradian bit::math::mod( gradian num, gradian den )
+  noexcept
+{
+  return gradian( std::fmod(num.value(),den.value() ) );
+}
+
+inline bit::math::degree bit::math::mod( degree num, degree den )
+  noexcept
+{
+  return degree( std::fmod(num.value(),den.value() ) );
 }
 
 //----------------------------------------------------------------------------
