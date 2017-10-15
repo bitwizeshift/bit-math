@@ -346,7 +346,7 @@ template<typename T>
 inline constexpr bit::math::matrix4<T>& bit::math::matrix4<T>::invert()
   noexcept
 {
-  value_type inv[4][4]; // The resultant matrix
+  value_type inv[4][4] = {}; // The resultant matrix
 
   inv[0][0] = get(1,1) * get(2,2) * get(3,3) -
               get(1,1) * get(2,3) * get(3,2) -
@@ -376,7 +376,7 @@ inline constexpr bit::math::matrix4<T>& bit::math::matrix4<T>::invert()
               get(3,0) * get(1,1) * get(2,2) +
               get(3,0) * get(1,2) * get(2,1);
 
-  T det = get(0,0) * inv[0][0] + get(0,1) * inv[1][0] + get(0,2) * inv[2][0] + get(0,3) * inv[3][0];
+  auto det = get(0,0) * inv[0][0] + get(0,1) * inv[1][0] + get(0,2) * inv[2][0] + get(0,3) * inv[3][0];
 
   // If determinant is zero, just return the identity matrix
   if( det == T(0) ){
