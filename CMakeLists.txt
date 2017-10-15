@@ -224,9 +224,9 @@ target_include_directories(bit_math PUBLIC
 
 # Add compiler-specific flags
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  target_compile_options(bit_math PUBLIC -Wall -pedantic)
+  target_compile_options(bit_math PUBLIC -Wall -Wstrict-aliasing -pedantic)
 elseif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" )
-  target_compile_options(bit_math PUBLIC -Wall -pedantic)
+  target_compile_options(bit_math PUBLIC -Wall -Wstrict-aliasing -pedantic)
 elseif( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
   # TODO: Determine MSVC necessary compiler flags
 endif()
