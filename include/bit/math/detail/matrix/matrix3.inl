@@ -1,11 +1,6 @@
 #ifndef BIT_MATH_DETAIL_MATRIX_MATRIX3_INL
 #define BIT_MATH_DETAIL_MATRIX_MATRIX3_INL
 
-#ifndef BIT_MATH_DETAIL_MATRIX_MATRIX3_HPP
-# error "matrix3.inl included without first including declaration header matrix3.hpp"
-#endif
-
-
 //----------------------------------------------------------------------------
 // Constants
 //----------------------------------------------------------------------------

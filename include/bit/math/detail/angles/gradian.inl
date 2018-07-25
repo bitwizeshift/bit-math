@@ -1,10 +1,6 @@
 #ifndef BIT_MATH_DETAIL_ANGLES_GRADIAN_INL
 #define BIT_MATH_DETAIL_ANGLES_GRADIAN_INL
 
-#ifndef BIT_MATH_DETAIL_ANGLES_GRADIAN_HPP
-# error "gradian.inl included without first including declaration header gradian.hpp"
-#endif
-
 //----------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------

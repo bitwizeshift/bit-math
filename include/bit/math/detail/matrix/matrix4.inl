@@ -1,11 +1,6 @@
 #ifndef BIT_MATH_DETAIL_MATRIX_MATRIX4_INL
 #define BIT_MATH_DETAIL_MATRIX_MATRIX4_INL
 
-#ifndef BIT_MATH_DETAIL_MATRIX_MATRIX4_HPP
-# error "matrix4.inl included without first including declaration header matrix4.hpp"
-#endif
-
-
 //----------------------------------------------------------------------------
 // Constants
 //----------------------------------------------------------------------------

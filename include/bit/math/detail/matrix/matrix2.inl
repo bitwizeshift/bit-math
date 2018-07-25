@@ -1,11 +1,6 @@
 #ifndef BIT_MATH_DETAIL_MATRIX_MATRIX2_INL
 #define BIT_MATH_DETAIL_MATRIX_MATRIX2_INL
 
-// inl sanity check
-#ifndef BIT_MATH_DETAIL_MATRIX_MATRIX2_HPP
-# error "matrix2.inl included without first including declaration header matrix2.hpp"
-#endif
-
 //----------------------------------------------------------------------------
 // Constants
 //----------------------------------------------------------------------------
