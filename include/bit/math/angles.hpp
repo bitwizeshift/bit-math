@@ -32,7 +32,6 @@
 #ifndef BIT_MATH_ANGLES_HPP
 #define BIT_MATH_ANGLES_HPP
 
-#include "version.hpp" // BIT_MATH_CACHED_TRIG
 #include "math.hpp"    // bit::math::float_t
 
 // IWYU pragma: begin_exports

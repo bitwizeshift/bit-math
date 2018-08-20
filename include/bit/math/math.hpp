@@ -32,8 +32,6 @@
 #ifndef BIT_MATH_MATH_HPP
 #define BIT_MATH_MATH_HPP
 
-#include "version.hpp"
-
 #include <cmath>
 #include <type_traits>
 #include <utility>
