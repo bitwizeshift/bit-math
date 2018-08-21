@@ -20,6 +20,7 @@ Note that `bit-math` only works on compiler that provide proper conformance for 
 | g++ 7.2.0             | Ubuntu 14.04.3 TLS                 |
 | clang++ 3.9.0         | Ubuntu 14.04.3 TLS                 |
 | clang++ 4.0.1         | Ubuntu 14.04.3 TLS                 |
+| clang++ 5.0.0         | Ubuntu 14.04.1 TLS                 |
 | clang xcode 7.3       | Darwin Kernel 15.6.0 (OSX 10.11.6) |
 | clang xcode 8.0       | Darwin Kernel 15.6.0 (OSX 10.11.6) |
 | clang xcode 8.1       | Darwin Kernel 16.1.0 (OSX 10.12.1) |
@@ -32,9 +33,9 @@ Note that `bit-math` only works on compiler that provide proper conformance for 
 
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
 
-The class is licensed under the [MIT License](http://opensource.org/licenses/MIT):
+This library is licensed under the [MIT License](http://opensource.org/licenses/MIT):
 
-Copyright &copy; 2017 Matthew Rodusek
+Copyright &copy; 2018 Matthew Rodusek
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
