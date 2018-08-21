@@ -43,18 +43,16 @@ if( BIT_MATH_ENABLE_ASAN )
   add_executable(math_asan ${source_files})
   add_executable(Bit::math_asan ALIAS math_asan)
 
-  target_link_libraries(math_asan PRIVATE
-    -fsanitize=address
-    -fsanitize=leak
-    -fuse-ld=gold
-  )
-
   target_compile_options(math_asan PRIVATE
     -g
     -O1
     -fno-omit-frame-pointer
     -fsanitize=address
     -fsanitize=leak
+  )
+  set_property(
+    TARGET math_asan
+    APPEND PROPERTY LINK_FLAGS -fsanitize=address -fsanitize=leak
   )
 
   add_test(
@@ -74,10 +72,10 @@ if( BIT_MATH_ENABLE_UBSAN )
 
   target_compile_options(math_ubsan PRIVATE
     -fsanitize=undefined
-    -fuse-ld=gold
   )
-  target_link_libraries(math_ubsan PRIVATE
-    -fsanitize=undefined
+  set_property(
+    TARGET math_ubsan
+    APPEND PROPERTY LINK_FLAGS -fsanitize=undefined
   )
 
   add_test(
@@ -97,10 +95,10 @@ if( BIT_MATH_ENABLE_TSAN )
 
   target_compile_options(math_tsan PRIVATE
     -fsanitize=thread
-    -fuse-ld=gold
   )
-  target_link_libraries(math_tsan PRIVATE
-    -fsanitize=thread
+  set_property(
+    TARGET math_tsan
+    APPEND PROPERTY LINK_FLAGS -fsanitize=thread
   )
 
   add_test(
@@ -118,14 +116,15 @@ if( BIT_MATH_ENABLE_COVERAGE )
   add_executable(math_coverage ${source_files})
   add_executable(Bit::math_coverage ALIAS math_coverage)
 
-  target_link_libraries(math_coverage PRIVATE
-    --coverage
-  )
   target_compile_options(math_coverage PRIVATE
     -g
     -O0
     -fprofile-arcs
     -ftest-coverage
+  )
+  set_property(
+    TARGET math_coverage
+    APPEND PROPERTY LINK_FLAGS --coverage
   )
 
   add_test(
