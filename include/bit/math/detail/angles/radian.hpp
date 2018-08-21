@@ -1,11 +1,34 @@
-/**
- * \file radian.hpp
- *
+/*****************************************************************************
+ * \file
  * \brief This internal header defines a type representing a radian angle
- *
- * \note This is an internal header file, included by other library headers.
- *       Do not attempt to use it directly.
- */
+ *****************************************************************************/
+
+/*
+  The MIT License (MIT)
+
+  Bit Math Library.
+  https://github.com/bitwizeshift/bit-math
+
+  Copyright (c) 2018 Matthew Rodusek
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+*/
 #ifndef BIT_MATH_DETAIL_ANGLES_RADIAN_HPP
 #define BIT_MATH_DETAIL_ANGLES_RADIAN_HPP
 
@@ -214,49 +237,12 @@ namespace bit {
     // Comparisons
     //------------------------------------------------------------------------
 
-    /// \brief Determines exact equality between two radian
-    ///
-    /// \param lhs the left radian
-    /// \param rhs the right radian
-    /// \return \c true if the two radian contain identical values
-    constexpr bool operator == ( const radian& lhs, const radian& rhs ) noexcept;
-
-    /// \brief Determines exact inequality between two radian
-    ///
-    /// \param lhs the left radian
-    /// \param rhs the right radian
-    /// \return \c true if the two radian contain at least 1 different value
-    constexpr bool operator != ( const radian& lhs, const radian& rhs ) noexcept;
-
-    /// \brief Determines whether \p lhs is numerically less than \p rhs
-    ///
-    /// \param lhs the left radian
-    /// \param rhs the right radian
-    /// \return \c true if \p lhs < \p rhs
-    constexpr bool operator < ( const radian& lhs, const radian& rhs ) noexcept;
-
-    /// \brief Determines whether \p lhs is numerically greater than \p rhs
-    ///
-    /// \param lhs the left radian
-    /// \param rhs the right radian
-    /// \return \c true if \p lhs > \p rhs
-    constexpr bool operator > ( const radian& lhs, const radian& rhs ) noexcept;
-
-    /// \brief Determines whether \p lhs is numerically less than or equal
-    ///        to \p rhs
-    ///
-    /// \param lhs the left radian
-    /// \param rhs the right radian
-    /// \return \c true if \p lhs <= \p rhs
-    constexpr bool operator <= ( const radian& lhs, const radian& rhs ) noexcept;
-
-    /// \brief Determines whether \p lhs is numerically greater than or equal
-    ///        to \p rhs
-    ///
-    /// \param lhs the left radian
-    /// \param rhs the right radian
-    /// \return \c true if \p lhs >= \p rhs
-    constexpr bool operator >= ( const radian& lhs, const radian& rhs ) noexcept;
+    constexpr bool operator==( const radian& lhs, const radian& rhs ) noexcept;
+    constexpr bool operator!=( const radian& lhs, const radian& rhs ) noexcept;
+    constexpr bool operator<( const radian& lhs, const radian& rhs ) noexcept;
+    constexpr bool operator>( const radian& lhs, const radian& rhs ) noexcept;
+    constexpr bool operator<=( const radian& lhs, const radian& rhs ) noexcept;
+    constexpr bool operator>=( const radian& lhs, const radian& rhs ) noexcept;
 
     //----------------------------------------------------------------------------
 

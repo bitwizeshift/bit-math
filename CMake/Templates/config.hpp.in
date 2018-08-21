@@ -1,14 +1,12 @@
 /*****************************************************************************
- * \file
- * \brief This header contains the geometric primitive 'point' used to
- *        identify a location in 2d or 3d coordinate systems
+ * \file version.hpp
+ * \brief This header defines configurated information from the build system.
+ *
+ * \note This header is generated, and should not be modified directly.
  *****************************************************************************/
 
 /*
   The MIT License (MIT)
-
-  Bit Math Library.
-  https://github.com/bitwizeshift/bit-math
 
   Copyright (c) 2018 Matthew Rodusek
 
@@ -30,19 +28,17 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef BIT_MATH_DETAIL_GEOMETRY_POINT_HPP
-#define BIT_MATH_DETAIL_GEOMETRY_POINT_HPP
+#ifndef BIT_MATH_CONFIG_HPP
+#define BIT_MATH_CONFIG_HPP
 
-// bit::math library
-#include "../vector.hpp"
+#cmakedefine01 BIT_MATH_CACHED_TRIG
 
-// std library
-#include <cstddef> // std::size_t, std::ptrdiff_t
-#include <tuple>   // std::tie
+namespace bit {
+  namespace math {
 
-// IWYU pragma: begin_exports
-#include "detail/point/point2.hpp"
-#include "detail/point/point3.hpp"
-// IWYU pragma: end_exports
+    using float_t = @FLOAT_TYPE@;
 
-#endif /* BIT_MATH_DETAIL_GEOMETRY_POINT_HPP */
+  } // namespace math
+} // namespace bit
+
+#endif // BIT_MATH_CONFIG_HPP

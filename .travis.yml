@@ -1,83 +1,318 @@
-#-----------------------------------------------------------------------------
-# Enable C++ language
-#-----------------------------------------------------------------------------
+#########################
+# project configuration #
+#########################
+
+# Enable C++
 language: cpp
 
-#-----------------------------------------------------------------------------
-# Branches to run
-#-----------------------------------------------------------------------------
+dist: trusty
+sudo: required
+group: edge
+
+###################
+# branch settings #
+###################
 branches:
   except:
     - prototype/.*
     - gh-pages
 
-
-#-----------------------------------------------------------------------------
-# Build Configurations
-#-----------------------------------------------------------------------------
+################
+# build matrix #
+################
 matrix:
   include:
-    # Linux gcc-6
+
+    ########################
+    # Linux gcc unit tests #
+    ########################
+
+    # Linux gcc-6 Unit Tests
     - os: linux
       compiler: gcc
+      env:
+        - TEST="g++-6 Unit Tests"
+        - COMPILER=g++-6
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-6']
-      env:
-        - TOOLSET=g++-6 BUILD_TYPE='Debug'
 
+    # Linux gcc-7 Unit Tests
     - os: linux
       compiler: gcc
+      env:
+        - TEST="g++-7 Unit Tests"
+        - COMPILER=g++-7
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-6']
+          packages: ['g++-7']
+
+    ########################
+    # Linux gcc sanitizers #
+    ########################
+
+    # gcc-7 address sanitizer
+    - os: linux
+      compiler: gcc
       env:
-        - TOOLSET=g++-6 BUILD_TYPE='Release'
+        - TEST="g++-7 Address Sanitizer"
+        - COMPILER=g++-7
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_ASAN=On -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
+        - CTEST_NAME=math_asan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7']
 
-    # OSX clang
-    - os: osx
+    # gcc-7 undefined behavior sanitizer
+    - os: linux
+      compiler: gcc
+      env:
+        - TEST="g++-7 Undefined Behavior Sanitizer"
+        - COMPILER=g++-7
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_UBSAN=On -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
+        - CTEST_NAME=math_ubsan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7']
+
+    # gcc-7 thread sanitizer
+    - os: linux
+      compiler: gcc
+      env:
+        - TEST="g++-7 Thread Sanitizer"
+        - COMPILER=g++-7
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_TSAN=On -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
+        - CTEST_NAME=math_tsan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7']
+
+    ###############
+    # Linux clang #
+    ###############
+
+    # Linux clang-3.9 Unit Tests
+    - os: linux
       compiler: clang
-      env: TOOLSET=clang++ BUILD_TYPE='Debug'
+      env:
+        - TEST="clang++-3.9 Unit Tests"
+        - COMPILER=clang++-3.9
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7', 'clang-3.9']
 
-    - os: osx
+    # Linux clang-4.0 Unit Tests
+    - os: linux
       compiler: clang
-      env: TOOLSET=clang++ BUILD_TYPE='Release'
+      env:
+        - TEST="clang++-4.0 Unit Tests"
+        - COMPILER=clang++-4.0
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0']
+          packages: ['g++-7', 'clang-4.0']
 
-#-----------------------------------------------------------------------------
-# Installation Step
-#-----------------------------------------------------------------------------
+    # Linux clang-5.0 Unit Tests
+    - os: linux
+      compiler: clang
+      env:
+        - TEST="clang++-5.0 Unit Tests"
+        - COMPILER=clang++-5.0
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'clang-5.0']
+
+    ##########################
+    # Linux clang sanitizers #
+    ##########################
+
+    # clang-5.0 address sanitizer
+    - os: linux
+      compiler: clang
+      env:
+        - TEST="clang++-5.0 Address Sanitizer"
+        - COMPILER=clang++-5.0
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_ASAN=On -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
+        - CTEST_NAME=math_asan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'clang-5.0']
+
+    # clang-5.0 undefined behavior sanitizer
+    - os: linux
+      compiler: clang
+      env:
+        - TEST="clang++-5.0 Undefined Behavior Sanitizer"
+        - COMPILER=clang++-5.0
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_UBSAN=On -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
+        - CTEST_NAME=math_ubsan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'clang-5.0']
+
+    # clang-5.0 thread sanitizer
+    - os: linux
+      compiler: clang
+      env:
+        - TEST="clang++-5.0 Thread Sanitizer"
+        - COMPILER=clang++-5.0
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_TSAN=On -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
+        - CTEST_NAME=math_tsan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'clang-5.0']
+
+    #############
+    # OSX clang #
+    #############
+
+    # xcode7.3 clang unit test
+    - os: osx
+      osx_image: xcode7.3
+      compiler: clang
+      env:
+        - TEST="xcode7.3 Unit Tests"
+        - COMPILER=clang++
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+
+    # xcode8 clang unit test
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env:
+        - TEST="xcode8 Unit Tests"
+        - COMPILER=clang++
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+
+    # xcode8.1 clang unit test
+    - os: osx
+      osx_image: xcode8.1
+      compiler: clang
+      env:
+        - TEST="xcode8.1 Unit Tests"
+        - COMPILER=clang++
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+
+    # xcode8.2 clang unit test
+    - os: osx
+      osx_image: xcode8.2
+      compiler: clang
+      env:
+        - TEST="xcode8.2 Unit Tests"
+        - COMPILER=clang++
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+
+    # xcode8.3 clang unit test
+    - os: osx
+      osx_image: xcode8.3
+      compiler: clang
+      env:
+        - TEST="xcode8.3 Unit Tests"
+        - COMPILER=clang++
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+
+    # xcode9 clang unit test
+    - os: osx
+      osx_image: xcode9
+      compiler: clang
+      env:
+        - TEST="xcode9 Unit Tests"
+        - COMPILER=clang++
+        - CONFIGURATION=Release
+        - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+
+######################
+# Installation Steps #
+######################
 install:
   - cd ../
 
   # Get dependency 'catch'
   - mkdir -p catch/include
-  - wget https://github.com/philsquared/Catch/releases/download/v1.10.0/catch.hpp -P catch/include
+  - wget https://github.com/catchorg/Catch2/releases/download/v2.0.1/catch.hpp -P catch/include
   - export CATCH_DIR=$(pwd)/catch/include
 
   # Install cmake 3.9.4 for Linux
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-check-certificate https://www.cmake.org/files/v3.9/cmake-3.9.4-Linux-x86_64.tar.gz; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar -xzf cmake-3.9.4-Linux-x86_64.tar.gz; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CMAKE=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Linux-x86_64/bin/cmake; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CTEST=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Linux-x86_64/bin/ctest; fi
 
   # Install cmake 3.9.4 for MacOS
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --no-check-certificate https://cmake.org/files/v3.9/cmake-3.9.4-Darwin-x86_64.tar.gz; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar -xzf cmake-3.9.4-Darwin-x86_64.tar.gz && ls && ls cmake-3.9.4-Darwin-x86_64; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CMAKE=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Darwin-x86_64/CMake.app/Contents/bin/cmake; fi
-
-  - export CXX=$TOOLSET
-  - $CXX --version
-  - $CMAKE --version
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CTEST=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Darwin-x86_64/CMake.app/Contents/bin/ctest; fi
 
   - cd bit-math/
 
-#-----------------------------------------------------------------------------
-# Build Step
-#-----------------------------------------------------------------------------
-script:
-  - mkdir build/ && cd build/
+##################
+# Pre-build step #
+##################
+before_script:
+  # Output information
+  - echo $TEST
+  - uname -a
+  - $CXX --version
+  - $CMAKE --version
+
+  # Build
+  - mkdir build/
+  - cd build/
   - export CTEST_OUTPUT_ON_FAILURE=1
-  - $CMAKE .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INCLUDE_PATH=$CATCH_DIR -DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On -DBIT_MATH_COMPILE_UNIT_TESTS=On
-  - $CMAKE --build .
-  - $CMAKE --build . --target test
+
+  # CMake arguments
+  - CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_BUILD_TYPE=$CONFIGURATION"
+  - CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_INCLUDE_PATH=$CATCH_DIR"
+  - CMAKE_ARGS="$CMAKE_ARGS -DBIT_MATH_COMPILE_UNIT_TESTS=On"
+  - CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_CXX_COMPILER=$COMPILER"
+
+######################
+# Default Build Step #
+######################
+script:
+  - $CMAKE .. $CMAKE_ARGS
+  - $CMAKE --build . --config $CONFIGURATION
+  - $CTEST --output-on-failure --tests-regex "$CTEST_NAME"

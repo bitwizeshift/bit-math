@@ -1,10 +1,6 @@
 #ifndef BIT_MATH_DETAIL_ANGLES_RADIAN_INL
 #define BIT_MATH_DETAIL_ANGLES_RADIAN_INL
 
-#ifndef BIT_MATH_DETAIL_ANGLES_RADIAN_HPP
-# error "radian.inl included without first including declaration header radian.hpp"
-#endif
-
 //----------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------
