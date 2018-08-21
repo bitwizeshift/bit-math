@@ -1,0 +1,65 @@
+#########################
+# project configuration #
+#########################
+
+version: '{build}'
+
+os:
+  - Visual Studio 2017
+
+################
+# build matrix #
+################
+
+environment:
+  matrix:
+  - additional_flags: ""
+  - additional_flags: "/permissive- /std:c++latest"
+
+build:
+  verbosity: detailed
+
+configuration: Release
+
+init: []
+
+######################
+# Installation Steps #
+######################
+install:
+  - mkdir C:\projects\dependencies
+  - cd C:\projects\dependencies
+
+  # Install a recent CMake
+  - set CMAKE_URL="https://cmake.org/files/v3.9/cmake-3.9.4-win64-x64.zip"
+  - appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
+  - 7z x cmake.zip -oC:\projects\dependencies\cmake > nul
+  - set PATH=C:\projects\dependencies\cmake\bin;%PATH%
+  - cmake --version
+
+  # Download Catch
+  - set CATCH_DIR=%cd%\catch\include
+  - mkdir %CATCH_DIR%
+  - appveyor DownloadFile https://github.com/catchorg/Catch2/releases/download/v2.0.1/catch.hpp -FileName %CATCH_DIR%\catch.hpp
+
+#####################
+# Update Submodules #
+#####################
+before_build:
+  - cd "C:\projects\bit-math"
+
+##############
+# Build Step #
+##############
+build_script:
+  - mkdir build
+  - cd build
+  - SET GEN="Visual Studio 15 2017"
+  - cmake .. -G%GEN% -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DCMAKE_INCLUDE_PATH=%CATCH_DIR% -DBIT_MATH_COMPILE_UNIT_TESTS=On -DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On
+  - cmake --build . --config %CONFIGURATION%
+
+#############
+# Test Step #
+#############
+test_script:
+  - ctest --output-on-failure --build-config %CONFIGURATION%
