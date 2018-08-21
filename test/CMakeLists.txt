@@ -55,7 +55,6 @@ if( BIT_MATH_ENABLE_ASAN )
     -fno-omit-frame-pointer
     -fsanitize=address
     -fsanitize=leak
-    -fuse-ld=gold
   )
 
   add_test(
@@ -79,7 +78,6 @@ if( BIT_MATH_ENABLE_UBSAN )
   )
   target_link_libraries(math_ubsan PRIVATE
     -fsanitize=undefined
-    -fuse-ld=gold
   )
 
   add_test(
@@ -103,7 +101,6 @@ if( BIT_MATH_ENABLE_TSAN )
   )
   target_link_libraries(math_tsan PRIVATE
     -fsanitize=thread
-    -fuse-ld=gold
   )
 
   add_test(
