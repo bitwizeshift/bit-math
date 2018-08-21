@@ -52,12 +52,10 @@ if( BIT_MATH_ENABLE_ASAN )
   )
   set_property(
     TARGET math_asan
-    APPEND PROPERTY LINK_FLAGS -fsanitize=address
+    APPEND PROPERTY LINK_FLAGS "-fsanitize=address" "-fsanitize=leak"
   )
-  set_property(
-    TARGET math_asan
-    APPEND PROPERTY LINK_FLAGS -fsanitize=leak
-  )
+  get_property(tmp TARGET math_asan PROPERTY LINK_FLAGS)
+  message(VERBOSE "asan: ${tmp}")
 
   add_test(
     NAME "math_asan_default"
