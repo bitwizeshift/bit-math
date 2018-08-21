@@ -4,6 +4,7 @@
 conanfile.py for Bit::math
 """
 
+##############################################################################
 # The MIT License (MIT)
 #
 # Copyright (c) 2018 Matthew Rodusek
@@ -25,9 +26,7 @@ conanfile.py for Bit::math
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-#!/usr/bin/env python3
-
+##############################################################################
 from conans import ConanFile, CMake, tools
 
 def extract_cmake_version():

@@ -13,18 +13,11 @@ set(source_files
 
 add_executable(bit_math_test ${source_files})
 
-target_link_libraries(bit_math_test PRIVATE "bit::math" "philsquared::Catch")
+target_link_libraries(bit_math_test PRIVATE "Bit::math" "philsquared::Catch")
 
 #-----------------------------------------------------------------------------
 # Testing
 #-----------------------------------------------------------------------------
 
 add_test( NAME "bit_math_test_default"
-          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-          COMMAND "$<TARGET_FILE:bit_math_test>" )
-
-#-----------------------------------------------------------------------------
-
-add_test( NAME "bit_math_test_all"
-          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-          COMMAND "$<TARGET_FILE:bit_math_test>" "*" )
+          COMMAND bit_math_test -r junit -o "${CMAKE_CURRENT_BINARY_DIR}/bit_math_test.xml" )
