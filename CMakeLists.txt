@@ -31,7 +31,7 @@ project("BitMath" LANGUAGES CXX)
 
 set(BIT_MATH_VERSION_MAJOR 0 CACHE STRING "major version of bit::math" FORCE)
 set(BIT_MATH_VERSION_MINOR 1 CACHE STRING "minor version of bit::math" FORCE)
-set(BIT_MATH_VERSION_PATCH 62 CACHE STRING "patch version of bit::math" FORCE)
+set(BIT_MATH_VERSION_PATCH 63 CACHE STRING "patch version of bit::math" FORCE)
 
 set(BIT_MATH_VERSION "${BIT_MATH_VERSION_MAJOR}.${BIT_MATH_VERSION_MINOR}.${BIT_MATH_VERSION_PATCH}" CACHE STRING "version of Bit::math" FORCE)
 
