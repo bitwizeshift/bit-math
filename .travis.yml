@@ -315,4 +315,4 @@ before_script:
 script:
   - $CMAKE .. $CMAKE_ARGS
   - $CMAKE --build . --config $CONFIGURATION
-  - $CTEST --output-on-failure --tests-regex $CTEST_NAME
+  - $CTEST --output-on-failure --tests-regex "$CTEST_NAME"

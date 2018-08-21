@@ -36,8 +36,8 @@ add_test(
 
 #-----------------------------------------------------------------------------
 
-# Enable sanitizers if compiling  with clang or gcc
-if( (UNIX OR APPLE) AND
+# Don't enable sanitizers on compilers other than Clang/gcc on Unix or Mac
+if( NOT (UNIX OR APPLE) OR
     NOT ("${CMAKE_CXX_ENABLER_ID}" STREQUAL "Clang" AND
          "${CMAKE_CXX_ENABLER_ID}" STREQUAL "GNU") )
   return()
