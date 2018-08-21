@@ -313,7 +313,7 @@ inline constexpr bit::math::vector4<T>
   bit::math::vector4<T>::inverse()
   const noexcept
 {
-  return vector4<T>{*this}.invert();
+  return vector4<T>(*this).invert();
 }
 
 //----------------------------------------------------------------------------

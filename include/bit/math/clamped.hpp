@@ -104,7 +104,7 @@ namespace bit {
       ///
       /// \param other the other clamped to move
       /// \return reference to \c (*this)
-      clamped& operator=( clamped& other ) noexcept = default;
+      clamped& operator=( clamped&& other ) noexcept = default;
 
       //----------------------------------------------------------------------
       // Conversion
