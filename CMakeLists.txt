@@ -58,9 +58,6 @@ if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
   set(CMAKE_BUILD_TYPE DEBUG)
 endif()
 
-include(EnableCCache)
-enable_ccache()
-
 #-----------------------------------------------------------------------------
 
 if(BIT_MATH_DOUBLE_PRECISION)
