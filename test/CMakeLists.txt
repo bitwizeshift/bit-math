@@ -34,15 +34,6 @@ add_test(
   COMMAND math_test -r junit -o "${CMAKE_CURRENT_BINARY_DIR}/bit_math_test.xml"
 )
 
-#-----------------------------------------------------------------------------
-
-# Don't enable sanitizers on compilers other than Clang/gcc on Unix or Mac
-if( NOT (UNIX OR APPLE) OR
-    NOT ("${CMAKE_CXX_ENABLER_ID}" MATCHES "Clang" OR
-         "${CMAKE_CXX_ENABLER_ID}" STREQUAL "GNU") )
-  return()
-endif()
-
 ##############################################################################
 # Address Sanitizer
 ##############################################################################
