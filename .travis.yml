@@ -35,6 +35,7 @@ matrix:
         - COMPILER=g++-6
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -48,6 +49,7 @@ matrix:
         - COMPILER=g++-7
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -64,7 +66,8 @@ matrix:
         - TEST="g++-7 Address Sanitizer"
         - COMPILER=g++-7
         - CONFIGURATION=Debug
-        - CMAKE_ARGS="-DBIT_MATH_COMPILE_ASAN=On"
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_ASAN=On"
+        - CTEST_NAME=math_asan_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -77,7 +80,8 @@ matrix:
         - TEST="g++-7 Undefined Behavior Sanitizer"
         - COMPILER=g++-7
         - CONFIGURATION=Debug
-        - CMAKE_ARGS="-DBIT_MATH_COMPILE_UBSAN=On"
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_UBSAN=On"
+        - CTEST_NAME=math_ubsan_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -90,7 +94,8 @@ matrix:
         - TEST="g++-7 Thread Sanitizer"
         - COMPILER=g++-7
         - CONFIGURATION=Debug
-        - CMAKE_ARGS="-DBIT_MATH_COMPILE_TSAN=On"
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_TSAN=On"
+        - CTEST_NAME=math_tsan_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -108,6 +113,7 @@ matrix:
         - COMPILER=clang++-3.9
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -121,6 +127,7 @@ matrix:
         - COMPILER=clang++-4.0
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0']
@@ -134,6 +141,53 @@ matrix:
         - COMPILER=clang++-5.0
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'clang-5.0']
+
+    ##########################
+    # Linux clang sanitizers #
+    ##########################
+
+    # clang-5.0 address sanitizer
+    - os: linux
+      compiler: clang
+      env:
+        - TEST="clang++-5.0 Address Sanitizer"
+        - COMPILER=clang++-5.0
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_ASAN=On"
+        - CTEST_NAME=math_asan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'clang-5.0']
+
+    # clang-5.0 undefined behavior sanitizer
+    - os: linux
+      compiler: clang
+      env:
+        - TEST="clang++-5.0 Undefined Behavior Sanitizer"
+        - COMPILER=clang++-5.0
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_UBSAN=On"
+        - CTEST_NAME=math_ubsan_default
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'clang-5.0']
+
+    # clang-5.0 thread sanitizer
+    - os: linux
+      compiler: clang
+      env:
+        - TEST="clang++-5.0 Thread Sanitizer"
+        - COMPILER=clang++-5.0
+        - CONFIGURATION=Debug
+        - CMAKE_ARGS="-DBIT_MATH_ENABLE_TSAN=On"
+        - CTEST_NAME=math_tsan_default
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
@@ -152,6 +206,7 @@ matrix:
         - COMPILER=clang++
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
 
     # xcode8 clang unit test
     - os: osx
@@ -162,6 +217,7 @@ matrix:
         - COMPILER=clang++
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
 
     # xcode8.1 clang unit test
     - os: osx
@@ -172,6 +228,7 @@ matrix:
         - COMPILER=clang++
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
 
     # xcode8.2 clang unit test
     - os: osx
@@ -182,6 +239,7 @@ matrix:
         - COMPILER=clang++
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
 
     # xcode8.3 clang unit test
     - os: osx
@@ -192,6 +250,7 @@ matrix:
         - COMPILER=clang++
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
 
     # xcode9 clang unit test
     - os: osx
@@ -202,6 +261,7 @@ matrix:
         - COMPILER=clang++
         - CONFIGURATION=Release
         - CMAKE_ARGS="-DBIT_MATH_COMPILE_HEADER_SELF_CONTAINMENT_TESTS=On"
+        - CTEST_NAME=math_test_default
 
 ######################
 # Installation Steps #
@@ -218,11 +278,13 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-check-certificate https://www.cmake.org/files/v3.9/cmake-3.9.4-Linux-x86_64.tar.gz; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar -xzf cmake-3.9.4-Linux-x86_64.tar.gz; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CMAKE=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Linux-x86_64/bin/cmake; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CTEST=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Linux-x86_64/bin/ctest; fi
 
   # Install cmake 3.9.4 for MacOS
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --no-check-certificate https://cmake.org/files/v3.9/cmake-3.9.4-Darwin-x86_64.tar.gz; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar -xzf cmake-3.9.4-Darwin-x86_64.tar.gz && ls && ls cmake-3.9.4-Darwin-x86_64; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CMAKE=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Darwin-x86_64/CMake.app/Contents/bin/cmake; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CTEST=$TRAVIS_BUILD_DIR/../cmake-3.9.4-Darwin-x86_64/CMake.app/Contents/bin/ctest; fi
 
   - cd bit-math/
 
@@ -253,4 +315,4 @@ before_script:
 script:
   - $CMAKE .. $CMAKE_ARGS
   - $CMAKE --build . --config $CONFIGURATION
-  - $CMAKE --build . --target test --config $CONFIGURATION
+  - $CTEST --output-on-failure --tests-regex $CTEST_NAME
